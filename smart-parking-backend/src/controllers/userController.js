@@ -8,12 +8,17 @@ const multer = require("multer");
 
 const createUser = async (req, res) => {
   try {
-    const user = new User(req.body);
+    if (!req.body.car_no || req.body.car_no == "") {
+      throw new Error(`you must add car_no to create profile`);
+    }
+    const cars = [req.body.car_no];
+    const user = new User({ ...req.body, cars });
     await user.save();
     // sendWelcomeEmail(user.email, user.name);
     const token = await user.generateAuthToken();
     res.status(201).send({ user: user, token });
   } catch (error) {
+    console.log(error);
     if (error.code === 11000) {
       const keys = Object.keys(error.keyValue);
       return res.status(400).send({
@@ -35,7 +40,9 @@ const loginUser = async (req, res) => {
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send();
+    res.status(400).send({
+      error: error.message,
+    });
   }
 };
 
@@ -45,7 +52,7 @@ const userProfile = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedupdates = ["name", "email", "password", "age"];
+  const allowedupdates = ["name", "password"];
   const isValidOperation = updates.every((update) => {
     return allowedupdates.includes(update);
   });
@@ -60,7 +67,9 @@ const updateUser = async (req, res) => {
     await req.user.save();
     res.send(req.user);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send({
+      error: error.message,
+    });
   }
 };
 
@@ -70,7 +79,9 @@ const deleteUser = async (req, res) => {
     // sendCancelationEmail(req.user.email, req.user.name);
     res.send(req.user);
   } catch (error) {
-    res.status(500).send(e);
+    res.status(500).send({
+      error: error.message,
+    });
   }
 };
 

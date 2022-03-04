@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 
-const parkingOwnerSchema = new mongoose.Schema(
+const Parking = require("./parkingModel");
+
+const ownerSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -48,7 +50,6 @@ const parkingOwnerSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "Parking",
-        required: true,
       },
     ],
   },
@@ -57,29 +58,29 @@ const parkingOwnerSchema = new mongoose.Schema(
   }
 );
 
-parkingOwnerSchema.methods.generateAuthToken = async function () {
-  const parkingOwner = this;
-  const token = jwt.sign(
-    { _id: parkingOwner._id.toString() },
-    process.env.JWT_SECRET
-  );
-  await parkingOwner.save();
+ownerSchema.methods.generateAuthToken = async function () {
+  const owner = this;
+  const token = jwt.sign({ _id: owner._id.toString() }, process.env.JWT_SECRET);
+  await owner.save();
   return token;
 };
 
-parkingOwnerSchema.methods.toJSON = function () {
-  const parkingOwner = this;
-  const parkingOwnerObject = parkingOwner.toObject();
-  delete parkingOwnerObject.password;
-  return parkingOwnerObject;
+ownerSchema.methods.toJSON = function () {
+  const owner = this;
+  const ownerObject = owner.toObject();
+  delete ownerObject.password;
+  delete ownerObject.createdAt;
+  delete ownerObject.updatedAt;
+  delete ownerObject.__v;
+  return ownerObject;
 };
 
-parkingOwnerSchema.statics.findByCredentials = async (email, password) => {
-  const parkingOwner = await ParkingOwner.findOne({ email });
-  if (!parkingOwner) {
+ownerSchema.statics.findByCredentials = async (email, password) => {
+  const owner = await Owner.findOne({ email });
+  if (!owner) {
     throw new Error("Unable to login");
   }
-  const isMatch = await bcrypt.compare(password, parkingOwner.password);
+  const isMatch = await bcrypt.compare(password, owner.password);
   if (!isMatch) {
     throw new Error("Unable to login");
   }
@@ -87,26 +88,26 @@ parkingOwnerSchema.statics.findByCredentials = async (email, password) => {
 };
 
 //Hash the plain text password before saving
-parkingOwnerSchema.pre("save", async function (next) {
-  const parkingOwner = this; //'this' is a document that is going to be save.
+ownerSchema.pre("save", async function (next) {
+  const owner = this; //'this' is a document that is going to be save.
 
-  if (parkingOwner.isModified("password")) {
-    parkingOwner.password = await bcrypt.hash(parkingOwner.password, 8);
+  if (owner.isModified("password")) {
+    owner.password = await bcrypt.hash(owner.password, 8);
   }
 
   next(); // it runs after function runs
 });
 
-//Delete parkings of parkingowner when owner delete accout
-parkingOwnerSchema.pre("remove", async function (next) {
-  const parkingOwner = this;
+//Delete parkings of owner when owner delete accout
+ownerSchema.pre("remove", async function (next) {
+  const owner = this;
   await Parking.deleteMany({
-    owner: parkingOwner._id,
+    owner: owner._id,
   });
 
   next();
 });
 
-const ParkingOwner = mongoose.model("ParkingOwner", parkingOwnerSchema);
+const Owner = mongoose.model("Owner", ownerSchema);
 
-module.exports = ParkingOwner;
+module.exports = Owner;

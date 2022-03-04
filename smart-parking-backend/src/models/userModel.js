@@ -44,21 +44,25 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    primary_car_no: {
+    car_no: {
       type: String,
       required: true,
       trim: true,
+      uppercase: true,
+      unique: true,
       validate(value) {
-        if (!validator.isLicensePlate(value, ["en-IN"])) {
-          throw new Error("car number plate is invalid");
-        }
+        return /[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(value);
       },
     },
     cars: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "Car",
+        type: String,
         required: true,
+        uppercase: true,
+        trim: true,
+        validate(value) {
+          return /[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(value);
+        },
       },
     ],
   },
@@ -77,6 +81,9 @@ userSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
   delete userObject.password;
+  delete userObject.createdAt;
+  delete userObject.updatedAt;
+  delete userObject.__v;
   return userObject;
 };
 
@@ -101,16 +108,6 @@ userSchema.pre("save", async function (next) {
   }
 
   next(); // it runs after function runs
-});
-
-//Delete user task when user is removed.
-userSchema.pre("remove", async function (next) {
-  const user = this;
-  await Car.deleteMany({
-    owner: user._id,
-  });
-
-  next();
 });
 
 const User = mongoose.model("User", userSchema);
