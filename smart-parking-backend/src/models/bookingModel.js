@@ -15,9 +15,8 @@ const bookingSchema = new mongoose.Schema({
     required: true,
   },
   car: {
-    type: String,
-    trim: true,
-    uppercase: true,
+    type: mongoose.Types.ObjectId,
+    ref: "Car",
     required: true,
   },
   parking: {

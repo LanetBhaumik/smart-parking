@@ -22,63 +22,59 @@ const Signup = (props) => {
       body: JSON.stringify({ name, email, password, mobile_no, car_no }),
     });
     const json = await response.json();
+    console.log(response)
     console.log(json);
-    if (json.success) {
+    if (response.status === 201) {
       //Save the authtoken and redirect
-      localStorage.setItem("token", json.authtoken);
+      localStorage.setItem("token", json.token);
       navigate("/");
       props.showAlert("Account created successfully", "success");
-    } else {
-      props.showAlert("Invalid credentials", "danger");
+    } else if(json.error){
+      props.showAlert(json.error, "danger");
+    }
+     else {
     }
   };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
-    <div className="container mt-3">
-      <h2>Create an account to book your parking slot </h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
+  <>
+  <h2>Create an account to book your parking slot </h2>
+  <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name">
             Name
           </label>
           <input
             type="text"
-            className="form-control"
             id="name"
             name="name"
             onChange={onChange}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
+          <label htmlFor="email">
             Email address
           </label>
           <input
             type="email"
-            className="form-control"
             id="email"
             name="email"
             onChange={onChange}
             aria-describedby="emailHelp"
           />
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="mobile_no" className="form-label">
+        <div>
+          <label htmlFor="mobile_no">
             Mobile Number
           </label>
           <input
             type="tel"
-            className="form-control"
             id="mobile_no"
             name="mobile_no"
             onChange={onChange}
           />
         </div>
+  
         <div className="mb-3">
           <label htmlFor="car_no" className="form-label">
             Enter Vehicle Number
@@ -89,7 +85,7 @@ const Signup = (props) => {
             id="car_no"
             name="car_no"
             onChange={onChange}
-          />
+            />
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -103,7 +99,7 @@ const Signup = (props) => {
             onChange={onChange}
             minLength={8}
             required
-          />
+            />
         </div>
         <div className="mb-3">
           <label htmlFor="cpassword" className="form-label">
@@ -117,14 +113,13 @@ const Signup = (props) => {
             onChange={onChange}
             minLength={8}
             required
-          />
+            />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit">
           Submit
         </button>
       </form>
-    </div>
-  );
+  </>);
 };
 
 export default Signup;

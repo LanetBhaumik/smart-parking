@@ -1,5 +1,5 @@
-const { findById, findOne } = require("../models/BookingModel");
-const Booking = require("../models/BookingModel");
+const { findById, findOne } = require("../models/bookingModel");
+const Booking = require("../models/bookingModel");
 const Parking = require("../models/parkingModel");
 
 // New booking
@@ -11,7 +11,7 @@ const createBooking = async (req, res) => {
     }
     const booking = new Booking({
       user: req.user._id,
-      car: req.user.car_no,
+      car: req.user.car,
       ...req.body,
     });
     await booking.save();

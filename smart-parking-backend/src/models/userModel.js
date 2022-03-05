@@ -44,27 +44,16 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    car_no: {
-      type: String,
+    car: {
+      type: mongoose.Types.ObjectId,
       required: true,
-      trim: true,
-      uppercase: true,
-      unique: true,
-      validate(value) {
-        return /[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(value);
-      },
+      ref: "Car",
     },
-    cars: [
-      {
-        type: String,
-        required: true,
-        uppercase: true,
-        trim: true,
-        validate(value) {
-          return /[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(value);
-        },
-      },
-    ],
+    cars: [{
+      type: mongoose.Types.ObjectId,
+    }
+
+    ]
   },
   {
     timestamps: true,

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Booking = require("./BookingModel");
+const Booking = require("./bookingModel");
 
 const parkingSchema = new mongoose.Schema(
   {
@@ -26,6 +26,10 @@ const parkingSchema = new mongoose.Schema(
           throw new Error("rate must be greater than zero.");
         }
       },
+    },
+    address:{
+      type: String,
+      required: true,
     },
     pincode: {
       type: String,

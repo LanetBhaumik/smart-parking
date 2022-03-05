@@ -7,11 +7,11 @@ const ownerRouter = require("./routers/ownerRouter");
 const parkingRouter = require("./routers/parkingRouter");
 const bookingRouter = require("./routers/bookingRouter");
 
-// const cors = require("cors");
+const cors = require("cors");
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 app.use(carRouter);
