@@ -1,31 +1,18 @@
-import React from "react";
+import React from 'react'
+import { Route, Routes } from 'react-router'
+import ResponsiveAppBar from './components/ResponsiveAppBar'
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 
-
-import { Routes, Route } from "react-router-dom";
-
-import Navbar from "./components/Navbar/Navbar";
-import Home from "./components/Home";
-import About from "./components/About";
-import Signup from "./components/Signup";
-
-function App() {
-
-  return (
-    <>
-      <div className="container">
-      <Navbar />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/about" element={<About />} />
-          <Route
-            exact
-            path="/signup"
-            element={<Signup />}
-          />
-        </Routes>
-      </div>
-    </>
-  );
+const App = () => {
+  return (<>
+    <ResponsiveAppBar/>
+    <Routes>
+      <Route path="/signin" element={<SignIn />}></Route>
+      <Route path="/signup" element={<SignUp />}></Route>
+    </Routes>
+  </>
+  )
 }
 
-export default App;
+export default App
