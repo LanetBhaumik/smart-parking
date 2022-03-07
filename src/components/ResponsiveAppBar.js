@@ -1,19 +1,18 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+
+// import Landing from '../pages/Landing';
+// import SignIn from '../pages/SignIn';
+// import SignUp from '../pages/SignUp'
+
+import {AppBar,Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+
 
 const pages = ['Home', 'Bookings', 'How It Works'];
-const settings = ['Profile', 'Dashboard', 'Bookings','Logout'];
+const pageLinks = ['/','/bookings','/about'];
+const settings = ['Profile', 'Dashboard', 'Bookings','Sign Out'];
+const settingLinks = ['/me','/dashboard','/bookings','/SignOut']
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -41,10 +40,15 @@ const ResponsiveAppBar = () => {
           <Typography
             variant="h6"
             noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            component={RouterLink}
+            to="/"
+            color="inherit"
+            sx={{ mr: 2,
+              textDecoration:'none',
+              cursor:'pointer',
+              display: { xs: 'none', md: 'flex' } }}
           >
-            Smart Parking
+             Smart Parking
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -76,9 +80,13 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {pages.map((page,i) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography  textAlign="center"
+                  component={RouterLink}
+                  to={pageLinks[i]}
+                  color="inherit"
+                  >{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -89,14 +97,18 @@ const ResponsiveAppBar = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            LOGO
+            Smart Parking
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.map((page,i) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                component={RouterLink}
+            to={pageLinks[i]}
+            color="inherit"
+
               >
                 {page}
               </Button>
@@ -125,9 +137,16 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {settings.map((setting,i) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center"
+                  component={RouterLink}
+                  to={settingLinks[i]}
+                  color="inherit"
+                style={{
+                  textDecoration:"none"
+                }}
+                  >{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

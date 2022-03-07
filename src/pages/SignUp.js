@@ -1,25 +1,19 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import React from 'react';
+
+
+import {Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import {Link as MaterialLink} from '@material-ui/core';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="http://localhost:3001/">
+      <MaterialLink component={RouterLink} to="/" color="inherit">
         Smart Parking
-      </Link>{' '}
+      </MaterialLink>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -45,7 +39,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -101,12 +95,6 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -118,9 +106,9 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <MaterialLink component={RouterLink} to="/signin" variant="body2">
                   Already have an account? Sign in
-                </Link>
+                </MaterialLink>
               </Grid>
             </Grid>
           </Box>

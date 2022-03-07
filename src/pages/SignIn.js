@@ -1,25 +1,21 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+
+import {Avatar, Button, CssBaseline, TextField, Grid, Box, Typography, Container} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import {Link as MaterialLink} from '@material-ui/core';
+
+import {loginUser} from '../actions/auth'
+import { useDispatch } from 'react-redux';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="http://localhost:3001/">
+      <MaterialLink component={RouterLink} to="/" color="inherit" href="http://localhost:3001/">
         Smart Parking
-      </Link>{' '}
+      </MaterialLink>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -28,15 +24,21 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+const SignIn = () => {
+  
+
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
+    const Credentials = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    console.log(Credentials)
+    dispatch(loginUser(Credentials))
   };
 
   return (
@@ -45,7 +47,7 @@ export default function SignIn() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -78,10 +80,6 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -91,15 +89,10 @@ export default function SignIn() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <MaterialLink component={RouterLink} to='/signup' variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </MaterialLink>
               </Grid>
             </Grid>
           </Box>
@@ -109,3 +102,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;
