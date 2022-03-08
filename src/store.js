@@ -9,4 +9,13 @@ const enhancer = composeEnhancer(
     applyMiddleware(thunk)
 )
 
-export default createStore(reducer, enhancer)
+const token = localStorage.getItem('token')
+const INITIAL_STATE ={
+    auth:{
+        token:"",
+        error_msg:"",
+        role:"",
+    }
+}
+if(token) INITIAL_STATE.auth.token=token;
+export default createStore(reducer, INITIAL_STATE, enhancer)
