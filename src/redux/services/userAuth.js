@@ -1,7 +1,6 @@
 import baseService from "./baseService";
 
-export function userLogin(Credentials){
-    return baseService.post('/users/login', Credentials)
-}
+export const userLogIn = (Credentials)=>baseService.post('/users/login', Credentials)
+export const userSignUp = (userData) => baseService.post('/users',userData)
 
-export default {userLogin}
+export default {userLogIn, userSignUp}

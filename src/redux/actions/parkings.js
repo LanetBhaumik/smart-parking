@@ -10,14 +10,14 @@ export const getParkings = () => async (dispatch) => {
     if (response.status === 200) {
       dispatch({
         type: PARKING_SUCCESS,
-        data: data,
+        payload: data,
       });
     }
   } catch (error) {
     if (error.response) {
       dispatch({
         type: PARKING_FAILED,
-        data: {
+        payload: {
           error_msg: error.response.data.error,
         },
       });
@@ -25,4 +25,4 @@ export const getParkings = () => async (dispatch) => {
   }
 };
 
-export default { getParking };
+export default { getParkings };

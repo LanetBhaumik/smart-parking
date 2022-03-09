@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   AppBar,
   Toolbar,
@@ -6,8 +7,11 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+
 import { useSelector } from "react-redux";
+
+import CustomLink from "../CustomLink/CustomLink";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -40,7 +44,7 @@ const Navbar = () => {
       <Toolbar>
         <Typography
           component={Link}
-          to="/userDashboard"
+          to="/"
           variant="h4"
           className={classes.logo}
           color="inherit"
@@ -48,25 +52,26 @@ const Navbar = () => {
           Smart Parking
         </Typography>
         <div className={classes.navlinks}>
-          <Link to="/parkings" className={classes.link}>
-            Home
-          </Link>
+          <CustomLink to="/parkings" className={classes.link}>
+            Parkings
+          </CustomLink>
           {isUserLoggedIn && (
-            <Link to="/userDashboard" className={classes.link}>
+            <CustomLink to="/" className={classes.link}>
               Dashboard
-            </Link>
+            </CustomLink>
           )}
           {isUserLoggedIn && (
-            <Link to="/UserBookings" className={classes.link}>
+            <CustomLink to="/user/bookings" className={classes.link}>
               Bookings
-            </Link>
+            </CustomLink>
           )}
 
           {isUserLoggedIn && (
-            <Link to="/me" className={classes.link}>
+            <CustomLink to="/me" className={classes.link}>
               Profile
-            </Link>
+            </CustomLink>
           )}
+          <Outlet/>
         </div>
       </Toolbar>
     </AppBar>

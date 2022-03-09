@@ -4,8 +4,8 @@ import { Button, TextField, Typography } from "@material-ui/core";
 
 import classes from "./SignIn.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../../redux/actions/userAuth";
-import {ownerLogin } from "../../redux/actions/ownerAuth";
+import { userLogIn } from "../../redux/actions/userAuth";
+import {ownerLogIn } from "../../redux/actions/ownerAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { Link as MaterialLink } from "@mui/material";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -37,11 +37,11 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(credentials);
-    role==='user'?dispatch(userLogin(credentials)):dispatch(ownerLogin(credentials));
+    role==='user'?dispatch(userLogIn(credentials)):dispatch(ownerLogIn(credentials));
   };
 
   useEffect(()=>{
-    token && Navigate('/userDashboard')
+    token && Navigate('/')
   },[token])
 
   return (<>
@@ -105,8 +105,13 @@ const SignIn = () => {
             </Button>
           </div>
           <div>
-            <MaterialLink component={Link} to="/signup" variant="body2">
+            <MaterialLink component={Link} to="/user/signup" variant="body2">
               {"Don't have an account? Sign Up"}
+            </MaterialLink>
+          </div>
+          <div>
+            <MaterialLink component={Link} to="/owner/signup" variant="body2">
+              {"Want to list your parking? Sign Up"}
             </MaterialLink>
           </div>
         </form>

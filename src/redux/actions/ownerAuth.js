@@ -1,7 +1,7 @@
 import * as ownerAuthService from "../../redux/services/ownerAuth.js";
 import { INVALID_OWNER, LOGIN_SUCCESSFUL, LOGOUT } from "../reducers/ownerAuth";
 
-export const ownerLogin = (Credentials) => {
+export const ownerLogIn = (Credentials) => {
   return (async function(dispatch) {
     try {
       const response = await ownerAuthService.ownerLogin(Credentials);
@@ -26,7 +26,7 @@ export const ownerLogin = (Credentials) => {
   });
 };
 
-export const ownerLogout = ()=>{
+export const ownerLogOut = ()=>{
   return (dispatch)=>{
     dispatch({
       type: LOGOUT
@@ -35,4 +35,4 @@ export const ownerLogout = ()=>{
   }
 }
 
-export default { ownerLogin, ownerLogout };
+export default { ownerLogIn, ownerLogOut };
