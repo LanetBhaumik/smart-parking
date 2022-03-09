@@ -10,7 +10,7 @@ import UserDashboard from './pages/UserDashboard'
 import Unauthorized from './pages/Unauthorized'
 
 import Alert from './components/Alert'
-import Header from './components/Header/Header'
+import Header from './components/Navbar/Navbar'
 
 const App = () => {
   const [alert, setAlert] = useState(null)
