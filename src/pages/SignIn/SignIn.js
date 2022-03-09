@@ -4,11 +4,12 @@ import { Button, TextField, Typography } from "@material-ui/core";
 
 import classes from "./SignIn.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../../actions/userAuth";
+import { userLogin } from "../../redux/actions/userAuth";
+import {ownerLogin } from "../../redux/actions/ownerAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { Link as MaterialLink } from "@mui/material";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { Alert } from '@mui/material';
+// import { Alert } from '@mui/material';
 
 const SignIn = () => {
   const auth = useSelector((state)=>state.auth)  
@@ -36,7 +37,7 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(credentials);
-    role==='user'?dispatch(userLogin(credentials)):dispatch();
+    role==='user'?dispatch(userLogin(credentials)):dispatch(ownerLogin(credentials));
   };
 
   useEffect(()=>{

@@ -1,10 +1,10 @@
-import * as userAuthService from "../services/userAuth.js";
-import { INVALID_USER, LOGIN_SUCCESSFUL, LOGOUT } from "../reducers/userAuth";
+import * as ownerAuthService from "../../redux/services/ownerAuth.js";
+import { INVALID_OWNER, LOGIN_SUCCESSFUL, LOGOUT } from "../reducers/ownerAuth";
 
-export const userLogin = (Credentials) => {
+export const ownerLogin = (Credentials) => {
   return (async function(dispatch) {
     try {
-      const response = await userAuthService.login(Credentials);
+      const response = await ownerAuthService.ownerLogin(Credentials);
       console.log(response);
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
@@ -16,7 +16,7 @@ export const userLogin = (Credentials) => {
     } catch (error) {
       if (error.response) {
         dispatch({
-          type: INVALID_USER,
+          type: INVALID_OWNER,
           data: {
             error_msg: error.response.data.error,
           },
@@ -26,7 +26,7 @@ export const userLogin = (Credentials) => {
   });
 };
 
-export const userLogout = ()=>{
+export const ownerLogout = ()=>{
   return (dispatch)=>{
     dispatch({
       type: LOGOUT
@@ -35,4 +35,4 @@ export const userLogout = ()=>{
   }
 }
 
-export default { userLogin, userLogout };
+export default { ownerLogin, ownerLogout };

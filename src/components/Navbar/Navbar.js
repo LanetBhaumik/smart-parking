@@ -7,13 +7,14 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
     marginLeft: theme.spacing(10),
     display: "flex",
   },
- logo: {
+  logo: {
     flexGrow: "1",
     cursor: "pointer",
   },
@@ -29,29 +30,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar() {
+const Navbar = () => {
+  const auth = useSelector((state) => state.auth);
+  const isUserLoggedIn = auth.token && auth.token !== "";
   const classes = useStyles();
-
   return (
     <AppBar position="static">
       <CssBaseline />
       <Toolbar>
-        <Typography variant="h4" className={classes.logo}>
+        <Typography
+          component={Link}
+          to="/userDashboard"
+          variant="h4"
+          className={classes.logo}
+          color="inherit"
+        >
           Smart Parking
         </Typography>
-          <div className={classes.navlinks}>
-            <Link to="/dashboard" className={classes.link}>
-              Home
+        <div className={classes.navlinks}>
+          <Link to="/parkings" className={classes.link}>
+            Home
+          </Link>
+          {isUserLoggedIn && (
+            <Link to="/userDashboard" className={classes.link}>
+              Dashboard
             </Link>
-            <Link to="/about" className={classes.link}>
+          )}
+          {isUserLoggedIn && (
+            <Link to="/UserBookings" className={classes.link}>
               Bookings
             </Link>
-            <Link to="/about" className={classes.link}>
+          )}
+
+          {isUserLoggedIn && (
+            <Link to="/me" className={classes.link}>
               Profile
             </Link>
-          </div>
+          )}
+        </div>
       </Toolbar>
     </AppBar>
   );
-}
+};
 export default Navbar;

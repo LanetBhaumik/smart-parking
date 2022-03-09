@@ -15,7 +15,18 @@ const INITIAL_STATE ={
         token:"",
         error_msg:"",
         role:"",
-    }
+    },
+    parkings:[
+        {
+            "_id": "parking_id",
+            "name": "parking_name",
+            "slots": "parking_slots",
+            "rate": "parking_rate",
+            "address": "parking_address",
+            "pincode": "parking_pincode",
+            "owner": "parking_owner"
+        }
+    ]
 }
 if(token) INITIAL_STATE.auth.token=token;
 export default createStore(reducer, INITIAL_STATE, enhancer)

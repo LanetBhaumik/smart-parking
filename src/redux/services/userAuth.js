@@ -1,5 +1,7 @@
 import baseService from "./baseService";
 
-export function login(Credentials){
+export function userLogin(Credentials){
     return baseService.post('/users/login', Credentials)
 }
+
+export default {userLogin}
