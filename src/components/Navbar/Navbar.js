@@ -6,12 +6,13 @@ import {
   CssBaseline,
   Typography,
   makeStyles,
+  Button,
 } from "@material-ui/core";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
-import CustomLink from "../CustomLink/CustomLink";
+import CustomLink from "../CustomLink";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -35,9 +36,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = () => {
-  const auth = useSelector((state) => state.auth);
-  const isUserLoggedIn = auth.token && auth.token !== "";
+  const Navigate = useNavigate();
+  const { role } = useSelector((state) => state.auth);
   const classes = useStyles();
+
+  const handleSignIn = () => {
+    Navigate("/signin");
+  };
+
+  const handleUserSignUp = () => {
+    Navigate("user/signup");
+  };
+  const handleOwnerSignUp = () => {
+    Navigate("owner/signup");
+  };
+  const handleSignOut = () => {};
   return (
     <AppBar position="static">
       <CssBaseline />
@@ -52,26 +65,61 @@ const Navbar = () => {
           Smart Parking
         </Typography>
         <div className={classes.navlinks}>
-          <CustomLink to="/parkings" className={classes.link}>
-            Parkings
-          </CustomLink>
-          {isUserLoggedIn && (
+          {role === "" && (
+            <Button
+              variant="outlined"
+              className={classes.link}
+              onClick={handleSignIn}
+            >
+              Sign In
+            </Button>
+          )}
+          {role === "" && (
+            <Button
+              variant="outlined"
+              className={classes.link}
+              onClick={handleUserSignUp}
+            >
+              User Sign Up
+            </Button>
+          )}
+          {role === "" && (
+            <Button
+              variant="outlined"
+              className={classes.link}
+              onClick={handleOwnerSignUp}
+            >
+              Owner Sign Up
+            </Button>
+          )}
+
+          {role === "user" && (
             <CustomLink to="/" className={classes.link}>
-              Dashboard
+              Parkings
             </CustomLink>
           )}
-          {isUserLoggedIn && (
+          {role === "user" && (
             <CustomLink to="/user/bookings" className={classes.link}>
               Bookings
             </CustomLink>
           )}
 
-          {isUserLoggedIn && (
+          {role === "user" && (
             <CustomLink to="/me" className={classes.link}>
               Profile
             </CustomLink>
           )}
-          <Outlet/>
+          {role === "user" && (
+            <Button
+              variant="outlined"
+              className={classes.link}
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </Button>
+          )}
+
+          <Outlet />
         </div>
       </Toolbar>
     </AppBar>

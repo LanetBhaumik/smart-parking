@@ -11,6 +11,10 @@ const userAuth = async (req, res, next) => {
     if (!user) {
       throw new Error("user not found");
     }
+    await user.populate({
+      path: "cars",
+      select: "car_no",
+    });
     req.token = token;
     req.user = user;
     next();

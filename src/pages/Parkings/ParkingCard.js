@@ -2,87 +2,48 @@ import React from "react";
 
 //Material UI
 import {
-  Avatar,
+  Button,
   Card,
   CardContent,
   CardHeader,
-  Collapse,
-  IconButton,
-  styled,
+  CardMedia,
+  Grid,
   Typography,
 } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
 import { CardActions } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
-
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
 
 const ParkingCard = ({ parking }) => {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
   return (
     <>
-      <Card sx={{ maxWidth: 345 }} variant="outlined">
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              {parking.name[0].toUpperCase()}
-            </Avatar>
-          }
-          title={parking.name}
-        />
-        <img
-          src="/images/parking/parking.png"
-          alt="parking"
-          width="194"
-          height="194"
-        ></img>
-        <CardContent>
-          <Typography variant="body2" color="secondary">
-            {`${parking.address} - ${parking.pincode}`}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
+      <Grid item key={parking} xs={12} sm={6} md={4}>
+        <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          <CardMedia
+            component="img"
+            sx={{
+              // 16:9
+              pt: "56.25%",
+            }}
+            image="https://source.unsplash.com/random"
+            alt="random"
+          />
+          <CardHeader
+            title={parking.name}
+            subheader={`${parking.address} - ${parking.pincode}`}
+          />
+          <CardContent sx={{ flexGrow: 1 }}>
             <Typography
               paragraph
-            >{`Parking Title: ${parking.name}`}</Typography>
+            >{`Total Slots: ${parking.total_slots}`}</Typography>
             <Typography
               paragraph
-            >{`total slots: ${parking.total_slots}`}</Typography>
-            <Typography
-              paragraph
-            >{`available slots: ${parking.available_slots}`}</Typography>
-            <Typography
-              paragraph
-            >{`Parking owner: ${parking.owner.name}`}</Typography>
-            <Typography>Book now</Typography>
+            >{`Available Slots: ${parking.available_slots}`}</Typography>
+            <Typography paragraph>{`Rate: ${parking.rate} / hour`}</Typography>
           </CardContent>
-        </Collapse>
-      </Card>
+          <CardActions>
+            <Button size="small">Book</Button>
+          </CardActions>
+        </Card>
+      </Grid>
     </>
   );
 };

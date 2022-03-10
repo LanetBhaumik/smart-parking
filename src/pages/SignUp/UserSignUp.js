@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
 
+//material ui
 import { Button, TextField, Typography } from "@material-ui/core";
-
+import { Link as MaterialLink } from "@mui/material";
+//css
 import classes from "../SignIn/SignIn.module.css";
+//actions
 import { userSignUp } from "../../redux/actions/userAuth";
 import { setAlert } from "../../redux/actions/alert";
-import { Link } from "react-router-dom";
-import { Link as MaterialLink } from "@mui/material";
-import { connect } from "react-redux";
-// import { ToggleButton } from "@mui/material";
 
 const UserSignUp = ({ userSignUp, setAlert }) => {
-  // const dispatch = useDispatch();
-
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -61,6 +60,12 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
     if (!credIsValid()) return;
     userSignUp(userData);
   };
+
+  const { token } = useSelector((state) => state.auth);
+  const Navigate = useNavigate();
+  useEffect(() => {
+    token && token !== "" && Navigate("/");
+  }, [token]);
 
   return (
     <div className={classes.main}>

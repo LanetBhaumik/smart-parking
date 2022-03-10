@@ -1,20 +1,26 @@
-import * as userAuthService from "../../redux/services/userAuth.js";
+import {
+  signInService,
+  signUpService,
+  profileService,
+} from "../../redux/services/userAuth.js";
 import {
   INVALID_USER,
-  LOGIN_SUCCESSFUL,
-  LOGOUT_SUCCESSFUL,
+  SIGNIN_SUCCESSFUL,
+  SIGNOUT_SUCCESSFUL,
   SIGNUP_SUCCESSFUL,
+  USER_PROFILE,
 } from "../reducers/userAuth";
 
-export const userLogIn = (Credentials) => async (dispatch) => {
+export const userSignIn = (Credentials) => async (dispatch) => {
   try {
-    const response = await userAuthService.userLogIn(Credentials);
+    const response = await signInService(Credentials);
     console.log(response);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", "user");
       dispatch({
-        type: LOGIN_SUCCESSFUL,
-        payload: { token: response.data.token, role: "user" },
+        type: SIGNIN_SUCCESSFUL,
+        payload: { data: response.data, role: "user" },
       });
     }
   } catch (error) {
@@ -32,13 +38,15 @@ export const userLogIn = (Credentials) => async (dispatch) => {
 export const userSignUp = (userData) => async (dispatch) => {
   try {
     console.log(userData);
-    const response = await userAuthService.userSignUp(userData);
+    const response = await signUpService(userData);
     console.log(response);
-    if (response.status === 200) {
+    if (response.status === 201) {
+      console.log("userSign up runs");
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", "user");
       dispatch({
         type: SIGNUP_SUCCESSFUL,
-        payload: { token: response.data.token, role: "user" },
+        payload: { data: response.data, role: "user" },
       });
     }
   } catch (error) {
@@ -53,10 +61,25 @@ export const userSignUp = (userData) => async (dispatch) => {
   }
 };
 
-export const userLogOut = () => async (dispatch) => {
+export const userProfile = () => async (dispatch) => {
+  try {
+    const response = await profileService();
+    console.log(response);
+    if (response.status === 200) {
+      dispatch({
+        type: USER_PROFILE,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const userSignOut = () => async (dispatch) => {
   dispatch({
-    type: LOGOUT_SUCCESSFUL,
+    type: SIGNOUT_SUCCESSFUL,
     payload: false,
   });
 };
-export default { userLogIn, userLogOut, userSignUp };
+export default { userSignIn, userSignOut, userSignUp, userProfile };

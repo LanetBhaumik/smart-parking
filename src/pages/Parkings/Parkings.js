@@ -1,3 +1,4 @@
+import { Container, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useSelector, connect } from "react-redux";
 import { fetchParkings } from "../../redux/actions/parkings";
@@ -20,9 +21,13 @@ const Parkings = ({ fetchParkings }) => {
 
   return (
     <>
-      {parkings.map((parking) => {
-        return <ParkingCard parking={parking} key={parking._id} />;
-      })}
+      <Container sx={{ py: 8, mt: 100 }} maxWidth="md">
+        <Grid container spacing={4}>
+          {parkings.map((parking) => (
+            <ParkingCard parking={parking} key={parking._id} />
+          ))}
+        </Grid>
+      </Container>
     </>
   );
 };

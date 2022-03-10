@@ -10,6 +10,8 @@ const composeEnhancer =
 const enhancer = composeEnhancer(applyMiddleware(thunk));
 
 const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
+
 const INITIAL_STATE = {
   auth: {
     token: "",
@@ -29,9 +31,12 @@ const INITIAL_STATE = {
   ],
   alert: {
     alert: false,
-    severity: "info",
+    severity: "",
     message: "",
   },
 };
-if (token) INITIAL_STATE.auth.token = token;
+if (token) {
+  INITIAL_STATE.auth.token = token;
+  INITIAL_STATE.auth.role = role;
+}
 export default createStore(reducer, INITIAL_STATE, enhancer);

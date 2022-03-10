@@ -1,15 +1,19 @@
 import * as ownerAuthService from "../../redux/services/ownerAuth.js";
-import { INVALID_OWNER, LOGIN_SUCCESSFUL, LOGOUT } from "../reducers/ownerAuth";
+import {
+  INVALID_OWNER,
+  SIGNIN_SUCCESSFUL,
+  SIGNOUT,
+} from "../reducers/ownerAuth";
 
-export const ownerLogIn = (Credentials) => {
-  return (async function(dispatch) {
+export const ownerSignIn = (Credentials) => {
+  return async function(dispatch) {
     try {
-      const response = await ownerAuthService.ownerLogin(Credentials);
+      const response = await ownerAuthService.ownerSignIn(Credentials);
       console.log(response);
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         dispatch({
-          type: LOGIN_SUCCESSFUL,
+          type: SIGNIN_SUCCESSFUL,
           data: { token: response.data.token, role: "user" },
         });
       }
@@ -23,16 +27,16 @@ export const ownerLogIn = (Credentials) => {
         });
       }
     }
-  });
+  };
 };
 
-export const ownerLogOut = ()=>{
-  return (dispatch)=>{
+export const ownerSignOut = () => {
+  return (dispatch) => {
     dispatch({
-      type: LOGOUT
-    })
+      type: SIGNOUT,
+    });
     localStorage.removeItem("token");
-  }
-}
+  };
+};
 
-export default { ownerLogIn, ownerLogOut };
+export default { ownerSignIn, ownerSignOut };

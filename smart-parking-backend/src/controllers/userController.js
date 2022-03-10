@@ -25,8 +25,8 @@ const createUser = async (req, res) => {
     const car = new Car({
       _id: car_id,
       car_no: req.body.car,
-      owner: user_id
-    })
+      owner: user_id,
+    });
     await car.save();
 
     const user = new User({
@@ -43,7 +43,7 @@ const createUser = async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user: user, token });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     // if (error.code === 11000) {
     //   const keys = Object.keys(error.keyValue);
     //   return res.status(400).send({

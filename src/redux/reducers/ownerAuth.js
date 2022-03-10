@@ -4,13 +4,13 @@ const INITIAL_STATE = {
   error_msg: "",
 };
 
-export const LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
+export const SIGNIN_SUCCESSFUL = "SIGNIN_SUCCESSFUL";
 export const INVALID_OWNER = "INVALID_OWNER";
-export const LOGOUT = "LOGOUT";
+export const SIGNOUT = "SIGNOUT";
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case LOGIN_SUCCESSFUL: {
+    case SIGNIN_SUCCESSFUL: {
       return Object.assign({}, state, {
         token: action.data.token,
         role: "owner",
@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
     case INVALID_OWNER: {
       return Object.assign({}, state, { error_msg: action.data.error_msg });
     }
-    case LOGOUT: {
+    case SIGNOUT: {
       return Object.assign({}, state, { token: "", role: "" });
     }
 
