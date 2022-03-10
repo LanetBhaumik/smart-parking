@@ -6,7 +6,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/UserSignUp";
 import NotFound from "./pages/NotFound";
 import UserDashboard from "./pages/UserDashboard";
-import Parkings from "./pages/Parkings";
+import Parkings from "./pages/Parkings/Parkings";
 
 // import Unauthorized from './pages/Unauthorized'
 
@@ -25,10 +25,9 @@ const App = () => {
   return (
     <>
       <Header />
-      {alert && <Alert severity={alert.severity}>{alert.message}</Alert>}
+      {alert.alert && <Alert severity={alert.severity}>{alert.message}</Alert>}
       <Routes>
         <Route path="/" element={<SignIn />}>
-          <Route path="/parkings" element={<Parkings />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
         </Route>
         <Route path="/signup" element={<SignUp />}></Route>
@@ -40,6 +39,7 @@ const App = () => {
           <Route path="/parkingBookings" element={<ParkingBookings />}></Route>
         </Route>
 
+        <Route path="/parkings" element={<Parkings />}></Route>
         <Route path="/owner/signup" element={<OwnerSignUp />}></Route>
         <Route path="/user/signup" element={<UserSignUp />}></Route>
         <Route path="*" element={<NotFound />}></Route>

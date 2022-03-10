@@ -1,16 +1,14 @@
-import * as parkingService from "../../services/parkingServices";
+import { getParkings } from "../services/parkingServices";
 import { PARKING_SUCCESS, PARKING_FAILED } from "../reducers/parkings";
 
-export const getParkings = () => async (dispatch) => {
+export const fetchParkings = () => async (dispatch) => {
   try {
-    const response = await parkingService.getParkings();
-    console.log(response);
-    const data = await response.json();
-    console.log(data);
+    const response = await getParkings();
+    console.log(response.data);
     if (response.status === 200) {
       dispatch({
         type: PARKING_SUCCESS,
-        payload: data,
+        payload: response.data,
       });
     }
   } catch (error) {
@@ -25,4 +23,4 @@ export const getParkings = () => async (dispatch) => {
   }
 };
 
-export default { getParkings };
+export default { fetchParkings };

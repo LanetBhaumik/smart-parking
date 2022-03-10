@@ -8,7 +8,7 @@ const parkingSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    slots: {
+    total_slots: {
       type: Number,
       required: true,
       default: 10,
@@ -17,6 +17,15 @@ const parkingSchema = new mongoose.Schema(
           throw new Error("Parking must have 10 or more slots");
         }
       },
+    },
+    available_slots: {
+      type: Number,
+      required: true,
+    },
+    booked_slots: {
+      type: Number,
+      default: 0,
+      required: true,
     },
     rate: {
       type: Number,
@@ -27,7 +36,7 @@ const parkingSchema = new mongoose.Schema(
         }
       },
     },
-    address:{
+    address: {
       type: String,
       required: true,
     },
@@ -49,7 +58,7 @@ const parkingSchema = new mongoose.Schema(
   }
 );
 
-parkingSchema.methods.toJSON = function () {
+parkingSchema.methods.toJSON = function() {
   const parking = this;
   const parkingObject = parking.toObject();
   delete parkingObject.createdAt;
@@ -58,7 +67,13 @@ parkingSchema.methods.toJSON = function () {
   return parkingObject;
 };
 
-parkingSchema.pre("remove", async function (next) {
+parkingSchema.pre("save", async function(next) {
+  const parking = this;
+  parking.available_slots &&
+    (parking.available_slots = parking.total_slots - parking.booked_slots);
+});
+
+parkingSchema.pre("remove", async function(next) {
   const parking = this;
   await Booking.deleteMany({
     parking: parking._id,

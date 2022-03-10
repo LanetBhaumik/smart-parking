@@ -1,4 +1,5 @@
 const INITIAL_STATE = {
+  alert: false,
   severity: "",
   message: "",
 };
@@ -11,6 +12,7 @@ export default (state = INITIAL_STATE, action) => {
     case SET_ALERT: {
       return {
         ...INITIAL_STATE,
+        alert: true,
         severity: action.payload.severity,
         message: action.payload.message,
       };

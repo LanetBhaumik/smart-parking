@@ -9,7 +9,8 @@ const createParking = async (req, res) => {
       ...req.body,
       owner: req.owner._id,
     });
-    await parking.save();
+    (parking.available_slots = parking.total_slots - parking.booked_slots),
+      await parking.save();
     res.status(201).send(parking);
   } catch (error) {
     console.log(error);
@@ -21,8 +22,12 @@ const createParking = async (req, res) => {
 
 const readAllParkings = async (req, res) => {
   try {
-    const parkings = await Parking.find();
-    if (!parkings) {
+    const parkings = await Parking.find().populate({
+      path: "owner",
+      select: "name",
+    });
+
+    if (parkings.length === 0) {
       throw new Error("No parking found");
     }
     res.send(parkings);

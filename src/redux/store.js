@@ -28,7 +28,8 @@ const INITIAL_STATE = {
     },
   ],
   alert: {
-    severity: "",
+    alert: false,
+    severity: "info",
     message: "",
   },
 };
