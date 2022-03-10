@@ -10,9 +10,10 @@ import {
 } from "@material-ui/core";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 import CustomLink from "../CustomLink";
+import { userSignOut } from "../../redux/actions/userAuth";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ userSignOut }) => {
   const Navigate = useNavigate();
   const { role } = useSelector((state) => state.auth);
   const classes = useStyles();
@@ -50,7 +51,9 @@ const Navbar = () => {
   const handleOwnerSignUp = () => {
     Navigate("owner/signup");
   };
-  const handleSignOut = () => {};
+  const handleSignOut = () => {
+    userSignOut();
+  };
   return (
     <AppBar position="static">
       <CssBaseline />
@@ -125,4 +128,9 @@ const Navbar = () => {
     </AppBar>
   );
 };
-export default Navbar;
+
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, {
+  userSignOut,
+})(Navbar);

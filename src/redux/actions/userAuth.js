@@ -77,9 +77,11 @@ export const userProfile = () => async (dispatch) => {
 };
 
 export const userSignOut = () => async (dispatch) => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
   dispatch({
     type: SIGNOUT_SUCCESSFUL,
-    payload: false,
   });
 };
+
 export default { userSignIn, userSignOut, userSignUp, userProfile };
