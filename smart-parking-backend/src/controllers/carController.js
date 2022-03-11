@@ -1,6 +1,6 @@
-const { default: mongoose } = require('mongoose');
+const { default: mongoose } = require("mongoose");
 
-const Car = require('../models/carModel')
+const Car = require("../models/carModel");
 
 const addCar = async (req, res) => {
   try {
@@ -9,20 +9,24 @@ const addCar = async (req, res) => {
 
     const carExists = await Car.findOne({
       car_no,
-    })
+    });
 
-    if(carExists) throw new Error(`${car_no} is already registered.`)
+    if (carExists) throw new Error(`${car_no} is already registered.`);
 
     const car = new Car({
       _id: car_id,
       car_no,
-      owner: req.user._id
-    })
+      owner: req.user._id,
+    });
 
     await car.save();
     const updatedCars = [...req.user.cars, car_id];
     req.user.cars = updatedCars;
     await req.user.save();
+    await req.user.populate({
+      path: "cars",
+      select: "car_no",
+    });
     res.status(201).send({
       cars: req.user.cars,
     });
@@ -36,8 +40,8 @@ const addCar = async (req, res) => {
 
 const makeCarPrimary = async (req, res) => {
   try {
-    const car = req.user.cars.find(car => car==req.params.car_id)
-    if(!car) throw new Error('car not found');
+    const car = req.user.cars.find((car) => car == req.params.car_id);
+    if (!car) throw new Error("car not found");
     req.user.car = req.params.car_id;
     await req.user.save();
     res.send({
@@ -54,9 +58,10 @@ const makeCarPrimary = async (req, res) => {
 const deleteCar = async (req, res) => {
   try {
     const car = await Car.findById(req.params.car_id);
-    if(!car) throw new Error('car not found')
+    if (!car) throw new Error("car not found");
 
-    if(req.user.cars.length === 1) throw new Error('Atleast One car is required.')
+    if (req.user.cars.length === 1)
+      throw new Error("Atleast One car is required.");
 
     const updatedCars = req.user.cars.filter((car) => {
       return car != req.params.car_id;

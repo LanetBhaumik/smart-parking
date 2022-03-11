@@ -61,14 +61,15 @@ export const userSignUp = (userData) => async (dispatch) => {
   }
 };
 
-export const userProfile = () => async (dispatch) => {
+export const userProfile = () => async (dispatch, getState) => {
   try {
+    const { auth } = getState();
     const response = await profileService();
     console.log(response);
     if (response.status === 200) {
       dispatch({
         type: USER_PROFILE,
-        payload: response.data,
+        payload: { ...auth, user: response.data },
       });
     }
   } catch (error) {

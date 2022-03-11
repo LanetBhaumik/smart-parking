@@ -108,7 +108,7 @@ const Navbar = ({ userSignOut }) => {
           )}
 
           {role === "user" && (
-            <CustomLink to="/me" className={classes.link}>
+            <CustomLink to="user/me" className={classes.link}>
               Profile
             </CustomLink>
           )}

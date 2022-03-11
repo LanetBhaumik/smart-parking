@@ -15,6 +15,10 @@ const userAuth = async (req, res, next) => {
       path: "cars",
       select: "car_no",
     });
+    await user.populate({
+      path: "car",
+      select: "car_no",
+    });
     req.token = token;
     req.user = user;
     next();

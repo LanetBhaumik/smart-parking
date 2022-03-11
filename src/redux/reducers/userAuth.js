@@ -37,7 +37,7 @@ export default (state = INITIAL_STATE, action) => {
     }
     case USER_PROFILE: {
       return {
-        ...INITIAL_STATE,
+        ...action.payload,
       };
     }
 

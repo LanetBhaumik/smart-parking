@@ -15,13 +15,10 @@ const createUser = async (req, res) => {
     if (!req.body.car || req.body.car == "") {
       throw new Error(`you must add car_no to create profile`);
     }
-    // const carExists = await Car.findOne({
-    //   car_no: req.body.car_no
-    // })
-    // if(carExists) throw new Error("Car already exists")
-    // const car = new Car({
-    //   car_no: req.body.car_no
-    // })
+    const carExists = await Car.findOne({
+      car_no: req.body.car_no,
+    });
+    if (carExists) throw new Error("Car already exists");
     const car = new Car({
       _id: car_id,
       car_no: req.body.car,
@@ -40,8 +37,19 @@ const createUser = async (req, res) => {
     });
     await user.save();
     // sendWelcomeEmail(user.email, user.name);
+    await user.populate({
+      path: "car",
+      select: "car_no",
+    });
+    await user.populate({
+      path: "cars",
+      select: "car_no",
+    });
     const token = await user.generateAuthToken();
-    res.status(201).send({ user: user, token });
+    res.status(201).send({
+      user,
+      token,
+    });
   } catch (error) {
     console.log(error);
     // if (error.code === 11000) {

@@ -12,10 +12,8 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 // import { Alert } from '@mui/material';
 
 const SignIn = () => {
-  const auth = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const Navigate = useNavigate();
-
-  const { token } = auth;
 
   const dispatch = useDispatch();
 

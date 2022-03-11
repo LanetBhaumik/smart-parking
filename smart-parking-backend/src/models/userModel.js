@@ -80,7 +80,15 @@ userSchema.methods.toJSON = function() {
 };
 
 userSchema.statics.findByCredentials = async (email, password) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email })
+    .populate({
+      path: "cars",
+      select: "car_no",
+    })
+    .populate({
+      path: "car",
+      select: "car_no",
+    });
   if (!user) {
     throw new Error("User not found");
   }
