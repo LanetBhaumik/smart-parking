@@ -1,4 +1,6 @@
 import React from "react";
+import { connect, useSelector } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import {
   AppBar,
@@ -8,9 +10,6 @@ import {
   makeStyles,
   Button,
 } from "@material-ui/core";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-
-import { connect, useSelector } from "react-redux";
 
 import CustomLink from "../CustomLink";
 
@@ -39,9 +38,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = ({ signOut }) => {
-  const Navigate = useNavigate();
-  const { role } = useSelector((state) => state.auth);
   const classes = useStyles();
+  const Navigate = useNavigate();
+
+  const { role } = useSelector((state) => state.auth);
 
   const handleSignIn = () => {
     Navigate("/signin");
@@ -50,12 +50,86 @@ const Navbar = ({ signOut }) => {
   const handleUserSignUp = () => {
     Navigate("user/signup");
   };
+
   const handleOwnerSignUp = () => {
     Navigate("owner/signup");
   };
+
   const handleSignOut = () => {
     signOut();
   };
+
+  let links = null;
+  if (role === "user") {
+    links = (
+      <>
+        <CustomLink to="/" className={classes.link}>
+          Parkings
+        </CustomLink>
+        <CustomLink to="/user/bookings" className={classes.link}>
+          Bookings
+        </CustomLink>
+        <CustomLink to="user/me" className={classes.link}>
+          Profile
+        </CustomLink>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleSignOut}
+        >
+          Sign Out
+        </Button>
+      </>
+    );
+  } else if (role === "owner") {
+    links = (
+      <>
+        <CustomLink to="/" className={classes.link}>
+          Home
+        </CustomLink>
+        <CustomLink to="/owner/parkings" className={classes.link}>
+          Parkings
+        </CustomLink>
+        <CustomLink to="/owner/me" className={classes.link}>
+          Profile
+        </CustomLink>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleSignOut}
+        >
+          Sign Out
+        </Button>
+      </>
+    );
+  } else {
+    links = (
+      <div>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleSignIn}
+        >
+          Sign In
+        </Button>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleUserSignUp}
+        >
+          User Sign Up
+        </Button>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleOwnerSignUp}
+        >
+          Owner Sign Up
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <AppBar position="fixed">
       <CssBaseline />
@@ -70,60 +144,7 @@ const Navbar = ({ signOut }) => {
           Smart Parking
         </Typography>
         <div className={classes.navlinks}>
-          {role === "" && (
-            <Button
-              variant="outlined"
-              className={classes.link}
-              onClick={handleSignIn}
-            >
-              Sign In
-            </Button>
-          )}
-          {role === "" && (
-            <Button
-              variant="outlined"
-              className={classes.link}
-              onClick={handleUserSignUp}
-            >
-              User Sign Up
-            </Button>
-          )}
-          {role === "" && (
-            <Button
-              variant="outlined"
-              className={classes.link}
-              onClick={handleOwnerSignUp}
-            >
-              Owner Sign Up
-            </Button>
-          )}
-
-          {role === "user" && (
-            <CustomLink to="/" className={classes.link}>
-              Parkings
-            </CustomLink>
-          )}
-          {role === "user" && (
-            <CustomLink to="/user/bookings" className={classes.link}>
-              Bookings
-            </CustomLink>
-          )}
-
-          {role === "user" && (
-            <CustomLink to="user/me" className={classes.link}>
-              Profile
-            </CustomLink>
-          )}
-          {role === "user" && (
-            <Button
-              variant="outlined"
-              className={classes.link}
-              onClick={handleSignOut}
-            >
-              Sign Out
-            </Button>
-          )}
-
+          {links}
           <Outlet />
         </div>
       </Toolbar>

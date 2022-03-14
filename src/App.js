@@ -17,6 +17,7 @@ import Parking from "./pages/owner/parking";
 //material ui
 import { Alert } from "@mui/material";
 import OwnerParkings from "./pages/owner/OwnerParkings";
+import OwnerProfile from "./pages/owner/OwnerProfile";
 
 const App = () => {
   const { alert } = useSelector((state) => state);
@@ -43,11 +44,13 @@ const App = () => {
           {/* user routes */}
           <Route path="/user/bookings" element={<UserBookings />}></Route>
           <Route path="user/me" element={<UserProfile />}></Route>
-          <Route path="*" element={<NotFound />}></Route>
 
           {/* owner routes */}
           <Route path="/owner/parkings" element={<OwnerParkings />} />
+          <Route path="owner/me" element={<OwnerProfile />}></Route>
           <Route path="/owner/parkings/:parkingId" element={<Parking />} />
+
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </main>
     </div>
