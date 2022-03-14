@@ -18,7 +18,7 @@ export default (state = INITIAL_STATE, action) => {
       return action.payload;
     }
     case PARKING_FAILED: {
-      return {};
+      return action.payload;
     }
     default:
       return state;

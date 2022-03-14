@@ -1,5 +1,5 @@
-import { getParkings } from "../services/parkingServices";
-import { PARKING_SUCCESS, PARKING_FAILED } from "../reducers/parkings";
+import { getParkings } from "../services/parkingService";
+import { PARKING_SUCCESS, PARKING_FAILED } from "../reducers/parkingReducer";
 
 export const fetchParkings = () => async (dispatch) => {
   try {
@@ -13,10 +13,11 @@ export const fetchParkings = () => async (dispatch) => {
     }
   } catch (error) {
     if (error.response) {
+      console.log(error.response);
       dispatch({
         type: PARKING_FAILED,
         payload: {
-          error_msg: error.response.data.error,
+          error: error.response.data.error,
         },
       });
     }

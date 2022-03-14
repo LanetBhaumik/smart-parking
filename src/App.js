@@ -7,33 +7,50 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Parkings from "./pages/Parkings/Parkings";
 import SignIn from "./pages/SignIn/SignIn";
-import UserSignUp from "./pages/SignUp/UserSignUp";
-import OwnerSignUp from "./pages/SignUp/OwnerSignUp";
+import UserSignUp from "./pages/user/UserSignUp";
+import OwnerSignUp from "./pages/owner/OwnerSignUp";
 import NotFound from "./pages/NotFound";
-import UserBookings from "./pages/UserBookings";
-import UserProfile from "./pages/UserProfile";
+import UserBookings from "./pages/user/UserBookings";
+import UserProfile from "./pages/user/UserProfile";
+import Parking from "./pages/owner/parking";
 
 //material ui
 import { Alert } from "@mui/material";
+import OwnerParkings from "./pages/owner/OwnerParkings";
 
 const App = () => {
   const { alert } = useSelector((state) => state);
+  console.log(alert);
   return (
-    <>
-      <Navbar />
-      {alert.alert && <Alert severity={alert.severity}>{alert.message}</Alert>}
-      <Routes>
-        <Route path="/" element={<Parkings />}></Route>
-        <Route path="/signin" element={<SignIn />}></Route>
-        <Route path="/user/signup" element={<UserSignUp />}></Route>
-        <Route path="/owner/signup" element={<OwnerSignUp />}></Route>
+    <div>
+      <div>
+        <Navbar />
+      </div>
+      <br />
+      {/* {alert.alert &&  */}
+      <Alert severity={alert.severity} style={{ marginTop: "50px" }}>
+        {alert.message}
+      </Alert>
+      {/* } */}
+      <br />
+      <main>
+        <Routes>
+          <Route path="/" element={<Parkings />}></Route>
+          <Route path="/signin" element={<SignIn />}></Route>
+          <Route path="/user/signup" element={<UserSignUp />}></Route>
+          <Route path="/owner/signup" element={<OwnerSignUp />}></Route>
 
-        {/* user routes */}
-        <Route path="/user/bookings" element={<UserBookings />}></Route>
-        <Route path="user/me" element={<UserProfile />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
-    </>
+          {/* user routes */}
+          <Route path="/user/bookings" element={<UserBookings />}></Route>
+          <Route path="user/me" element={<UserProfile />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
+
+          {/* owner routes */}
+          <Route path="/owner/parkings" element={<OwnerParkings />} />
+          <Route path="/owner/parkings/:parkingId" element={<Parking />} />
+        </Routes>
+      </main>
+    </div>
   );
 };
 

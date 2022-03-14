@@ -31,8 +31,8 @@ const INITIAL_STATE = {
   ],
   alert: {
     alert: false,
-    severity: "",
-    message: "",
+    severity: "info",
+    message: "just some information",
   },
 };
 if (token) {

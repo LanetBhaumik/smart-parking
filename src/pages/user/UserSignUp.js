@@ -6,12 +6,13 @@ import { connect, useSelector } from "react-redux";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { Link as MaterialLink } from "@mui/material";
 //css
-import classes from "../SignIn/SignIn.module.css";
-//actions
-import { userSignUp } from "../../redux/actions/userAuth";
-import { setAlert } from "../../redux/actions/alert";
+import classes from "./UserSignUp.module.css";
 
-const UserSignUp = ({ userSignUp, setAlert }) => {
+//actions
+import { userSignUp } from "../../redux/actions/authAction";
+import { setAlert, resetAlert } from "../../redux/actions/alertAction";
+
+const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -21,37 +22,35 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
     car: "",
   });
 
+  const showAlert = async (severity, message) => {
+    await setAlert({
+      severity,
+      message,
+    });
+    setTimeout(() => {
+      resetAlert();
+    }, 2000);
+  };
+
   const { name, email, password, conPassword, mobile_no, car } = userData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({
       ...userData,
-      [name]: value.trim(),
+      [name]: value,
     });
   };
 
   const credIsValid = () => {
     if (mobile_no.length !== 10)
-      return setAlert({
-        severity: "error",
-        message: "mobile_no not invalid",
-      });
+      return showAlert("error", "mobile_no not invalid");
     else if (password.length < 7)
-      return setAlert({
-        severity: "error",
-        message: "mobile_no not invalid",
-      });
+      return showAlert("error", "password must be greater than 6 characters");
     else if (password !== conPassword)
-      return setAlert({
-        severity: "error",
-        message: "mobile_no not invalid",
-      });
+      return showAlert("error", "Password and Confirm password does't match");
     else if (!/[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(car.toUpperCase()))
-      return setAlert({
-        severity: "error",
-        message: "mobile_no not invalid",
-      });
+      return showAlert("error", "vehicle number is invalid");
     else return true;
   };
 
@@ -68,9 +67,9 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
   }, [token]);
 
   return (
-    <div className={classes.main}>
-      <div className={classes.form}>
-        <form onSubmit={handleSubmit}>
+    <>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <div className={classes.container}>
           <Typography
             variant="h4"
             gutterBottom
@@ -78,7 +77,7 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
             margin="normal"
             align="center"
           >
-            Sign Up To Park
+            Sign Up To Park Your car
           </Typography>
           <div>
             <TextField
@@ -91,6 +90,7 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
               value={name}
               name="name"
               onChange={handleChange}
+              fullWidth
             />
           </div>
           <div>
@@ -104,12 +104,14 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
               value={email}
               name="email"
               onChange={handleChange}
+              fullWidth
             />
           </div>
           <div>
             <TextField
               id="mobile_no"
               label="mobile_no"
+              helperText="without +91"
               variant="outlined"
               required
               type="tel"
@@ -117,12 +119,14 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
               value={mobile_no}
               name="mobile_no"
               onChange={handleChange}
+              fullWidth
             />
           </div>
           <div>
             <TextField
               id="car"
               label="vehicle Number"
+              helperText="in XX00XX000 format"
               variant="outlined"
               required
               type="text"
@@ -130,6 +134,7 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
               value={car}
               name="car"
               onChange={handleChange}
+              fullWidth
             />
           </div>
           <div>
@@ -143,6 +148,7 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
               required
               value={password}
               onChange={handleChange}
+              fullWidth
             />
           </div>
           <div>
@@ -156,21 +162,22 @@ const UserSignUp = ({ userSignUp, setAlert }) => {
               required
               value={conPassword}
               onChange={handleChange}
+              fullWidth
             />
           </div>
           <div>
-            <Button type="submit" variant="contained" margin="normal">
+            <Button type="submit" variant="contained" margin="normal" fullWidth>
               Sign Up
             </Button>
           </div>
-          <div>
+          <div style={{ justifyContent: "center", textAlign: "center" }}>
             <MaterialLink component={Link} to="/signin" variant="body2">
               {"Already have an account? Sign in"}
             </MaterialLink>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </form>
+    </>
   );
 };
 
@@ -179,4 +186,5 @@ const mapStateToProps = (state) => ({});
 export default connect(mapStateToProps, {
   userSignUp,
   setAlert,
+  resetAlert,
 })(UserSignUp);

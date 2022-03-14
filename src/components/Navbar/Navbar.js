@@ -13,7 +13,9 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
 
 import CustomLink from "../CustomLink";
-import { userSignOut } from "../../redux/actions/userAuth";
+
+// actions
+import { signOut } from "../../redux/actions/authAction";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
@@ -36,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ userSignOut }) => {
+const Navbar = ({ signOut }) => {
   const Navigate = useNavigate();
   const { role } = useSelector((state) => state.auth);
   const classes = useStyles();
@@ -52,10 +54,10 @@ const Navbar = ({ userSignOut }) => {
     Navigate("owner/signup");
   };
   const handleSignOut = () => {
-    userSignOut();
+    signOut();
   };
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <CssBaseline />
       <Toolbar>
         <Typography
@@ -132,5 +134,5 @@ const Navbar = ({ userSignOut }) => {
 const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, {
-  userSignOut,
+  signOut,
 })(Navbar);

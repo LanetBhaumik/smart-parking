@@ -3,7 +3,7 @@ const Booking = require("./bookingModel");
 
 const parkingSchema = new mongoose.Schema(
   {
-    name: {
+    parking_name: {
       type: String,
       required: true,
       trim: true,

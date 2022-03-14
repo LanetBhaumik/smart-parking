@@ -1,6 +1,10 @@
 import { combineReducers } from "redux";
-import auth from "./userAuth.js";
-import parkings from "./parkings";
-import alert from "./alert";
 
-export default combineReducers({ auth, parkings, alert });
+import auth from "./authReducer";
+
+import parkings from "./parkingReducer";
+import alert from "./alertReducer";
+import user from "./userReducer";
+import owner from "./ownerReducer";
+
+export default combineReducers({ auth, parkings, alert, owner, user });

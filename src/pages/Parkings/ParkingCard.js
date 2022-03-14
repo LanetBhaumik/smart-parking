@@ -27,9 +27,10 @@ const ParkingCard = ({ parking }) => {
             alt="random"
           />
           <CardHeader
-            title={parking.name}
+            title={parking.parking_name}
             subheader={`${parking.address} - ${parking.pincode}`}
           />
+
           <CardContent sx={{ flexGrow: 1 }}>
             <Typography
               paragraph
@@ -37,7 +38,9 @@ const ParkingCard = ({ parking }) => {
             <Typography
               paragraph
             >{`Available Slots: ${parking.available_slots}`}</Typography>
-            <Typography paragraph>{`Rate: ${parking.rate} / hour`}</Typography>
+            <Typography
+              paragraph
+            >{`Rate: ${parking.rate} Rs./hour`}</Typography>
           </CardContent>
           <CardActions>
             <Button size="small">Book</Button>
