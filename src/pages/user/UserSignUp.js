@@ -60,10 +60,10 @@ const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
     userSignUp(userData);
   };
 
-  const { token } = useSelector((state) => state.auth);
+  const { token, role } = useSelector((state) => state.auth);
   const Navigate = useNavigate();
   useEffect(() => {
-    token && token !== "" && Navigate("/");
+    token && token !== "" && role !== "owner" && Navigate("/");
   }, [token]);
 
   return (

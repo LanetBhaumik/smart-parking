@@ -20,8 +20,8 @@ const createOwner = async (req, res) => {
       ...req.body,
       parkings: [parking_id],
     });
-    await parking.save();
     await owner.save();
+    await parking.save();
     const token = await owner.generateAuthToken();
     res.status(201).send({ owner, parking, token });
   } catch (error) {

@@ -3,18 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@material-ui/core";
 
 import classes from "./SignIn.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Link as MaterialLink } from "@mui/material";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
+//actions
 import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";
 
-const SignIn = () => {
+const SignIn = ({ userSignIn, ownerSignIn }) => {
   const { token } = useSelector((state) => state.auth);
   const Navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -34,9 +33,7 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(credentials);
-    role === "user"
-      ? dispatch(userSignIn(credentials))
-      : dispatch(ownerSignIn(credentials));
+    role === "user" ? userSignIn(credentials) : ownerSignIn(credentials);
   };
 
   useEffect(() => {
@@ -132,4 +129,6 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, { userSignIn, ownerSignIn })(SignIn);

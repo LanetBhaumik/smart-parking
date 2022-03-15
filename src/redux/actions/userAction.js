@@ -1,18 +1,19 @@
 import {
-  profileService,
+  userProfileService,
   userBookingsService,
 } from "../services/userService.js";
-import { USER_PROFILE } from "../reducers/userReducer";
+import { USER_PROFILE, USER_BOOKINGS } from "../reducers/userReducer";
 
 export const userProfile = () => async (dispatch, getState) => {
   try {
-    const { auth } = getState();
-    const response = await profileService();
+    const { user } = getState();
+    console.log(user);
+    const response = await userProfileService();
     console.log(response);
     if (response.status === 200) {
       dispatch({
         type: USER_PROFILE,
-        payload: { ...auth, user: response.data },
+        payload: { ...user, profile: response.data },
       });
     }
   } catch (error) {
@@ -22,13 +23,13 @@ export const userProfile = () => async (dispatch, getState) => {
 
 export const userBookings = () => async (dispatch, getState) => {
   try {
-    const { auth } = getState();
+    const { user } = getState();
     const response = await userBookingsService();
     console.log(response);
     if (response.status === 200) {
       dispatch({
-        type: USER_PROFILE,
-        payload: { ...auth, userBookings: response.data },
+        type: USER_BOOKINGS,
+        payload: { ...user, bookings: response.data },
       });
     }
   } catch (error) {

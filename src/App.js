@@ -21,7 +21,6 @@ import OwnerProfile from "./pages/owner/OwnerProfile";
 
 const App = () => {
   const { alert } = useSelector((state) => state);
-  console.log(alert);
   return (
     <div>
       <div>

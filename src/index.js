@@ -7,13 +7,19 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import store from "./redux/store";
 
+// for date and time
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </LocalizationProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
