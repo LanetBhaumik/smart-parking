@@ -49,7 +49,16 @@ const userBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({
       user: req.user._id,
-    });
+    })
+      .select("-user")
+      .populate({
+        path: "car",
+        select: "car_no",
+      })
+      .populate({
+        path: "parking",
+        select: "parking_name",
+      });
     if (bookings.length == 0) {
       return res.send({
         success: "you do not have any bookings",
