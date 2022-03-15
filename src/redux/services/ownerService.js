@@ -1,7 +1,5 @@
 import baseService from "./baseService";
 
-export const ownerSignInService = (Credentials) => {
-  return baseService.post("/owners/login", Credentials);
-};
+export const ownerProfileService = () => baseService.get("/owners/me");
 
-export default { ownerSignInService, ownerSignUpService };
+export default { ownerProfileService };

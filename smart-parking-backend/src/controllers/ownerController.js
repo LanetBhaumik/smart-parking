@@ -44,7 +44,11 @@ const loginOwner = async (req, res) => {
       req.body.email,
       req.body.password
     );
+    await owner.populate({
+      path: "parkings",
+    });
     const token = await owner.generateAuthToken();
+
     res.send({ owner, token });
   } catch (error) {
     res.status(400).send({
@@ -54,6 +58,9 @@ const loginOwner = async (req, res) => {
 };
 
 const ownerProfile = async (req, res) => {
+  await req.owner.populate({
+    path: "parkings",
+  });
   res.send(req.owner);
 };
 

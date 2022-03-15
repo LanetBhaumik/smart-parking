@@ -1,9 +1,15 @@
-import { Container, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useSelector, connect } from "react-redux";
+
+// action
 import { fetchParkings } from "../../redux/actions/parkingsAction";
+
+//components
 import ParkingCard from "../../components/ParkingCard";
 import BookingDialog from "../../components/BookingDialog";
+
+//material ui
+import { Container, Grid } from "@material-ui/core";
 
 const Parkings = ({ fetchParkings }) => {
   const parkings = useSelector((state) => state.parkings);

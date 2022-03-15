@@ -14,15 +14,15 @@ const UserBookings = ({ userBookings }) => {
     userBookings();
   }, []);
 
+  const pad = (n) => (n < 10 ? "0" + n : n);
   const timeFormat = (date) => {
     date = new Date(date);
-    const dd = date.getDate();
-    const mm = date.getMonth();
+    const dd = pad(date.getDate());
+    const mm = pad(date.getMonth());
     const yyyy = date.getFullYear();
-    const hh = date.getHours();
-    const min = date.getMinutes();
-    const sec = date.getSeconds();
-    return `${dd}/${mm}/${yyyy} ${hh}:${min}:${sec}`;
+    const hh = pad(date.getHours());
+    const min = pad(date.getMinutes());
+    return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
   };
   return (
     <>
@@ -42,7 +42,7 @@ const UserBookings = ({ userBookings }) => {
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
           </li>
 
-          {bookings &&
+          {bookings.length > 0 &&
             bookings.map((booking, i) => {
               return (
                 <li className={classes["table-row"]} key={i}>

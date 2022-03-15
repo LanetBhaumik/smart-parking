@@ -51,6 +51,7 @@ const userBookings = async (req, res) => {
       user: req.user._id,
     })
       .select("-user")
+      .sort({ in_time: -1 })
       .populate({
         path: "car",
         select: "car_no",

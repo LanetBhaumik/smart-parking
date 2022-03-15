@@ -42,11 +42,11 @@ const App = () => {
 
           {/* user routes */}
           <Route path="/user/bookings" element={<UserBookings />}></Route>
-          <Route path="user/me" element={<UserProfile />}></Route>
+          <Route path="/user/me" element={<UserProfile />}></Route>
 
           {/* owner routes */}
           <Route path="/owner/parkings" element={<OwnerParkings />} />
-          <Route path="owner/me" element={<OwnerProfile />}></Route>
+          <Route path="/owner/me" element={<OwnerProfile />}></Route>
           <Route path="/owner/parkings/:parkingId" element={<Parking />} />
 
           <Route path="*" element={<NotFound />}></Route>

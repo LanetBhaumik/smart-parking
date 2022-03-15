@@ -1,23 +1,30 @@
 import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { userProfile } from "../../redux/actions/userAction";
+
+// actions
+import { ownerProfile } from "../../redux/actions/ownerAction";
+import { signOut } from "../../redux/actions/authAction";
 
 import { Button } from "@material-ui/core";
 
 import classes from "./OwnerProfile.module.css";
 
-const UserProfile = ({ userProfile }) => {
+const OwnerProfile = ({ ownerProfile, signOut }) => {
   const Navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
   useEffect(() => {
     (!token || token === "") && Navigate("/");
   }, [token]);
 
-  const { profile } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.owner);
+
+  const onSignOutHandle = () => {
+    signOut();
+  };
 
   useEffect(() => {
-    userProfile();
+    ownerProfile();
   }, []);
 
   return (
@@ -36,13 +43,12 @@ const UserProfile = ({ userProfile }) => {
               </h4>
               <p>{`Email: ${profile.email}`}</p>
               <p>{`Mobile No: ${profile.mobile_no}`}</p>
-              <p>{`Primary Car : ${profile.car.car_no}`}</p>
-              <p>{`Your Cars : `}</p>
-              {profile.cars.map((car) => (
-                <p key={car.car_no}>{`${car.car_no}`}</p>
+              <p>{`Your Parkings : `}</p>
+              {profile.parkings.map((parking) => (
+                <p key={parking._id}>{`${parking.parking_name}`}</p>
               ))}
             </div>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={onSignOutHandle}>
               Sign Out
             </Button>
           </div>
@@ -54,5 +60,6 @@ const UserProfile = ({ userProfile }) => {
 
 const mapStateToProps = (state) => ({});
 export default connect(mapStateToProps, {
-  userProfile,
-})(UserProfile);
+  ownerProfile,
+  signOut,
+})(OwnerProfile);
