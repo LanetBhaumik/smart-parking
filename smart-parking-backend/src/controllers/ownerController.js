@@ -12,8 +12,6 @@ const createOwner = async (req, res) => {
       _id: parking_id,
       ...req.body.parking,
       owner: owner_id,
-      booked_slots: 0,
-      available_slots: req.body.parking.total_slots,
     });
     const owner = new Owner({
       _id: owner_id,

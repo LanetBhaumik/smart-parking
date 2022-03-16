@@ -1,5 +1,13 @@
-import { newBookingService } from "../services/bookingService";
-import { BOOKING_SUCCESS, BOOKING_FAILED } from "../reducers/bookingReducer";
+import {
+  newBookingService,
+  parkingBookingsService,
+} from "../services/bookingService";
+import {
+  BOOKING_SUCCESS,
+  BOOKING_FAILED,
+  PARKING_BOOKINGS,
+  PARKING_BOOKINGS_FAILED,
+} from "../reducers/bookingReducer";
 
 export const bookSlot = (bookingData) => async (dispatch) => {
   try {
@@ -24,4 +32,27 @@ export const bookSlot = (bookingData) => async (dispatch) => {
   }
 };
 
-export default { bookSlot };
+export const parkingBookings = (parkingId) => async (dispatch, getState) => {
+  try {
+    const response = await parkingBookingsService(parkingId);
+    console.log(response.data);
+    if (response.status === 200) {
+      dispatch({
+        type: PARKING_BOOKINGS,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response);
+      dispatch({
+        type: PARKING_BOOKINGS_FAILED,
+        payload: {
+          error: error.response.data.error,
+        },
+      });
+    }
+  }
+};
+
+export default { bookSlot, parkingBookings };

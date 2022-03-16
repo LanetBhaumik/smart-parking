@@ -9,6 +9,7 @@ const INITIAL_STATE = [
     owner: "parking_owner",
   },
 ];
+
 export const PARKING_SUCCESS = "PARKING_SUCCESS";
 export const PARKING_FAILED = "PARKING_FAILED";
 

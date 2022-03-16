@@ -22,13 +22,15 @@ const Parkings = ({ fetchParkings }) => {
     <>
       {!parkings.length && <p>No Parkings Found</p>}
       {parkings.length && (
-        <Container sx={{ py: 8, mt: 100 }} maxWidth="md">
-          <Grid container spacing={4}>
-            {parkings.map((parking) => (
-              <ParkingCard parking={parking} key={parking._id} />
-            ))}
-          </Grid>
-        </Container>
+        <div style={{ marginTop: "5vh" }}>
+          <Container sx={{ py: 8, mt: 100 }} maxWidth="md">
+            <Grid container spacing={4}>
+              {parkings.map((parking) => (
+                <ParkingCard parking={parking} key={parking._id} />
+              ))}
+            </Grid>
+          </Container>
+        </div>
       )}
     </>
   );

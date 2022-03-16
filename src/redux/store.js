@@ -14,9 +14,7 @@ const role = localStorage.getItem("role");
 
 const INITIAL_STATE = {
   auth: {
-    token: "",
     error_msg: "",
-    role: "",
   },
   parkings: [
     {

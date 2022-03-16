@@ -18,15 +18,6 @@ const parkingSchema = new mongoose.Schema(
         }
       },
     },
-    available_slots: {
-      type: Number,
-      required: true,
-    },
-    booked_slots: {
-      type: Number,
-      default: 0,
-      required: true,
-    },
     rate: {
       type: Number,
       required: true,
@@ -52,6 +43,12 @@ const parkingSchema = new mongoose.Schema(
       ref: "Owner",
       required: true,
     },
+    bookings: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -67,15 +64,9 @@ parkingSchema.methods.toJSON = function() {
   return parkingObject;
 };
 
-parkingSchema.pre("save", async function(next) {
-  const parking = this;
-  parking.available_slots &&
-    (parking.available_slots = parking.total_slots - parking.booked_slots);
-});
-
 parkingSchema.pre("remove", async function(next) {
   const parking = this;
-  console.log(parking)
+  console.log(parking);
   await Booking.deleteMany({
     parking: parking._id,
   });

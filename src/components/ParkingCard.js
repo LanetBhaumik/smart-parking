@@ -35,7 +35,7 @@ const ParkingCard = ({ parking, bookSlot }) => {
   let duration = Math.ceil((outTime - inTime) / 3600000);
   let charge = duration * parking.rate;
 
-  const { token, role } = useSelector((state) => state.auth);
+  const { role } = useSelector((state) => state.auth);
   const Navigate = useNavigate();
 
   const onInError = (e) => {
@@ -58,10 +58,10 @@ const ParkingCard = ({ parking, bookSlot }) => {
   };
 
   const onBookHandle = () => {
-    if (token !== "" && role === "user") {
+    if (role === "user") {
       setOpen(true);
     } else {
-      Navigate("/user/signup");
+      Navigate("/signin");
     }
   };
 
@@ -97,9 +97,6 @@ const ParkingCard = ({ parking, bookSlot }) => {
             <Typography
               paragraph
             >{`Total Slots: ${parking.total_slots}`}</Typography>
-            <Typography
-              paragraph
-            >{`Available Slots: ${parking.available_slots}`}</Typography>
             <Typography
               paragraph
             >{`Rate: ${parking.rate} Rs./hour`}</Typography>

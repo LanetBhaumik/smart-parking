@@ -9,8 +9,7 @@ const createParking = async (req, res) => {
       ...req.body,
       owner: req.owner._id,
     });
-    (parking.available_slots = parking.total_slots - parking.booked_slots),
-      await parking.save();
+    await parking.save();
     await req.owner.parkings.push(_id);
     await req.owner.save();
     await req.owner.populate({

@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { findById, findOne } = require("../models/bookingModel");
 const Booking = require("../models/bookingModel");
 const Parking = require("../models/parkingModel");
@@ -5,16 +6,20 @@ const Parking = require("../models/parkingModel");
 // New booking
 const createBooking = async (req, res) => {
   try {
+    const bookingId = new mongoose.Types.ObjectId();
     const parking = await Parking.findById(req.body.parking);
     if (!parking) {
       throw new Error("parking is not valid");
     }
     const booking = new Booking({
+      _id: bookingId,
       user: req.user._id,
       car: req.user.car,
       ...req.body,
     });
     await booking.save();
+    parking.bookings.push(bookingId);
+    await parking.save();
     res.send(booking);
   } catch (error) {
     console.log(error);
@@ -79,7 +84,19 @@ const parkingBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({
       parking: req.params.parking_id,
-    });
+    })
+      .populate({
+        path: "user",
+        select: "name",
+      })
+      .populate({
+        path: "car",
+        select: "car_no",
+      })
+      .populate({
+        path: "parking",
+        select: "parking_name",
+      });
     if (bookings.length == 0) {
       return res.send({
         success: "this parking do not have any bookings",

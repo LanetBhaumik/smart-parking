@@ -10,14 +10,15 @@ import UserSignUp from "./pages/user/UserSignUp";
 import OwnerSignUp from "./pages/owner/OwnerSignUp";
 import UserBookings from "./pages/user/UserBookings";
 import UserProfile from "./pages/user/UserProfile";
-import OwnerParkings from "./pages/owner/OwnerParkings";
-import Parking from "./pages/owner/parking";
+import OwnerParkings from "./pages/Parkings/OwnerParkings";
+import Parking from "./pages/Parkings/parking";
 import OwnerProfile from "./pages/owner/OwnerProfile";
 import NotFound from "./pages/NotFound";
 
 //material ui
 // import { Alert } from "@mui/material";
 import { useSelector } from "react-redux";
+import ParkingBookings from "./pages/Parkings/ParkingBookings";
 
 const App = () => {
   const { role } = useSelector((state) => state.auth);
@@ -53,7 +54,7 @@ const App = () => {
             <Route path="owner">
               <Route path="parkings">
                 <Route index element={<OwnerParkings />} />
-                <Route path=":parkingId" element={<Parking />} />
+                <Route path=":parkingId" element={<ParkingBookings />} />
               </Route>
               <Route path="me" element={<OwnerProfile />} />
             </Route>
