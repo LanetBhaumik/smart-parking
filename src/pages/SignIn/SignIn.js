@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 import classes from "./SignIn.module.css";
-import { connect, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Link as MaterialLink } from "@mui/material";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+
+import {
+  Link as MaterialLink,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@material-ui/core";
 
 //actions
 import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";
 
 const SignIn = ({ userSignIn, ownerSignIn }) => {
-  const { token } = useSelector((state) => state.auth);
   const Navigate = useNavigate();
-
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -34,11 +35,8 @@ const SignIn = ({ userSignIn, ownerSignIn }) => {
     e.preventDefault();
     console.log(credentials);
     role === "user" ? userSignIn(credentials) : ownerSignIn(credentials);
+    Navigate("/");
   };
-
-  useEffect(() => {
-    token && token !== "" && Navigate("/");
-  }, [token]);
 
   return (
     <>

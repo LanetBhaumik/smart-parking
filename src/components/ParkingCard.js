@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardMedia,
   Grid,
   Typography,
   Box,
@@ -80,7 +79,7 @@ const ParkingCard = ({ parking, bookSlot }) => {
     <>
       <Grid item key={parking} xs={12} sm={6} md={4}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <CardMedia
+          {/* <CardMedia
             component="img"
             sx={{
               // 16:9
@@ -88,7 +87,7 @@ const ParkingCard = ({ parking, bookSlot }) => {
             }}
             image="https://source.unsplash.com/random"
             alt="random"
-          />
+          /> */}
           <CardHeader
             title={parking.parking_name}
             subheader={`${parking.address} - ${parking.pincode}`}

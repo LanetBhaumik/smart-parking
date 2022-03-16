@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 // actions
 import { ownerProfile, addParking } from "../../redux/actions/ownerAction";
@@ -40,13 +39,7 @@ const OwnerParkings = ({ ownerProfile, addParking }) => {
     });
     console.log(parking);
   };
-  const { owner, auth } = useSelector((state) => state);
-  const { role, token } = auth;
-
-  const Navigate = useNavigate();
-  if (!token || role === "user") {
-    Navigate("/signin");
-  }
+  const { owner } = useSelector((state) => state);
   const { profile } = owner;
   useEffect(() => {
     ownerProfile();

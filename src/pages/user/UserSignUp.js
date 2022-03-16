@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 
 //material ui
 import { Button, TextField, Typography } from "@material-ui/core";
@@ -13,6 +13,7 @@ import { userSignUp } from "../../redux/actions/authAction";
 import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 
 const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
+  const Navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -58,13 +59,8 @@ const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
     e.preventDefault();
     if (!credIsValid()) return;
     userSignUp(userData);
+    Navigate("/");
   };
-
-  const { token, role } = useSelector((state) => state.auth);
-  const Navigate = useNavigate();
-  useEffect(() => {
-    token && token !== "" && role !== "owner" && Navigate("/");
-  }, [token]);
 
   return (
     <>

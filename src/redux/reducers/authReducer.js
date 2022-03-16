@@ -1,6 +1,4 @@
 const INITIAL_STATE = {
-  token: "",
-  role: "",
   error_msg: "",
   user: {},
   owner: {},

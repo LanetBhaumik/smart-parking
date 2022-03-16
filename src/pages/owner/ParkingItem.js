@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ParkingItem = ({ parking }) => {
   const { _id, parking_name } = parking;
-  const link = `/profile/${_id}`;
+  const link = `/owner/parkings/${_id}`;
 
   return (
     <article className={classes["img-container"]}>

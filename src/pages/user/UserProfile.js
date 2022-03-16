@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 
 // actions
 import { userProfile } from "../../redux/actions/userAction";
@@ -11,12 +10,6 @@ import { Button } from "@material-ui/core";
 import classes from "./UserProfile.module.css";
 
 const UserProfile = ({ userProfile, signOut }) => {
-  const Navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth);
-  useEffect(() => {
-    (!token || token === "") && Navigate("/");
-  }, [token]);
-
   const { profile } = useSelector((state) => state.user);
 
   const onSignOutHandle = () => {

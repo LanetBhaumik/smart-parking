@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 // material ui
@@ -18,6 +18,7 @@ import { ownerSignUp } from "../../redux/actions/authAction";
 import classes from "./OwnerSignUp.module.css";
 
 const OwnerSignUp = ({ ownerSignUp }) => {
+  const Navigate = useNavigate();
   const [ownerData, setOwnerData] = useState({
     name: "",
     email: "",
@@ -56,13 +57,8 @@ const OwnerSignUp = ({ ownerSignUp }) => {
     e.preventDefault();
     // if (!credIsValid()) return;
     ownerSignUp({ ...ownerData, parking });
+    Navigate("/");
   };
-
-  const { token } = useSelector((state) => state.auth);
-  const Navigate = useNavigate();
-  useEffect(() => {
-    token && token !== "" && Navigate("/");
-  }, [token]);
 
   return (
     <>
