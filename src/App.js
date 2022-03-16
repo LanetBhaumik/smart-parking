@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 
 //pages
@@ -15,12 +14,12 @@ import UserProfile from "./pages/user/UserProfile";
 import Parking from "./pages/owner/parking";
 
 //material ui
-import { Alert } from "@mui/material";
+// import { Alert } from "@mui/material";
 import OwnerParkings from "./pages/owner/OwnerParkings";
 import OwnerProfile from "./pages/owner/OwnerProfile";
 
 const App = () => {
-  const { alert } = useSelector((state) => state);
+  // const { alert } = useSelector((state) => state);
   return (
     <div>
       <div>
@@ -28,9 +27,9 @@ const App = () => {
       </div>
       <br />
       {/* {alert.alert &&  */}
-      <Alert severity={alert.severity} style={{ marginTop: "50px" }}>
+      {/* <Alert severity={alert.severity} style={{ marginTop: "50px" }}>
         {alert.message}
-      </Alert>
+      </Alert> */}
       {/* } */}
       <br />
       <main>

@@ -6,7 +6,6 @@ import { fetchParkings } from "../../redux/actions/parkingsAction";
 
 //components
 import ParkingCard from "../../components/ParkingCard";
-import BookingDialog from "../../components/BookingDialog";
 
 //material ui
 import { Container, Grid } from "@material-ui/core";
@@ -21,8 +20,6 @@ const Parkings = ({ fetchParkings }) => {
 
   return (
     <>
-      <BookingDialog />
-
       {!parkings.length && <p>No Parkings Found</p>}
       {parkings.length && (
         <Container sx={{ py: 8, mt: 100 }} maxWidth="md">

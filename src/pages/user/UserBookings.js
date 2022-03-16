@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { userBookings } from "../../redux/actions/userAction";
 
@@ -7,6 +8,12 @@ import { userBookings } from "../../redux/actions/userAction";
 import classes from "./UserBookings.module.css";
 
 const UserBookings = ({ userBookings }) => {
+  const { token, role } = useSelector((state) => state.auth);
+  const Navigate = useNavigate();
+  if (token === "" || role !== "user") {
+    Navigate("/signin");
+  }
+
   const currentDate = new Date();
 
   const { bookings } = useSelector((state) => state.user);
@@ -42,7 +49,8 @@ const UserBookings = ({ userBookings }) => {
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
           </li>
 
-          {bookings.length > 0 &&
+          {bookings &&
+            bookings.length > 0 &&
             bookings.map((booking, i) => {
               return (
                 <li className={classes["table-row"]} key={i}>

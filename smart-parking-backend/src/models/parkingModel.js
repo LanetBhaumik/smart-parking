@@ -75,6 +75,7 @@ parkingSchema.pre("save", async function(next) {
 
 parkingSchema.pre("remove", async function(next) {
   const parking = this;
+  console.log(parking)
   await Booking.deleteMany({
     parking: parking._id,
   });

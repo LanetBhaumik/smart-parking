@@ -11,7 +11,12 @@ const createParking = async (req, res) => {
     });
     (parking.available_slots = parking.total_slots - parking.booked_slots),
       await parking.save();
-    res.status(201).send(parking);
+    await req.owner.parkings.push(_id);
+    await req.owner.save();
+    await req.owner.populate({
+      path: "parkings",
+    });
+    res.status(201).send(req.owner);
   } catch (error) {
     console.log(error);
     res.status(400).send({
