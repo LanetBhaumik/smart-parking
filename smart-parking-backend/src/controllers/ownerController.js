@@ -7,12 +7,19 @@ const createOwner = async (req, res) => {
   try {
     const owner_id = new mongoose.Types.ObjectId();
     const parking_id = new mongoose.Types.ObjectId();
+    const bookings = {};
+    console.log(req.body.parking.total_slots);
+    for (let i = 1; i <= req.body.parking.total_slots; i++) {
+      bookings[i] = [];
+    }
 
     const parking = new Parking({
       _id: parking_id,
+      bookings,
       ...req.body.parking,
       owner: owner_id,
     });
+    console.log(parking);
     const owner = new Owner({
       _id: owner_id,
       ...req.body,
@@ -20,6 +27,7 @@ const createOwner = async (req, res) => {
     });
     await owner.save();
     await parking.save();
+    console.log(parking);
     const token = await owner.generateAuthToken();
     res.status(201).send({ owner, parking, token });
   } catch (error) {

@@ -13,7 +13,9 @@ import { DateTimePicker } from "@mui/lab";
 
 const BookingDialog = () => {
   const [open, setOpen] = React.useState(false);
-
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -25,6 +27,7 @@ const BookingDialog = () => {
   };
   return (
     <div>
+      <Button onClick={handleOpen}>Book Now</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Book Your Slot</DialogTitle>
         <DialogContent>

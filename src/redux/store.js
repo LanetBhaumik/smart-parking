@@ -16,17 +16,6 @@ const INITIAL_STATE = {
   auth: {
     error_msg: "",
   },
-  parkings: [
-    {
-      _id: "parking_id",
-      name: "parking_name",
-      slots: "parking_slots",
-      rate: "parking_rate",
-      address: "parking_address",
-      pincode: "parking_pincode",
-      owner: "parking_owner",
-    },
-  ],
   alert: {
     alert: false,
     severity: "info",

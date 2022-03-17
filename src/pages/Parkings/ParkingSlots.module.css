@@ -99,6 +99,29 @@
 .expired {
   color: red;
 }
-.active {
-  color: green;
+
+.slotBtn {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: green;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+}
+
+.available {
+  height: 20px;
+  width: 20px;
+  background: green;
+  margin-right: 10px;
+}
+
+.occupied {
+  height: 20px;
+  width: 20px;
+  background: red;
+  margin-right: 10px;
 }

@@ -18,7 +18,7 @@ router.post("/owners/parkings", Auth, createParking);
 router.get("/parkings", readAllParkings);
 
 // Read Parking
-router.get("/parkings/:parking_id", Auth, readParking);
+router.get("/parkings/:parking_id", readParking);
 
 // Update Parking
 router.patch("/parkings/:parking_id", Auth, updateParking);

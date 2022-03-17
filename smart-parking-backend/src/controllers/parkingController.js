@@ -4,11 +4,17 @@ const mongoose = require("mongoose");
 const createParking = async (req, res) => {
   try {
     const _id = new mongoose.Types.ObjectId();
+    const bookings = {};
+    for (let i = 1; i <= req.body.total_slots; i++) {
+      bookings[i] = [];
+    }
     const parking = new Parking({
       _id,
+      bookings,
       ...req.body,
       owner: req.owner._id,
     });
+    console.log(parking);
     await parking.save();
     await req.owner.parkings.push(_id);
     await req.owner.save();
@@ -47,7 +53,6 @@ const readParking = async (req, res) => {
   try {
     const parking = await Parking.findOne({
       _id: req.params.parking_id,
-      owner: req.owner._id,
     });
     if (!parking) {
       throw new Error("parking not found or you do not have permission.");

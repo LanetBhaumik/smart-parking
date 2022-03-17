@@ -11,6 +11,7 @@ const createBooking = async (req, res) => {
     if (!parking) {
       throw new Error("parking is not valid");
     }
+    console.log("slot", req.body.slot);
     const booking = new Booking({
       _id: bookingId,
       user: req.user._id,
@@ -18,8 +19,14 @@ const createBooking = async (req, res) => {
       ...req.body,
     });
     await booking.save();
-    parking.bookings.push(bookingId);
+
+    console.log("jdfkldsjl=----------", parking.bookings[req.body.slot]);
+    parking.bookings[req.body.slot].push(bookingId);
+    console.log("before", parking);
     await parking.save();
+    console.log("jdfkldsjl=----------", parking.bookings[req.body.slot]);
+
+    console.log("after", parking);
     res.send(booking);
   } catch (error) {
     console.log(error);

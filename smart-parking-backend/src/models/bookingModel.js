@@ -24,6 +24,10 @@ const bookingSchema = new mongoose.Schema({
     ref: "Parking",
     required: true,
   },
+  slot: {
+    type: Number,
+    required: true,
+  },
   charge: {
     type: Number,
     trim: true,

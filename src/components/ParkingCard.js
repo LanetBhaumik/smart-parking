@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { connect, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 //Material UI
 import {
@@ -17,8 +17,8 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  CardActionArea,
 } from "@material-ui/core";
-import { CardActions } from "@mui/material";
 import { DateTimePicker } from "@mui/lab";
 
 //actions
@@ -34,10 +34,6 @@ const ParkingCard = ({ parking, bookSlot }) => {
   });
   let duration = Math.ceil((outTime - inTime) / 3600000);
   let charge = duration * parking.rate;
-
-  const { role } = useSelector((state) => state.auth);
-  const Navigate = useNavigate();
-
   const onInError = (e) => {
     !e
       ? setError((prevError) => {
@@ -57,14 +53,6 @@ const ParkingCard = ({ parking, bookSlot }) => {
         });
   };
 
-  const onBookHandle = () => {
-    if (role === "user") {
-      setOpen(true);
-    } else {
-      Navigate("/signin");
-    }
-  };
-
   const onSubmitHandle = () => {
     setOpen(false);
     bookSlot({
@@ -79,7 +67,8 @@ const ParkingCard = ({ parking, bookSlot }) => {
     <>
       <Grid item key={parking} xs={12} sm={6} md={4}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          {/* <CardMedia
+          <CardActionArea component={Link} to={`/parking/${parking._id}`}>
+            {/* <CardMedia
             component="img"
             sx={{
               // 16:9
@@ -88,24 +77,26 @@ const ParkingCard = ({ parking, bookSlot }) => {
             image="https://source.unsplash.com/random"
             alt="random"
           /> */}
-          <CardHeader
-            title={parking.parking_name}
-            subheader={`${parking.address} - ${parking.pincode}`}
-          />
 
-          <CardContent sx={{ flexGrow: 1 }}>
-            <Typography
-              paragraph
-            >{`Total Slots: ${parking.total_slots}`}</Typography>
-            <Typography
-              paragraph
-            >{`Rate: ${parking.rate} Rs./hour`}</Typography>
-          </CardContent>
-          <CardActions>
+            <CardHeader
+              title={parking.parking_name}
+              subheader={`${parking.address} - ${parking.pincode}`}
+            />
+
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Typography
+                paragraph
+              >{`Total Slots: ${parking.total_slots}`}</Typography>
+              <Typography
+                paragraph
+              >{`Rate: ${parking.rate} Rs./hour`}</Typography>
+            </CardContent>
+            {/* <CardActions>
             <Button variant="outlined" onClick={onBookHandle}>
               Book
             </Button>
-          </CardActions>
+          </CardActions> */}
+          </CardActionArea>
         </Card>
       </Grid>
 

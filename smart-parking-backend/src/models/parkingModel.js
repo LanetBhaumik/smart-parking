@@ -43,12 +43,15 @@ const parkingSchema = new mongoose.Schema(
       ref: "Owner",
       required: true,
     },
-    bookings: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "Booking",
-      },
-    ],
+    bookings: {
+      type: Object,
+
+      // [{
+      //   slotnum:1,
+      //   bookinngs IDs:[]
+      // }]
+      required: true,
+    },
   },
   {
     timestamps: true,

@@ -11,8 +11,8 @@ import ParkingCard from "../../components/ParkingCard";
 import { Container, Grid } from "@material-ui/core";
 
 const Parkings = ({ fetchParkings }) => {
-  const parkings = useSelector((state) => state.parkings);
-  console.log(parkings);
+  const { list } = useSelector((state) => state.parking);
+  console.log(list);
 
   useEffect(() => {
     fetchParkings();
@@ -20,12 +20,12 @@ const Parkings = ({ fetchParkings }) => {
 
   return (
     <>
-      {!parkings.length && <p>No Parkings Found</p>}
-      {parkings.length && (
+      {!list && <p>No Parkings Found</p>}
+      {list && list.length > 0 && (
         <div style={{ marginTop: "5vh" }}>
           <Container sx={{ py: 8, mt: 100 }} maxWidth="md">
             <Grid container spacing={4}>
-              {parkings.map((parking) => (
+              {list.map((parking) => (
                 <ParkingCard parking={parking} key={parking._id} />
               ))}
             </Grid>
