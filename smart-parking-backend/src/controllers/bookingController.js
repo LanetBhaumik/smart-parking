@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const { findById, findOne } = require("../models/bookingModel");
 const Booking = require("../models/bookingModel");
+const ParkingBooking = require("../models/parkingBookingModal");
 const Parking = require("../models/parkingModel");
 
 // New booking
@@ -11,7 +12,6 @@ const createBooking = async (req, res) => {
     if (!parking) {
       throw new Error("parking is not valid");
     }
-    console.log("slot", req.body.slot);
     const booking = new Booking({
       _id: bookingId,
       user: req.user._id,
@@ -19,6 +19,13 @@ const createBooking = async (req, res) => {
       ...req.body,
     });
     await booking.save();
+
+    const parkingBooking = await ParkingBooking.find({
+      parking: booking.parking,
+      slot: booking.slot,
+    });
+    await parkingBooking.bookings.push(bookingId);
+    await parkingBooking.save();
 
     console.log("jdfkldsjl=----------", parking.bookings[req.body.slot]);
     parking.bookings[req.body.slot].push(bookingId);
@@ -46,6 +53,17 @@ const deleteBooking = async (req, res) => {
     if (!booking) {
       throw new Error("Booking not found or you do not have permission.");
     }
+
+    const parkingBooking = await ParkingBooking.find({
+      parking: booking.parking,
+      slot: booking.slot,
+    });
+    const newBookigs = parkingBooking.bookings.filter(
+      (id) => id != booking._id
+    );
+    parkingBooking.bookings = newBookigs;
+    await parkingBooking.save();
+
     await booking.remove();
     res.send(booking);
   } catch (error) {
@@ -89,27 +107,15 @@ const userBookings = async (req, res) => {
 //Get all bookings of parking
 const parkingBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({
-      parking: req.params.parking_id,
-    })
-      .populate({
-        path: "user",
-        select: "name",
-      })
-      .populate({
-        path: "car",
-        select: "car_no",
-      })
-      .populate({
-        path: "parking",
-        select: "parking_name",
-      });
-    if (bookings.length == 0) {
-      return res.send({
-        success: "this parking do not have any bookings",
+    const parkingBooking = await ParkingBooking.find({
+      parking: req.params.parkingId,
+    });
+    if (parkingBooking.length == 0) {
+      return res.status(404).send({
+        error: "parking not found",
       });
     }
-    res.send(bookings);
+    res.send(parkingBooking);
   } catch (error) {
     console.log(error);
     res.status(400).send({

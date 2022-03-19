@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Booking = require("./bookingModel");
+const ParkingBooking = require("./parkingBookingModal");
 
 const parkingSchema = new mongoose.Schema(
   {
@@ -62,6 +63,9 @@ parkingSchema.pre("remove", async function(next) {
   const parking = this;
   console.log(parking);
   await Booking.deleteMany({
+    parking: parking._id,
+  });
+  await ParkingBooking.deleteMany({
     parking: parking._id,
   });
 

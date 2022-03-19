@@ -1,22 +1,27 @@
 const Parking = require("../models/parkingModel");
 const mongoose = require("mongoose");
+const ParkingBooking = require("../models/parkingBookingModal");
 
 const createParking = async (req, res) => {
   try {
-    const _id = new mongoose.Types.ObjectId();
-    const bookings = {};
-    for (let i = 1; i <= req.body.total_slots; i++) {
-      bookings[i] = [];
-    }
+    const parkingId = new mongoose.Types.ObjectId();
     const parking = new Parking({
-      _id,
-      bookings,
+      _id: parkingId,
       ...req.body,
       owner: req.owner._id,
     });
-    console.log(parking);
     await parking.save();
-    await req.owner.parkings.push(_id);
+
+    for (let i = 1; i <= req.body.total_slots; i++) {
+      const parkingBooking = new ParkingBooking({
+        parking: parkingId,
+        slot: i,
+        bookings: [],
+      });
+      await parkingBooking.save();
+    }
+
+    req.owner.parkings.push(parkingId);
     await req.owner.save();
     await req.owner.populate({
       path: "parkings",
@@ -66,38 +71,6 @@ const readParking = async (req, res) => {
   }
 };
 
-const updateParking = async (req, res) => {
-  try {
-    const updates = Object.keys(req.body);
-    const allowedupdates = ["name", "slots", "rate", "pincode"];
-    const isValidOperation = updates.every((update) => {
-      return allowedupdates.includes(update);
-    });
-
-    if (!isValidOperation) {
-      return res.status(400).send({ error: "Invalid updates" });
-    }
-
-    const parking = await Parking.findOne({
-      _id: req.params.parking_id,
-      owner: req.owner._id,
-    });
-    if (!parking) {
-      throw new Error("parking not found or you do not have permission");
-    }
-    updates.forEach((update) => {
-      parking[update] = req.body[update];
-    });
-    await parking.save();
-    res.send(parking);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({
-      error: error.message,
-    });
-  }
-};
-
 const deleteParking = async (req, res) => {
   try {
     const parking = await Parking.findOne({
@@ -119,7 +92,6 @@ const deleteParking = async (req, res) => {
 
 module.exports = {
   createParking,
-  updateParking,
   readParking,
   deleteParking,
   readAllParkings,

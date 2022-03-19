@@ -1,27 +1,22 @@
 const mongoose = require("mongoose");
 
-const parkingBookingSchema = new mongoose.Schema(
-  {
-    parking: {
-      type: mongoose.Types.ObjectId,
-      required: true,
-      ref: "Parking",
-    },
-    slot: {
-      type: Number,
-      required: true,
-    },
-    bookings: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "Booking",
-      },
-    ],
+const parkingBookingSchema = new mongoose.Schema({
+  parking: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+    ref: "Parking",
   },
-  {
-    timestamps: true,
-  }
-);
+  slot: {
+    type: Number,
+    required: true,
+  },
+  bookings: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Booking",
+    },
+  ],
+});
 
 parkingBookingSchema.methods.toJSON = function() {
   const parkingBooking = this;

@@ -2,32 +2,37 @@ const multer = require("multer");
 const Owner = require("../models/ownerModel");
 const Parking = require("../models/parkingModel");
 const mongoose = require("mongoose");
+const ParkingBooking = require("../models/parkingBookingModal");
 
 const createOwner = async (req, res) => {
   try {
-    const owner_id = new mongoose.Types.ObjectId();
-    const parking_id = new mongoose.Types.ObjectId();
-    const bookings = {};
+    const ownerId = new mongoose.Types.ObjectId();
+    const parkingId = new mongoose.Types.ObjectId();
     console.log(req.body.parking.total_slots);
-    for (let i = 1; i <= req.body.parking.total_slots; i++) {
-      bookings[i] = [];
-    }
 
     const parking = new Parking({
-      _id: parking_id,
-      bookings,
+      _id: parkingId,
       ...req.body.parking,
-      owner: owner_id,
+      owner: ownerId,
     });
-    console.log(parking);
+
+    for (let i = 1; i <= req.body.parking.total_slots; i++) {
+      const parkingBooking = new ParkingBooking({
+        parking: parkingId,
+        slot: i,
+        bookings: [],
+      });
+      await parkingBooking.save();
+    }
+
     const owner = new Owner({
-      _id: owner_id,
+      _id: ownerId,
       ...req.body,
-      parkings: [parking_id],
+      parkings: [parkingId],
     });
+
     await owner.save();
     await parking.save();
-    console.log(parking);
     const token = await owner.generateAuthToken();
     res.status(201).send({ owner, parking, token });
   } catch (error) {

@@ -14,12 +14,12 @@ const ownerAuth = require("../middleware/ownerAuth");
 router.post("/bookings", userAuth, createBooking);
 
 // Delete booking
-router.delete("/bookings/:booking_id", userAuth, deleteBooking);
+router.delete("/bookings/:bookingId", userAuth, deleteBooking);
 
 // Get all bookings of user
 router.get("/bookings/me", userAuth, userBookings);
 
 //Get all bookings of parking
-router.get("/bookings/:parking_id", ownerAuth, parkingBookings);
+router.get("/bookings/:parkingId", parkingBookings);
 
 module.exports = router;
