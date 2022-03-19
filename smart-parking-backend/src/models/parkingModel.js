@@ -43,15 +43,6 @@ const parkingSchema = new mongoose.Schema(
       ref: "Owner",
       required: true,
     },
-    bookings: {
-      type: Object,
-
-      // [{
-      //   slotnum:1,
-      //   bookinngs IDs:[]
-      // }]
-      required: true,
-    },
   },
   {
     timestamps: true,
