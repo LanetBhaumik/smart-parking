@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 
 // actions
 import { userProfile } from "../../redux/actions/userAction";
@@ -9,8 +9,8 @@ import { Button } from "@material-ui/core";
 
 import classes from "./UserProfile.module.css";
 
-const UserProfile = ({ userProfile, signOut }) => {
-  const { profile } = useSelector((state) => state.user);
+const UserProfile = ({ userProfile, signOut, user }) => {
+  const { profile } = user;
 
   const onSignOutHandle = () => {
     signOut();
@@ -52,7 +52,9 @@ const UserProfile = ({ userProfile, signOut }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
 export default connect(mapStateToProps, {
   userProfile,
   signOut,

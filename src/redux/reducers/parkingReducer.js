@@ -20,6 +20,7 @@ export const PARKING_DETAIL_FAILED = "PARKING_DETAIL_FAILED";
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PARKING_SUCCESS: {
+      console.log(state);
       return action.payload;
     }
     case PARKING_FAILED: {

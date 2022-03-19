@@ -1,141 +1,161 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import React from "react";
+import { connect } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import {
+  AppBar,
+  Toolbar,
+  CssBaseline,
+  Typography,
+  makeStyles,
+  Button,
+} from "@material-ui/core";
 
-const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+import CustomLink from "./CustomLink";
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+// actions
+import { signOut } from "../redux/actions/authAction";
+
+const useStyles = makeStyles((theme) => ({
+  navlinks: {
+    marginLeft: theme.spacing(10),
+    display: "flex",
+  },
+  logo: {
+    flexGrow: "1",
+    cursor: "pointer",
+  },
+  link: {
+    textDecoration: "none",
+    color: "white",
+    fontSize: "20px",
+    marginLeft: theme.spacing(20),
+    "&:hover": {
+      color: "yellow",
+      borderBottom: "1px solid white",
+    },
+  },
+}));
+
+const Navbar = ({ signOut, auth }) => {
+  const classes = useStyles();
+  const Navigate = useNavigate();
+
+  const { role } = auth;
+
+  const handleSignIn = () => {
+    Navigate("/signin");
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+
+  const handleUserSignUp = () => {
+    Navigate("user/signup");
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleOwnerSignUp = () => {
+    Navigate("owner/signup");
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleSignOut = () => {
+    signOut();
   };
+
+  let links = null;
+  if (role === "user") {
+    links = (
+      <>
+        <CustomLink to="/parkings" className={classes.link}>
+          Parkings
+        </CustomLink>
+        <CustomLink to="/user/bookings" className={classes.link}>
+          Bookings
+        </CustomLink>
+        <CustomLink to="user/me" className={classes.link}>
+          Profile
+        </CustomLink>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleSignOut}
+        >
+          Sign Out
+        </Button>
+      </>
+    );
+  } else if (role === "owner") {
+    links = (
+      <>
+        <CustomLink to="/" className={classes.link}>
+          Home
+        </CustomLink>
+        <CustomLink to="/owner/parkings" className={classes.link}>
+          Parkings
+        </CustomLink>
+        <CustomLink to="/owner/me" className={classes.link}>
+          Profile
+        </CustomLink>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleSignOut}
+        >
+          Sign Out
+        </Button>
+      </>
+    );
+  } else {
+    links = (
+      <div>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleSignIn}
+        >
+          Sign In
+        </Button>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleUserSignUp}
+        >
+          User Sign Up
+        </Button>
+        <Button
+          variant="outlined"
+          className={classes.link}
+          onClick={handleOwnerSignUp}
+        >
+          Owner Sign Up
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-          >
-            Smart Parking
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            {/* For three line */}
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-          >
-            Smart Parking
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
+    <AppBar position="relative">
+      <CssBaseline />
+      <Toolbar>
+        <Typography
+          component={Link}
+          to="/"
+          variant="h4"
+          className={classes.logo}
+          color="inherit"
+        >
+          Smart Parking
+        </Typography>
+        <div className={classes.navlinks}>
+          {links}
+          <Outlet />
+        </div>
+      </Toolbar>
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {
+  signOut,
+})(Navbar);

@@ -7,6 +7,7 @@ import alert from "./alertReducer";
 import user from "./userReducer";
 import owner from "./ownerReducer";
 import bookings from "./bookingReducer";
+import parkingBooking from "./parkingBookingReducer";
 
 export default combineReducers({
   auth,
@@ -15,4 +16,5 @@ export default combineReducers({
   owner,
   user,
   bookings,
+  parkingBooking,
 });

@@ -10,11 +10,16 @@ import {
 } from "@mui/lab";
 import React from "react";
 import BookingDialog from "./BookingDialog";
+import { useParams } from "react-router";
+import { connect } from "react-redux";
 
 // css
 import classes from "./TimelineModal.module.css";
 
-const TimelineModal = ({ slot, bookings }) => {
+const TimelineModal = ({ slot, bookings, list }) => {
+  const params = useParams();
+  const parkingId = params.parkingId;
+  const parking = list.find((item) => item._id === parkingId);
   const style = {
     position: "absolute",
     top: "50%",
@@ -22,14 +27,14 @@ const TimelineModal = ({ slot, bookings }) => {
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
-    border: "2px solid #000",
     boxShadow: 24,
     pt: 2,
     px: 4,
     pb: 3,
   };
-  console.log(bookings.length);
 
+  const btnClass =
+    bookings.length === 0 ? "AvailableSlotBtn" : "OccupiedSlotBtn";
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -40,7 +45,7 @@ const TimelineModal = ({ slot, bookings }) => {
 
   return (
     <>
-      <button className={classes.slotBtn} onClick={handleOpen}>
+      <button className={classes[btnClass]} onClick={handleOpen}>
         <h2>{slot}</h2>
       </button>
       <Modal
@@ -68,11 +73,20 @@ const TimelineModal = ({ slot, bookings }) => {
               <TimelineContent>Out time</TimelineContent>
             </TimelineItem>
           </Timeline>
-          <BookingDialog />
+          <BookingDialog
+            rate={parking.rate}
+            parkingName={parking.parking_name}
+            parkingId={params.parkingId}
+            slot={slot}
+          />
         </Box>
       </Modal>
     </>
   );
 };
 
-export default TimelineModal;
+const mapStateToProps = (state) => ({
+  list: state.parking.list,
+});
+
+export default connect(mapStateToProps, {})(TimelineModal);

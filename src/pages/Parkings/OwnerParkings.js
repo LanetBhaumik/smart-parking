@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
 // actions
 import { ownerProfile, addParking } from "../../redux/actions/ownerAction";
@@ -8,67 +8,23 @@ import { ownerProfile, addParking } from "../../redux/actions/ownerAction";
 import classes from "./OwnerParkings.module.css";
 
 // material ui
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-} from "@material-ui/core";
-import { DialogContent } from "@mui/material";
+import { Box } from "@material-ui/core";
 
 import ParkingItem from "./ParkingItem";
+import AddParking from "../../components/AddParking";
 
-const OwnerParkings = ({ ownerProfile, addParking }) => {
-  const [parking, setParking] = useState({
-    parking_name: "",
-    address: "",
-    pincode: "",
-    total_slots: "",
-    rate: "",
-  });
-  const { parking_name, address, pincode, total_slots, rate } = parking;
-
-  const handleParkingChange = (e) => {
-    const { name, value } = e.target;
-    setParking({
-      ...parking,
-      [name]: value,
-    });
-    console.log(parking);
-  };
-  const { owner } = useSelector((state) => state);
+const OwnerParkings = ({ ownerProfile, owner }) => {
   const { profile } = owner;
   useEffect(() => {
     ownerProfile();
   }, []);
-
-  const [open, setOpen] = React.useState(false);
-
-  const onAddHandle = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const onSubmitHandle = () => {
-    setOpen(false);
-
-    addParking(parking);
-  };
 
   return (
     <>
       <div>
         <h2 className={classes.heading}>Your Parkings</h2>
         <Box textAlign="center">
-          <Button variant="contained" onClick={onAddHandle}>
-            Add Parking
-          </Button>
+          <AddParking />
         </Box>
         {profile && profile.parkings && profile.parkings.length < 1 && (
           <h3 className={classes.nothing}>No Parkings</h3>
@@ -82,84 +38,13 @@ const OwnerParkings = ({ ownerProfile, addParking }) => {
           </div>
         )}
       </div>
-      <div>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Add New Parking</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Add details of your paking</DialogContentText>
-            <TextField
-              id="parking_name"
-              label="Name of Parking"
-              variant="outlined"
-              required
-              type="text"
-              margin="normal"
-              value={parking_name}
-              name="parking_name"
-              onChange={handleParkingChange}
-              fullWidth
-            />
-            <TextField
-              id="address"
-              label="Parking Address"
-              variant="outlined"
-              required
-              type="text"
-              margin="normal"
-              value={address}
-              name="address"
-              onChange={handleParkingChange}
-              fullWidth
-            />
-            <TextField
-              id="pincode"
-              label="Pincode"
-              variant="outlined"
-              required
-              type="text"
-              margin="normal"
-              value={pincode}
-              name="pincode"
-              onChange={handleParkingChange}
-              fullWidth
-            />
-            <TextField
-              id="total_slots"
-              label="Total slots"
-              variant="outlined"
-              required
-              type="text"
-              margin="normal"
-              value={total_slots}
-              name="total_slots"
-              onChange={handleParkingChange}
-              fullWidth
-            />
-            <TextField
-              id="rate"
-              label="Rate of parking"
-              helperText="per hour in rupees"
-              variant="outlined"
-              required
-              type="text"
-              margin="normal"
-              value={rate}
-              name="rate"
-              onChange={handleParkingChange}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={onSubmitHandle}>Submit</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
     </>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  owner: state.owner,
+});
 
 export default connect(mapStateToProps, {
   ownerProfile,

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, connect } from "react-redux";
+import { connect } from "react-redux";
 
 // action
 import { fetchParkings } from "../../redux/actions/parkingsAction";
@@ -10,8 +10,8 @@ import ParkingCard from "../../components/ParkingCard";
 //material ui
 import { Container, Grid } from "@material-ui/core";
 
-const Parkings = ({ fetchParkings }) => {
-  const { list } = useSelector((state) => state.parking);
+const Parkings = ({ fetchParkings, parking }) => {
+  const { list } = parking;
   console.log(list);
 
   useEffect(() => {
@@ -36,7 +36,9 @@ const Parkings = ({ fetchParkings }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  parking: state.parking,
+});
 
 export default connect(mapStateToProps, {
   fetchParkings,

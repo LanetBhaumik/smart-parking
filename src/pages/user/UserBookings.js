@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 
 import { userBookings } from "../../redux/actions/userAction";
 
 // css
 import classes from "./UserBookings.module.css";
 
-const UserBookings = ({ userBookings }) => {
+const UserBookings = ({ userBookings, user }) => {
   const currentDate = new Date();
 
-  const { bookings } = useSelector((state) => state.user);
+  const { bookings } = user;
   useEffect(() => {
     userBookings();
   }, []);
@@ -110,7 +110,9 @@ const UserBookings = ({ userBookings }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
 
 export default connect(mapStateToProps, {
   userBookings,

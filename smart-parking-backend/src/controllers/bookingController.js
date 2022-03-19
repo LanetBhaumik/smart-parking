@@ -20,20 +20,16 @@ const createBooking = async (req, res) => {
     });
     await booking.save();
 
-    const parkingBooking = await ParkingBooking.find({
+    const parkingBooking = await ParkingBooking.findOne({
       parking: booking.parking,
       slot: booking.slot,
     });
+    console.log(parkingBooking);
     await parkingBooking.bookings.push(bookingId);
+    console.log("before", parkingBooking.bookings);
     await parkingBooking.save();
+    console.log("before", parkingBooking.bookings);
 
-    console.log("jdfkldsjl=----------", parking.bookings[req.body.slot]);
-    parking.bookings[req.body.slot].push(bookingId);
-    console.log("before", parking);
-    await parking.save();
-    console.log("jdfkldsjl=----------", parking.bookings[req.body.slot]);
-
-    console.log("after", parking);
     res.send(booking);
   } catch (error) {
     console.log(error);
@@ -109,7 +105,12 @@ const parkingBookings = async (req, res) => {
   try {
     const parkingBooking = await ParkingBooking.find({
       parking: req.params.parkingId,
-    });
+    })
+      .select("-parking")
+      .populate({
+        path: "bookings",
+        select: "in_time out_time",
+      });
     if (parkingBooking.length == 0) {
       return res.status(404).send({
         error: "parking not found",
