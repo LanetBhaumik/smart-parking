@@ -60,7 +60,7 @@ const readParking = async (req, res) => {
       _id: req.params.parking_id,
     });
     if (!parking) {
-      throw new Error("parking not found or you do not have permission.");
+      throw new Error("parking not found");
     }
     res.send(parking);
   } catch (error) {

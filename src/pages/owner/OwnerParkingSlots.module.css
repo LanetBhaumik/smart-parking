@@ -15,18 +15,6 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-
-.slotBtn {
-  height: 60px;
-  width: 60px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  background: green;
-  outline: none;
-  border: none;
-  border-radius: 10px;
-}
 .link {
   text-decoration: none;
   color: white;
@@ -43,4 +31,27 @@
   width: 20px;
   background: red;
   margin-right: 10px;
+}
+
+.AvailableSlotBtn {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: green;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+}
+.OccupiedSlotBtn {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: red;
+  outline: none;
+  border: none;
+  border-radius: 10px;
 }

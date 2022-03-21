@@ -17,21 +17,33 @@ import { DateTimePicker } from "@mui/lab";
 //actions
 import { bookSlot } from "../redux/actions/bookingAction";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router";
 
-const BookingDialog = ({ rate, parkingId, parkingName, slot }) => {
+const BookingDialog = ({ parking, bookSlot, role }) => {
+  const { rate, parkingId, parkingName, slot } = parking;
+  const currentTime = new Date();
+  const [inTime, setInTime] = useState(
+    new Date().setHours(currentTime.getHours() + 1, 0)
+  );
+  const [outTime, setOutTime] = useState(
+    new Date().setHours(currentTime.getHours() + 2, 0)
+  );
   console.log(rate, parkingId, parkingName, slot);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({
     inError: false,
     outError: false,
   });
-  const [inTime, setInTime] = useState(new Date());
-  const [outTime, setOutTime] = useState(new Date());
   let duration = Math.ceil((outTime - inTime) / 3600000);
   let charge = duration * rate;
 
+  const Navigate = useNavigate();
   const handleOpen = () => {
-    setOpen(true);
+    if (role === "user") {
+      setOpen(true);
+    } else {
+      Navigate("/user/signup");
+    }
   };
   const onInError = (e) => {
     !e
@@ -54,6 +66,7 @@ const BookingDialog = ({ rate, parkingId, parkingName, slot }) => {
 
   const onSubmitHandle = () => {
     setOpen(false);
+    console.log(inTime, outTime);
     bookSlot({
       in_time: inTime,
       out_time: outTime,
@@ -81,7 +94,8 @@ const BookingDialog = ({ rate, parkingId, parkingName, slot }) => {
               value={inTime}
               name="inTime"
               onChange={(newInTime) => setInTime(newInTime)}
-              minDateTime={new Date()}
+              minDateTime={currentTime}
+              maxDateTime={new Date().setMonth(currentTime.getMonth() + 1)}
               renderInput={(params) => <TextField {...params} />}
               onError={(e) => onInError(e)}
             />
@@ -93,7 +107,7 @@ const BookingDialog = ({ rate, parkingId, parkingName, slot }) => {
               value={outTime}
               onChange={(newOutTime) => setOutTime(newOutTime)}
               minDateTime={inTime}
-              maxDateTime={new Date().setDate(inTime.getDate() + 7)}
+              maxDateTime={new Date().setMonth(currentTime.getMonth() + 1)}
               renderInput={(params) => <TextField {...params} />}
               onError={(e) => onOutError(e)}
             />
@@ -118,6 +132,8 @@ const BookingDialog = ({ rate, parkingId, parkingName, slot }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  role: state.auth.role,
+});
 
 export default connect(mapStateToProps, { bookSlot })(BookingDialog);

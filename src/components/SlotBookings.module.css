@@ -7,16 +7,6 @@
   color: black;
 }
 
-.note {
-  padding: 4px;
-  text-align: center;
-  margin: 0 auto 2rem;
-  color: #1d7f9d;
-}
-.note div {
-  margin-bottom: 4px;
-}
-
 .container {
   font-family: "Lato", sans-serif;
   max-width: 1050px;
@@ -80,20 +70,6 @@
   padding: 3rem;
   text-align: center;
   color: red;
-}
-
-.note {
-  text-align: center;
-  margin: 0 auto 2.5rem;
-  padding-top: 5px;
-  width: 100%;
-  max-width: 800px;
-}
-
-.note div {
-  font-size: 17px;
-  padding: 2px;
-  color: #999966;
 }
 
 .expired {

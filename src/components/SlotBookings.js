@@ -1,31 +1,34 @@
 import React, { useEffect } from "react";
-import { connect, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { fetchParkingDetail } from "../redux/actions/parkingsAction";
+import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 
 // css
 import classes from "./SlotBookings.module.css";
 
-const SlotBookings = ({ fetchParkingDetail }) => {
-  const currentDate = new Date();
+// action
+import { fetchParkingBookings } from "../redux/actions/parkingBookingAction";
+import { fetchParkingDetail } from "../redux/actions/parkingsAction";
+
+const SlotBookings = ({
+  parkingBookings,
+  fetchParkingBookings,
+  fetchParkingDetail,
+}) => {
+  const currentTime = new Date();
   const params = useParams();
-  console.log(params.parkingId);
-  const parkingDetail = useSelector((state) => state.parking[params.parkingId]);
-  console.log(parkingDetail);
-  let bookings = {};
-  if (parkingDetail) {
-    bookings = parkingDetail.bookings;
-  }
-  console.log(bookings);
   useEffect(() => {
+    fetchParkingBookings(params.parkingId);
     fetchParkingDetail(params.parkingId);
   }, []);
+
+  const bookings = parkingBookings[params.parkingId];
+  console.log(bookings);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
   const timeFormat = (date) => {
     date = new Date(date);
     const dd = pad(date.getDate());
-    const mm = pad(date.getMonth());
+    const mm = pad(date.getMonth() + 1);
     const yyyy = date.getFullYear();
     const hh = pad(date.getHours());
     const min = pad(date.getMinutes());
@@ -33,13 +36,14 @@ const SlotBookings = ({ fetchParkingDetail }) => {
   };
   return (
     <>
-      <h2 className={classes.heading}>bookings of slot</h2>
+      <h2 className={classes.heading}>Your Bookings</h2>
       <div className={classes.container}>
         <ul className={classes["responsive-table"]}>
           <li className={classes["table-header"]}>
             <div className={`${classes.col} ${classes["col-1"]}`}>Status</div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Car No</div>
-            <div className={`${classes.col} ${classes["col-1"]}`}>User</div>
+            <div className={`${classes.col} ${classes["col-1"]}`}>Parking</div>
+            <div className={`${classes.col} ${classes["col-1"]}`}>Slot</div>
             <div className={`${classes.col} ${classes["col-1"]}`}>
               Entry Time
             </div>
@@ -55,7 +59,7 @@ const SlotBookings = ({ fetchParkingDetail }) => {
               console.log(booking);
               return (
                 <li className={classes["table-row"]} key={i}>
-                  {currentDate > new Date(booking.out_time) && (
+                  {currentTime > new Date(booking.out_time) && (
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Status"
@@ -64,24 +68,41 @@ const SlotBookings = ({ fetchParkingDetail }) => {
                     </div>
                   )}
 
-                  {currentDate <= new Date(booking.out_time) && (
+                  {currentTime < new Date(booking.in_time) && (
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Status"
-                    ></div>
+                    >
+                      <span className={classes.upcoming}>Upcoming</span>
+                    </div>
                   )}
+                  {currentTime >= new Date(booking.in_time) &&
+                    currentTime <= new Date(booking.out_time) && (
+                      <div
+                        className={`${classes.col} ${classes["col-1"]}`}
+                        data-label="Status"
+                      >
+                        <span className={classes.active}>Active</span>
+                      </div>
+                    )}
 
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Car No"
                   >
-                    {/* {booking.car.car_no} */}
+                    {booking.car.car_no}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="User"
+                    data-label="Parking"
                   >
-                    {/* {booking.user.name} */}
+                    {booking.parking.parking_name}
+                  </div>
+                  <div
+                    className={`${classes.col} ${classes["col-1"]}`}
+                    data-label="Slot"
+                  >
+                    {booking.slot}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
@@ -110,8 +131,11 @@ const SlotBookings = ({ fetchParkingDetail }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  parkingBookings: state.parkingBookings,
+});
 
 export default connect(mapStateToProps, {
+  fetchParkingBookings,
   fetchParkingDetail,
 })(SlotBookings);

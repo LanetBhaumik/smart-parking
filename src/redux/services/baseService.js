@@ -5,13 +5,9 @@ export const baseUrl = "http://localhost:3000";
 
 (function() {
   const token = store.getState().auth.token;
-  if (token) {
+  console.log({ token });
+  if (token || localStorage.getItem("token")) {
     axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-  } else {
-    axios.defaults.headers.common["Authorization"] = null;
-    /*if setting null does not remove `Authorization` header then try     
-        delete axios.defaults.headers.common['Authorization'];
-      */
   }
 })();
 

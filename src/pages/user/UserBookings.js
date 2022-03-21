@@ -7,7 +7,7 @@ import { userBookings } from "../../redux/actions/userAction";
 import classes from "./UserBookings.module.css";
 
 const UserBookings = ({ userBookings, user }) => {
-  const currentDate = new Date();
+  const currentTime = new Date();
 
   const { bookings } = user;
   useEffect(() => {
@@ -18,7 +18,7 @@ const UserBookings = ({ userBookings, user }) => {
   const timeFormat = (date) => {
     date = new Date(date);
     const dd = pad(date.getDate());
-    const mm = pad(date.getMonth());
+    const mm = pad(date.getMonth() + 1);
     const yyyy = date.getFullYear();
     const hh = pad(date.getHours());
     const min = pad(date.getMinutes());
@@ -33,6 +33,7 @@ const UserBookings = ({ userBookings, user }) => {
             <div className={`${classes.col} ${classes["col-1"]}`}>Status</div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Car No</div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Parking</div>
+            <div className={`${classes.col} ${classes["col-1"]}`}>Slot</div>
             <div className={`${classes.col} ${classes["col-1"]}`}>
               Entry Time
             </div>
@@ -45,9 +46,10 @@ const UserBookings = ({ userBookings, user }) => {
           {bookings &&
             bookings.length > 0 &&
             bookings.map((booking, i) => {
+              console.log(booking);
               return (
                 <li className={classes["table-row"]} key={i}>
-                  {currentDate > new Date(booking.out_time) && (
+                  {currentTime > new Date(booking.out_time) && (
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Status"
@@ -56,12 +58,23 @@ const UserBookings = ({ userBookings, user }) => {
                     </div>
                   )}
 
-                  {currentDate <= new Date(booking.out_time) && (
+                  {currentTime < new Date(booking.in_time) && (
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Status"
-                    ></div>
+                    >
+                      <span className={classes.upcoming}>Upcoming</span>
+                    </div>
                   )}
+                  {currentTime >= new Date(booking.in_time) &&
+                    currentTime <= new Date(booking.out_time) && (
+                      <div
+                        className={`${classes.col} ${classes["col-1"]}`}
+                        data-label="Status"
+                      >
+                        <span className={classes.active}>Active</span>
+                      </div>
+                    )}
 
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
@@ -74,6 +87,12 @@ const UserBookings = ({ userBookings, user }) => {
                     data-label="Parking"
                   >
                     {booking.parking.parking_name}
+                  </div>
+                  <div
+                    className={`${classes.col} ${classes["col-1"]}`}
+                    data-label="Slot"
+                  >
+                    {booking.slot}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}

@@ -2,8 +2,9 @@ const express = require("express");
 const {
   createBooking,
   userBookings,
-  parkingBookings,
   deleteBooking,
+  parkingBookings,
+  parkingSlotBookings,
 } = require("../controllers/bookingController");
 const router = new express.Router();
 
@@ -21,5 +22,8 @@ router.get("/bookings/me", userAuth, userBookings);
 
 //Get all bookings of parking
 router.get("/bookings/:parkingId", parkingBookings);
+
+//Get all bookings of parking slot
+router.get("/bookings/:parkingId/:slot", parkingSlotBookings);
 
 module.exports = router;

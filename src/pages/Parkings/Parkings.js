@@ -10,9 +10,9 @@ import ParkingCard from "../../components/ParkingCard";
 //material ui
 import { Container, Grid } from "@material-ui/core";
 
-const Parkings = ({ fetchParkings, parking }) => {
-  const { list } = parking;
-  console.log(list);
+const Parkings = ({ fetchParkings, parkings }) => {
+  const ids = Object.keys(parkings);
+  console.log(ids);
 
   useEffect(() => {
     fetchParkings();
@@ -20,13 +20,13 @@ const Parkings = ({ fetchParkings, parking }) => {
 
   return (
     <>
-      {!list && <p>No Parkings Found</p>}
-      {list && list.length > 0 && (
+      {parkings.error && <p>No Parkings Found</p>}
+      {!parkings.error && ids && ids.length > 0 && (
         <div style={{ marginTop: "5vh" }}>
           <Container sx={{ py: 8, mt: 100 }} maxWidth="md">
             <Grid container spacing={4}>
-              {list.map((parking) => (
-                <ParkingCard parking={parking} key={parking._id} />
+              {ids.map((id) => (
+                <ParkingCard parking={parkings[id]} key={id} />
               ))}
             </Grid>
           </Container>
@@ -37,7 +37,7 @@ const Parkings = ({ fetchParkings, parking }) => {
 };
 
 const mapStateToProps = (state) => ({
-  parking: state.parking,
+  parkings: state.parkings,
 });
 
 export default connect(mapStateToProps, {

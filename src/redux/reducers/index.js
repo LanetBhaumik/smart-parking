@@ -2,19 +2,19 @@ import { combineReducers } from "redux";
 
 import auth from "./authReducer";
 
-import parking from "./parkingReducer";
+import parkings from "./parkingReducer";
 import alert from "./alertReducer";
 import user from "./userReducer";
 import owner from "./ownerReducer";
 import bookings from "./bookingReducer";
-import parkingBooking from "./parkingBookingReducer";
+import parkingBookings from "./parkingBookingReducer";
 
 export default combineReducers({
   auth,
-  parking,
+  parkings,
   alert,
   owner,
   user,
   bookings,
-  parkingBooking,
+  parkingBookings,
 });

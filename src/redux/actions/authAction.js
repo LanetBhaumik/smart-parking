@@ -16,7 +16,7 @@ import {
 export const userSignIn = (Credentials) => async (dispatch) => {
   try {
     const response = await userSignInService(Credentials);
-    console.log(response);
+    console.log("signin-----", response);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");

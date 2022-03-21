@@ -125,9 +125,38 @@ const parkingBookings = async (req, res) => {
   }
 };
 
+//Get all bookings of parking slot
+const parkingSlotBookings = async (req, res) => {
+  try {
+    const parkingBooking = await ParkingBooking.findOne({
+      parking: req.params.parkingId,
+      slot: req.params.slot,
+    }).populate({
+      path: "bookings",
+      populate: {
+        path: "user car",
+        select: "name car_no -_id",
+      },
+      select: "-parking -slot -__v",
+    });
+    if (parkingBooking.length == 0) {
+      return res.status(404).send({
+        error: "parking not found",
+      });
+    }
+    res.send(parkingBooking.bookings);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createBooking,
   userBookings,
   parkingBookings,
   deleteBooking,
+  parkingSlotBookings,
 };

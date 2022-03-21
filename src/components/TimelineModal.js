@@ -1,3 +1,9 @@
+import React from "react";
+import { useParams } from "react-router";
+import { connect } from "react-redux";
+
+import BookingDialog from "./BookingDialog";
+
 import { Box, Modal } from "@material-ui/core";
 import {
   Timeline,
@@ -8,18 +14,17 @@ import {
   TimelineOppositeContent,
   TimelineSeparator,
 } from "@mui/lab";
-import React from "react";
-import BookingDialog from "./BookingDialog";
-import { useParams } from "react-router";
-import { connect } from "react-redux";
 
 // css
 import classes from "./TimelineModal.module.css";
 
-const TimelineModal = ({ slot, bookings, list }) => {
+// action
+
+const TimelineModal = ({ slot, bookings, parkings }) => {
   const params = useParams();
   const parkingId = params.parkingId;
-  const parking = list.find((item) => item._id === parkingId);
+  const parking = parkings[parkingId];
+  console.log(parking);
   const style = {
     position: "absolute",
     top: "50%",
@@ -73,12 +78,16 @@ const TimelineModal = ({ slot, bookings, list }) => {
               <TimelineContent>Out time</TimelineContent>
             </TimelineItem>
           </Timeline>
-          <BookingDialog
-            rate={parking.rate}
-            parkingName={parking.parking_name}
-            parkingId={params.parkingId}
-            slot={slot}
-          />
+          {parking && (
+            <BookingDialog
+              parking={{
+                rate: parking.rate,
+                parkingName: parking.parking_name,
+                parkingId: params.parkingId,
+                slot: slot,
+              }}
+            />
+          )}
         </Box>
       </Modal>
     </>
@@ -86,7 +95,7 @@ const TimelineModal = ({ slot, bookings, list }) => {
 };
 
 const mapStateToProps = (state) => ({
-  list: state.parking.list,
+  parkings: state.parkings,
 });
 
 export default connect(mapStateToProps, {})(TimelineModal);

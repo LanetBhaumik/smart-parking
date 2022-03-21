@@ -22,7 +22,7 @@ const OwnerProfile = ({ ownerProfile, signOut, owner }) => {
 
   return (
     <>
-      {Object.keys(profile).length === 0 || (
+      {Object.keys(profile).length !== 0 && (
         <>
           <div className={classes.card}>
             <img

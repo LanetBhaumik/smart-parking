@@ -7,16 +7,22 @@ import classes from "./ParkingSlots.module.css";
 
 // action
 import { fetchParkingBookings } from "../../redux/actions/parkingBookingAction";
+import { fetchParkingDetail } from "../../redux/actions/parkingsAction";
 
 import TimelineModal from "../../components/TimelineModal";
 
-const ParkingSlots = ({ parkingBooking, fetchParkingBookings }) => {
+const ParkingSlots = ({
+  parkingBookings,
+  fetchParkingBookings,
+  fetchParkingDetail,
+}) => {
   const params = useParams();
   useEffect(() => {
     fetchParkingBookings(params.parkingId);
+    fetchParkingDetail(params.parkingId);
   }, []);
 
-  const bookings = parkingBooking[params.parkingId];
+  const bookings = parkingBookings[params.parkingId];
   console.log(bookings);
 
   return (
@@ -52,9 +58,10 @@ const ParkingSlots = ({ parkingBooking, fetchParkingBookings }) => {
 };
 
 const mapStateToProps = (state) => ({
-  parkingBooking: state.parkingBooking,
+  parkingBookings: state.parkingBookings,
 });
 
 export default connect(mapStateToProps, {
   fetchParkingBookings,
+  fetchParkingDetail,
 })(ParkingSlots);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ import { Box, Button, TextField, Typography } from "@material-ui/core";
 //actions
 import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";
 
-const SignIn = ({ userSignIn, ownerSignIn }) => {
+const SignIn = ({ userSignIn, ownerSignIn, token }) => {
   const Navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -37,6 +37,12 @@ const SignIn = ({ userSignIn, ownerSignIn }) => {
     role === "user" ? userSignIn(credentials) : ownerSignIn(credentials);
     Navigate("/");
   };
+
+  useEffect(() => {
+    if (token && token !== "") {
+      Navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -127,6 +133,8 @@ const SignIn = ({ userSignIn, ownerSignIn }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  token: state.auth.token,
+});
 
 export default connect(mapStateToProps, { userSignIn, ownerSignIn })(SignIn);
