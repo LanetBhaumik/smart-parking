@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import BookingDialog from "./BookingDialog";
 
-import { Box, Modal } from "@material-ui/core";
+import { Box, Modal } from "@mui/material";
 import {
   Timeline,
   TimelineConnector,
@@ -24,7 +24,6 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
   const params = useParams();
   const parkingId = params.parkingId;
   const parking = parkings[parkingId];
-  console.log(parking);
   const style = {
     position: "absolute",
     top: "50%",

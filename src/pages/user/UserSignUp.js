@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 //material ui
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField, Typography } from "@mui/material";
 import { Link as MaterialLink } from "@mui/material";
 //css
 import classes from "./UserSignUp.module.css";

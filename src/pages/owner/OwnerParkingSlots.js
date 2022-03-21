@@ -34,23 +34,20 @@ const OwnerParkingSlots = ({
       <div className={classes.container}>
         <div>
           {bookings !== undefined &&
-            bookings.length > 0 &&
-            bookings.map((booking) => {
+            Object.keys(bookings).map((slot) => {
               const btnClass =
-                booking.bookings.length === 0
+                bookings[slot].length === 0
                   ? "AvailableSlotBtn"
                   : "OccupiedSlotBtn";
               return (
                 <button
-                  key={booking._id}
+                  key={slot}
                   className={classes[btnClass]}
                   onClick={() =>
-                    Navigate(
-                      `/owner/parkings/${params.parkingId}/${booking.slot}`
-                    )
+                    Navigate(`/owner/parkings/${params.parkingId}/${slot}`)
                   }
                 >
-                  <h2>{booking.slot}</h2>
+                  <h2>{slot}</h2>
                 </button>
               );
             })}

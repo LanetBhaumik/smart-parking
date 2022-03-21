@@ -9,7 +9,7 @@ import {
   Button,
   Link as MaterialLink,
   Box,
-} from "@material-ui/core";
+} from "@mui/material";
 
 // actions
 import { ownerSignUp } from "../../redux/actions/authAction";

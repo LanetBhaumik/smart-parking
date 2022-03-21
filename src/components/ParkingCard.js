@@ -10,7 +10,7 @@ import {
   Grid,
   Typography,
   CardActionArea,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const ParkingCard = ({ parking }) => {
   return (

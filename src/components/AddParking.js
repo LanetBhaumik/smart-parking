@@ -5,7 +5,7 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { useState } from "react";
 import { DialogContent } from "@mui/material";
 import { connect } from "react-redux";

@@ -12,6 +12,7 @@ import {
   SIGNOUT,
   INVALID_DATA,
 } from "../reducers/authReducer";
+import { setAuthToken } from "../../utils/setAuthToken";
 
 export const userSignIn = (Credentials) => async (dispatch) => {
   try {
@@ -20,6 +21,7 @@ export const userSignIn = (Credentials) => async (dispatch) => {
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");
+      setAuthToken(response.data.token);
       dispatch({
         type: USER_SIGNIN,
         payload: response.data,

@@ -1,6 +1,8 @@
-import { Box, Button } from "@material-ui/core";
 import React from "react";
 import { useNavigate } from "react-router";
+
+// material ui
+import { Box, Button } from "@mui/material";
 
 const Homepage = () => {
   const Navigate = useNavigate();

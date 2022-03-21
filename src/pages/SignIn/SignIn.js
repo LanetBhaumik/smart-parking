@@ -9,7 +9,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 //actions
 import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";

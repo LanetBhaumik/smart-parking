@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { ownerProfile } from "../../redux/actions/ownerAction";
 import { signOut } from "../../redux/actions/authAction";
 
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 import classes from "./OwnerProfile.module.css";
 

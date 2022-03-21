@@ -2,14 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
+// material ui
 import {
   AppBar,
   Toolbar,
   CssBaseline,
   Typography,
-  makeStyles,
   Button,
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import CustomLink from "./CustomLink";
 
@@ -18,7 +19,7 @@ import { signOut } from "../redux/actions/authAction";
 
 const useStyles = makeStyles((theme) => ({
   navlinks: {
-    marginLeft: theme.spacing(10),
+    marginLeft: 10,
     display: "flex",
   },
   logo: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "white",
     fontSize: "20px",
-    marginLeft: theme.spacing(20),
+    marginLeft: 20,
     "&:hover": {
       color: "yellow",
       borderBottom: "1px solid white",

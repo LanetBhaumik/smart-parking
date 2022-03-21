@@ -11,7 +11,7 @@ import {
   DialogTitle,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { DateTimePicker } from "@mui/lab";
 
 //actions

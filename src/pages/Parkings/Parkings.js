@@ -8,7 +8,7 @@ import { fetchParkings } from "../../redux/actions/parkingsAction";
 import ParkingCard from "../../components/ParkingCard";
 
 //material ui
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid } from "@mui/material";
 
 const Parkings = ({ fetchParkings, parkings }) => {
   const ids = Object.keys(parkings);

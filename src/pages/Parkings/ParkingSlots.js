@@ -31,13 +31,12 @@ const ParkingSlots = ({
       <div className={classes.container}>
         <div>
           {bookings !== undefined &&
-            bookings.length > 0 &&
-            bookings.map((booking) => {
+            Object.keys(bookings).map((slot) => {
               return (
                 <TimelineModal
-                  key={booking._id}
-                  slot={booking.slot}
-                  bookings={booking.bookings}
+                  key={slot}
+                  slot={slot}
+                  bookings={bookings[slot]}
                 />
               );
             })}

@@ -8,7 +8,7 @@ import { ownerProfile, addParking } from "../../redux/actions/ownerAction";
 import classes from "./OwnerParkings.module.css";
 
 // material ui
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 import ParkingItem from "./ParkingItem";
 import AddParking from "../../components/AddParking";

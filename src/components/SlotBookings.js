@@ -6,22 +6,34 @@ import { useParams } from "react-router-dom";
 import classes from "./SlotBookings.module.css";
 
 // action
-import { fetchParkingBookings } from "../redux/actions/parkingBookingAction";
+import {
+  fetchParkingBookings,
+  fetchParkingSlotBookings,
+} from "../redux/actions/parkingBookingAction";
 import { fetchParkingDetail } from "../redux/actions/parkingsAction";
 
 const SlotBookings = ({
   parkingBookings,
   fetchParkingBookings,
+  fetchParkingSlotBookings,
   fetchParkingDetail,
 }) => {
   const currentTime = new Date();
   const params = useParams();
+  const parkingId = params.parkingId;
+  const slot = params.slot;
+
   useEffect(() => {
-    fetchParkingBookings(params.parkingId);
-    fetchParkingDetail(params.parkingId);
+    fetchParkingBookings(parkingId);
+    fetchParkingDetail(parkingId);
+    fetchParkingSlotBookings(parkingId, slot);
   }, []);
 
-  const bookings = parkingBookings[params.parkingId];
+  const parking = parkingBookings[parkingId];
+  let bookings = [];
+  if (parking) {
+    bookings = parking[slot];
+  }
   console.log(bookings);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
@@ -41,9 +53,8 @@ const SlotBookings = ({
         <ul className={classes["responsive-table"]}>
           <li className={classes["table-header"]}>
             <div className={`${classes.col} ${classes["col-1"]}`}>Status</div>
-            <div className={`${classes.col} ${classes["col-1"]}`}>Car No</div>
-            <div className={`${classes.col} ${classes["col-1"]}`}>Parking</div>
-            <div className={`${classes.col} ${classes["col-1"]}`}>Slot</div>
+            <div className={`${classes.col} ${classes["col-1"]}`}>User</div>
+            <div className={`${classes.col} ${classes["col-1"]}`}>Car</div>
             <div className={`${classes.col} ${classes["col-1"]}`}>
               Entry Time
             </div>
@@ -85,24 +96,17 @@ const SlotBookings = ({
                         <span className={classes.active}>Active</span>
                       </div>
                     )}
-
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Car No"
+                    data-label="User"
                   >
-                    {booking.car.car_no}
+                    {/* {booking.user.name} */}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Parking"
+                    data-label="Car"
                   >
-                    {booking.parking.parking_name}
-                  </div>
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Slot"
-                  >
-                    {booking.slot}
+                    {/* {booking.car.car_no} */}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
@@ -138,4 +142,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchParkingBookings,
   fetchParkingDetail,
+  fetchParkingSlotBookings,
 })(SlotBookings);

@@ -103,7 +103,7 @@ const userBookings = async (req, res) => {
 //Get all bookings of parking
 const parkingBookings = async (req, res) => {
   try {
-    const parkingBooking = await ParkingBooking.find({
+    const parkingBookings = await ParkingBooking.find({
       parking: req.params.parkingId,
     })
       .select("-parking")
@@ -111,12 +111,18 @@ const parkingBookings = async (req, res) => {
         path: "bookings",
         select: "in_time out_time",
       });
-    if (parkingBooking.length == 0) {
+    if (parkingBookings.length == 0) {
       return res.status(404).send({
         error: "parking not found",
       });
     }
-    res.send(parkingBooking);
+
+    const data = {};
+    parkingBookings.forEach((parkingBooking) => {
+      data[parkingBooking.slot] = parkingBooking.bookings;
+    });
+
+    res.send(data);
   } catch (error) {
     console.log(error);
     res.status(400).send({
