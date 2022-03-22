@@ -47,6 +47,7 @@ export const userSignUp = (userData) => async (dispatch) => {
     if (response.status === 201) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");
+      setAuthToken(response.data.token);
       dispatch({
         type: USER_SIGNUP,
         payload: response.data,
@@ -69,6 +70,7 @@ export const ownerSignIn = (Credentials) => async (dispatch) => {
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "owner");
+      setAuthToken(response.data.token);
       dispatch({
         type: OWNER_SIGNIN,
         payload: response.data,
@@ -94,6 +96,7 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
     if (response.status === 201) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "owner");
+      setAuthToken(response.data.token);
       dispatch({
         type: OWNER_SIGNUP,
         payload: response.data,
@@ -112,6 +115,8 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
 export const signOut = () => async (dispatch) => {
   localStorage.removeItem("token");
   localStorage.removeItem("role");
+
+  setAuthToken();
   dispatch({
     type: SIGNOUT,
   });

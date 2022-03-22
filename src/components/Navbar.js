@@ -71,7 +71,17 @@ const Navbar = ({ role, signOut }) => {
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
             component={Link}
-            to="/parkings"
+            to="/"
+            underline="hover"
+            color="inherit"
+          >
+            Home
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/owner/parkings"
             underline="hover"
             color="inherit"
           >
@@ -81,17 +91,7 @@ const Navbar = ({ role, signOut }) => {
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
             component={Link}
-            to="/user/bookings"
-            underline="hover"
-            color="inherit"
-          >
-            Bookings
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={Link}
-            to="/user/me"
+            to="/owner/me"
             underline="hover"
             color="inherit"
           >
@@ -148,7 +148,7 @@ const Navbar = ({ role, signOut }) => {
   }
 
   return (
-    <AppBar>
+    <AppBar position="fixed">
       <Toolbar>
         <Box
           component={Link}

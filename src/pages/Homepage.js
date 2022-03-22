@@ -10,21 +10,26 @@ const Homepage = () => {
     <>
       <div
         style={{
+          position: "absolute",
           backgroundImage: "url('/images/background.jpeg')",
-          height: "100vh",
-          marginTop: "-70px",
+          height: "100%",
+          width: "100%",
+          backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
+          overflow: "hidden",
+          top: "0",
+          bottom: "0",
         }}
       >
         <Box textAlign="center">
           <Button
             variant="contained"
             style={{
-              marginTop: "50vh",
+              marginTop: "40vh",
               color: "white",
               fontWeight: "bold",
-              backgroundColor: "#38383A",
+              backgroundColor: "primary",
             }}
             onClick={() => Navigate("/parkings")}
           >

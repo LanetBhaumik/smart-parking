@@ -48,7 +48,7 @@ const SlotBookings = ({
   };
   return (
     <>
-      <h2 className={classes.heading}>Your Bookings</h2>
+      <h2 className={classes.heading}>Bookings of slot {slot} </h2>
       <div className={classes.container}>
         <ul className={classes["responsive-table"]}>
           <li className={classes["table-header"]}>
@@ -63,9 +63,10 @@ const SlotBookings = ({
             </div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
           </li>
-
-          {bookings &&
-            bookings.length > 0 &&
+          {bookings.length === 0 && (
+            <h3 className={classes.heading}>No Bookings</h3>
+          )}
+          {bookings.length > 0 &&
             bookings.map((booking, i) => {
               console.log(booking);
               return (

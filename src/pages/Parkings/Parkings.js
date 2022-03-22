@@ -23,7 +23,7 @@ const Parkings = ({ fetchParkings, parkings }) => {
       {parkings.error && <p>No Parkings Found</p>}
       {!parkings.error && ids && ids.length > 0 && (
         <div style={{ marginTop: "5vh" }}>
-          <Container sx={{ py: 8, mt: 100 }} maxWidth="md">
+          <Container sx={{ py: 8 }} maxWidth="md">
             <Grid container spacing={4}>
               {ids.map((id) => (
                 <ParkingCard parking={parkings[id]} key={id} />

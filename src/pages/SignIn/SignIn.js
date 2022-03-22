@@ -34,8 +34,13 @@ const SignIn = ({ userSignIn, ownerSignIn, token }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(credentials);
-    role === "user" ? userSignIn(credentials) : ownerSignIn(credentials);
-    Navigate("/");
+    if (role === "user") {
+      userSignIn(credentials);
+      Navigate("/parkings");
+    } else if (role === "owner") {
+      ownerSignIn(credentials);
+      Navigate("/parkings");
+    }
   };
 
   useEffect(() => {

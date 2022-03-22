@@ -35,43 +35,45 @@ const App = () => {
       {/* <br />
       <br />
       <br /> */}
-      <Routes>
-        <Route path="/">
-          <Route index element={<Homepage />} />
-          <Route path="parkings" element={<Parkings />} />
-          <Route path="signin" element={<SignIn />} />
-          <Route path="user/signup" element={<UserSignUp />} />
-          <Route path="owner/signup" element={<OwnerSignUp />} />
-          <Route path="parkings/:parkingId" element={<ParkingSlots />} />
-        </Route>
-
-        {role === "user" && (
-          <Route path="user">
-            <Route path="bookings" element={<UserBookings />} />
-            <Route path="me" element={<UserProfile />} />
+      <div style={{ "margin-top": "4rem" }}>
+        <Routes>
+          <Route path="/">
+            <Route index element={<Homepage />} />
+            <Route path="parkings" element={<Parkings />} />
+            <Route path="signin" element={<SignIn />} />
+            <Route path="user/signup" element={<UserSignUp />} />
+            <Route path="owner/signup" element={<OwnerSignUp />} />
+            <Route path="parkings/:parkingId" element={<ParkingSlots />} />
           </Route>
-        )}
 
-        {role === "owner" && (
-          <Route path="owner">
-            <Route path="parkings">
-              <Route index element={<OwnerParkings />} />
-              <Route path=":parkingId">
-                <Route index element={<OwnerParkingSlots />} />
-                <Route path=":slot" element={<SlotBookings />}></Route>
-              </Route>
+          {role === "user" && (
+            <Route path="user">
+              <Route path="bookings" element={<UserBookings />} />
+              <Route path="me" element={<UserProfile />} />
             </Route>
-            <Route path="me" element={<OwnerProfile />} />
-          </Route>
-        )}
-        {!role && (
-          <>
-            <Route path="user/*" element={<Navigate to="/signin" />} />
-            <Route path="owner/*" element={<Navigate to="/signin" />} />
-          </>
-        )}
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
+          )}
+
+          {role === "owner" && (
+            <Route path="owner">
+              <Route path="parkings">
+                <Route index element={<OwnerParkings />} />
+                <Route path=":parkingId">
+                  <Route index element={<OwnerParkingSlots />} />
+                  <Route path=":slot" element={<SlotBookings />}></Route>
+                </Route>
+              </Route>
+              <Route path="me" element={<OwnerProfile />} />
+            </Route>
+          )}
+          {!role && (
+            <>
+              <Route path="user/*" element={<Navigate to="/signin" />} />
+              <Route path="owner/*" element={<Navigate to="/signin" />} />
+            </>
+          )}
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </div>
     </>
   );
 };

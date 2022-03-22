@@ -78,3 +78,6 @@
 .active {
   color: green;
 }
+.upcoming {
+  color: rgb(9, 153, 158);
+}

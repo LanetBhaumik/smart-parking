@@ -87,7 +87,7 @@ const BookingDialog = ({ parking, bookSlot, role }) => {
             Enter your expected in and out time.
           </DialogContentText>
           <Typography>{`Parking name : ${parkingName}`}</Typography>
-          <Box>
+          <Box sx={{ m: 2 }}>
             <DateTimePicker
               autoFocus
               label="in time"
@@ -100,7 +100,7 @@ const BookingDialog = ({ parking, bookSlot, role }) => {
               onError={(e) => onInError(e)}
             />
           </Box>
-          <Box>
+          <Box sx={{ m: 2 }}>
             <DateTimePicker
               label="out time"
               name="outTime"

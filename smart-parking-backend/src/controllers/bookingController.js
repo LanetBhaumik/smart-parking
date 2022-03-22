@@ -1,5 +1,4 @@
 const { default: mongoose } = require("mongoose");
-const { findById, findOne } = require("../models/bookingModel");
 const Booking = require("../models/bookingModel");
 const ParkingBooking = require("../models/parkingBookingModal");
 const Parking = require("../models/parkingModel");
@@ -8,10 +7,31 @@ const Parking = require("../models/parkingModel");
 const createBooking = async (req, res) => {
   try {
     const bookingId = new mongoose.Types.ObjectId();
-    const parking = await Parking.findById(req.body.parking);
-    if (!parking) {
-      throw new Error("parking is not valid");
+    const slotBooking = await ParkingBooking.findOne({
+      parking: req.body.parking,
+      slot: req.body.slot,
+    }).populate("bookings");
+    if (!slotBooking) {
+      throw new Error("parking or slot is not valid");
     }
+
+    //logic of slot is occupied or not
+    const requestedIn = new Date(req.body.in_time);
+    const requestedOut = new Date(req.body.out_time);
+    const occupied = slotBooking.bookings.some((booking) => {
+      const bookedIn = new Date(booking.in_time);
+      const bookedOut = new Date(booking.out_time);
+      const value =
+        (bookedIn < requestedIn && requestedIn <= bookedOut) ||
+        (bookedIn < requestedOut && requestedOut <= bookedOut);
+      return value;
+    });
+    if (occupied) {
+      return res.status(409).send({
+        error: "this time is already booked",
+      });
+    }
+
     const booking = new Booking({
       _id: bookingId,
       user: req.user._id,
@@ -19,16 +39,8 @@ const createBooking = async (req, res) => {
       ...req.body,
     });
     await booking.save();
-
-    const parkingBooking = await ParkingBooking.findOne({
-      parking: booking.parking,
-      slot: booking.slot,
-    });
-    console.log(parkingBooking);
-    await parkingBooking.bookings.push(bookingId);
-    console.log("before", parkingBooking.bookings);
-    await parkingBooking.save();
-    console.log("before", parkingBooking.bookings);
+    await slotBooking.bookings.push(bookingId);
+    await slotBooking.save();
 
     res.send(booking);
   } catch (error) {
