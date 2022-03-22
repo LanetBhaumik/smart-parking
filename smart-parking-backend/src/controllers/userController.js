@@ -52,12 +52,12 @@ const createUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    // if (error.code === 11000) {
-    //   const keys = Object.keys(error.keyValue);
-    //   return res.status(400).send({
-    //     error: `This ${keys[0]} is already being used`,
-    //   });
-    // }
+    if (error.code === 11000) {
+      const keys = Object.keys(error.keyValue);
+      return res.status(400).send({
+        error: `This ${keys[0]} is already being used`,
+      });
+    }
     res.status(400).send({
       error: error.message,
     });

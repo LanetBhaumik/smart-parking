@@ -17,9 +17,7 @@ const INITIAL_STATE = {
     error_msg: "",
   },
   alert: {
-    alert: false,
-    severity: "info",
-    message: "just some information",
+    status: false,
   },
 };
 if (token) {

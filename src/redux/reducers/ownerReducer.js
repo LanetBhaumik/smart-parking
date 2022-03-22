@@ -12,17 +12,20 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case OWNER_PROFILE: {
       return {
+        ...state,
         ...action.payload,
       };
     }
     case OWNER_PROFILE_FAILED: {
       return {
+        ...state,
         ...action.payload,
       };
     }
     case ADD_PARKING_SUCCESS: {
       console.log("add parking success");
       return {
+        ...state,
         ...action.payload,
       };
     }
@@ -30,6 +33,7 @@ export default (state = INITIAL_STATE, action) => {
       console.log("add parking failed");
 
       return {
+        ...state,
         ...action.payload,
       };
     }

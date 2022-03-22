@@ -14,7 +14,7 @@ export const fetchParkingBookings = (parkingId) => async (dispatch) => {
     const response = await parkingBookingsService(parkingId);
     console.log(response.data);
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: PARKING_BOOKINGS_DATA,
         payload: { [parkingId]: response.data },
       });
@@ -22,7 +22,7 @@ export const fetchParkingBookings = (parkingId) => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: PARKING_BOOKINGS_DATA_FAILED,
         payload: {
           error: error.response.data.error,
@@ -39,7 +39,7 @@ export const fetchParkingSlotBookings = (parkingId, slot) => async (
     const response = await parkingSlotBookingsService(parkingId, slot);
     console.log(response.data);
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: SLOT_BOOKINGS_DATA,
         payload: { parkingId, slot, bookings: response.data },
       });
@@ -47,7 +47,7 @@ export const fetchParkingSlotBookings = (parkingId, slot) => async (
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: SLOT_BOOKINGS_DATA_FAILED,
         payload: {
           error: error.response.data.error,

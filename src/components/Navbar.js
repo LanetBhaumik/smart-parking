@@ -13,10 +13,15 @@ import {
 
 // actions
 import { signOut } from "../redux/actions/authAction";
+import { setAlert } from "../redux/actions/alertAction";
 
-const Navbar = ({ role, signOut }) => {
+const Navbar = ({ role, signOut, setAlert }) => {
   const handleSignOut = () => {
-    signOut();
+    signOut().then((data) => {
+      if (data.type === "SIGNOUT") {
+        setAlert("success", "sign out success");
+      }
+    });
   };
 
   let links = null;
@@ -176,4 +181,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   signOut,
+  setAlert,
 })(Navbar);

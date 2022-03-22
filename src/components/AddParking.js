@@ -12,8 +12,9 @@ import { connect } from "react-redux";
 
 // action
 import { addParking } from "../redux/actions/ownerAction";
+import { setAlert } from "../redux/actions/alertAction";
 
-const AddParking = ({ addParking }) => {
+const AddParking = ({ addParking, setAlert }) => {
   const [parking, setParking] = useState({
     parking_name: "",
     address: "",
@@ -45,7 +46,13 @@ const AddParking = ({ addParking }) => {
   const onSubmitHandle = () => {
     setOpen(false);
 
-    addParking(parking);
+    addParking(parking).then((data) => {
+      if (data.type === "ADD_PARKING_SUCCESS") {
+        setAlert("success", "parking added");
+      } else {
+        setAlert("error", data.payload.error);
+      }
+    });
   };
   return (
     <div>
@@ -130,4 +137,5 @@ const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, {
   addParking,
+  setAlert,
 })(AddParking);

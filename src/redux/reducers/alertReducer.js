@@ -1,7 +1,5 @@
 const INITIAL_STATE = {
-  alert: false,
-  severity: "",
-  message: "",
+  status: false,
 };
 
 export const SET_ALERT = "SET_ALERT";
@@ -11,15 +9,14 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_ALERT: {
       return {
-        ...INITIAL_STATE,
-        alert: true,
+        status: true,
         severity: action.payload.severity,
         message: action.payload.message,
       };
     }
     case RESET_ALERT: {
       return {
-        ...INITIAL_STATE,
+        status: false,
       };
     }
 

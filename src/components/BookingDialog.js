@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // material ui
 import {
@@ -16,10 +18,9 @@ import { DateTimePicker } from "@mui/lab";
 
 //actions
 import { bookSlot } from "../redux/actions/bookingAction";
-import { connect } from "react-redux";
-import { useNavigate } from "react-router";
+import { setAlert } from "../redux/actions/alertAction";
 
-const BookingDialog = ({ parking, bookSlot, role }) => {
+const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
   const { rate, parkingId, parkingName, slot } = parking;
   const currentTime = new Date();
   const [inTime, setInTime] = useState(
@@ -73,7 +74,14 @@ const BookingDialog = ({ parking, bookSlot, role }) => {
       parking: parkingId,
       charge,
       slot,
+    }).then((data) => {
+      if (data.type === "BOOKING_FAILED") {
+        setAlert("error", data.payload.error);
+      } else {
+        setAlert("success", "Parking slot booked");
+      }
     });
+    Navigate("/user/bookings");
   };
   return (
     <div>
@@ -136,4 +144,4 @@ const mapStateToProps = (state) => ({
   role: state.auth.role,
 });
 
-export default connect(mapStateToProps, { bookSlot })(BookingDialog);
+export default connect(mapStateToProps, { bookSlot, setAlert })(BookingDialog);

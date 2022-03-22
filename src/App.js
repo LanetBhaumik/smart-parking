@@ -1,9 +1,11 @@
 import React from "react";
-
+import { connect } from "react-redux";
 import { Route, Routes, Navigate } from "react-router-dom";
 
-//pages
 import Navbar from "./components/Navbar";
+import SlotBookings from "./components/SlotBookings";
+
+//pages
 import Parkings from "./pages/Parkings/Parkings";
 import SignIn from "./pages/SignIn/SignIn";
 import UserSignUp from "./pages/user/UserSignUp";
@@ -13,29 +15,44 @@ import UserProfile from "./pages/user/UserProfile";
 import OwnerParkings from "./pages/Parkings/OwnerParkings";
 import OwnerProfile from "./pages/owner/OwnerProfile";
 import NotFound from "./pages/NotFound";
-
-//material ui
-// import { Alert } from "@mui/material";
-import { useSelector } from "react-redux";
 import OwnerParkingSlots from "./pages/owner/OwnerParkingSlots";
 import ParkingSlots from "./pages/Parkings/ParkingSlots";
-import SlotBookings from "./components/SlotBookings";
 import Homepage from "./pages/Homepage";
 
-const App = () => {
-  const { role } = useSelector((state) => state.auth);
+// material ui
+import { Alert, Snackbar } from "@mui/material";
+
+// action
+import { resetAlert } from "./redux/actions/alertAction";
+import Slide from "@mui/material/Slide";
+
+function SlideTransition(props) {
+  return <Slide {...props} direction="down" />;
+}
+
+const App = ({ role, alert, resetAlert }) => {
+  const handleClose = () => resetAlert();
   return (
     <>
       <Navbar />
-      {/* {alert.alert && (
-        <Alert severity={alert.severity} style={{ marginTop: "50px" }}>
-          {alert.message}
-        </Alert>
-      )} */}
-      {/* <br />
-      <br />
-      <br /> */}
-      <div style={{ "margin-top": "4rem" }}>
+      <div style={{ marginTop: "4rem" }}>
+        {alert.status && (
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            TransitionComponent={SlideTransition}
+            open={alert.status}
+            autoHideDuration={5000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity={alert.severity}
+              sx={{ width: "100%" }}
+            >
+              {alert.message}
+            </Alert>
+          </Snackbar>
+        )}
         <Routes>
           <Route path="/">
             <Route index element={<Homepage />} />
@@ -77,5 +94,9 @@ const App = () => {
     </>
   );
 };
+const mapStateToProps = (state) => ({
+  alert: state.alert,
+  role: state.auth.role,
+});
 
-export default App;
+export default connect(mapStateToProps, { resetAlert })(App);

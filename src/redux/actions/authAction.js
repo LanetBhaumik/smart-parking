@@ -22,18 +22,17 @@ export const userSignIn = (Credentials) => async (dispatch) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");
       setAuthToken(response.data.token);
-      dispatch({
+      return dispatch({
         type: USER_SIGNIN,
         payload: response.data,
       });
     }
   } catch (error) {
+    console.log({ error });
     if (error.response) {
-      dispatch({
+      return dispatch({
         type: INVALID_DATA,
-        data: {
-          error_msg: error.response.data.error,
-        },
+        payload: error.response.data,
       });
     }
   }
@@ -48,14 +47,14 @@ export const userSignUp = (userData) => async (dispatch) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");
       setAuthToken(response.data.token);
-      dispatch({
+      return dispatch({
         type: USER_SIGNUP,
         payload: response.data,
       });
     }
   } catch (error) {
     if (error.response) {
-      dispatch({
+      return dispatch({
         type: INVALID_DATA,
         payload: error.response.data,
       });
@@ -71,18 +70,16 @@ export const ownerSignIn = (Credentials) => async (dispatch) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "owner");
       setAuthToken(response.data.token);
-      dispatch({
+      return dispatch({
         type: OWNER_SIGNIN,
         payload: response.data,
       });
     }
   } catch (error) {
     if (error.response) {
-      dispatch({
+      return dispatch({
         type: INVALID_DATA,
-        data: {
-          error_msg: error.response.data.error,
-        },
+        payload: error.response.data,
       });
     }
   }
@@ -97,14 +94,14 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "owner");
       setAuthToken(response.data.token);
-      dispatch({
+      return dispatch({
         type: OWNER_SIGNUP,
         payload: response.data,
       });
     }
   } catch (error) {
     if (error.response) {
-      dispatch({
+      return dispatch({
         type: INVALID_DATA,
         payload: error.response.data,
       });
@@ -117,7 +114,7 @@ export const signOut = () => async (dispatch) => {
   localStorage.removeItem("role");
 
   setAuthToken();
-  dispatch({
+  return dispatch({
     type: SIGNOUT,
   });
 };

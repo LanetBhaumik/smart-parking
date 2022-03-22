@@ -12,7 +12,7 @@ import classes from "./UserSignUp.module.css";
 import { userSignUp } from "../../redux/actions/authAction";
 import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 
-const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
+const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
   const Navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
@@ -22,16 +22,6 @@ const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
     mobile_no: "",
     car: "",
   });
-
-  const showAlert = async (severity, message) => {
-    await setAlert({
-      severity,
-      message,
-    });
-    setTimeout(() => {
-      resetAlert();
-    }, 2000);
-  };
 
   const { name, email, password, conPassword, mobile_no, car } = userData;
 
@@ -44,22 +34,33 @@ const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
   };
 
   const credIsValid = () => {
-    if (mobile_no.length !== 10)
-      return showAlert("error", "mobile_no not invalid");
-    else if (password.length < 7)
-      return showAlert("error", "password must be greater than 6 characters");
-    else if (password !== conPassword)
-      return showAlert("error", "Password and Confirm password does't match");
-    else if (!/[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(car.toUpperCase()))
-      return showAlert("error", "vehicle number is invalid");
-    else return true;
+    if (mobile_no.length !== 10) {
+      setAlert("error", "mobile number is invalid");
+      return false;
+    } else if (!/[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(car.toUpperCase())) {
+      setAlert("error", "vehicle number is invalid");
+      return false;
+    } else if (password.length < 7) {
+      setAlert("error", "password must be greater than 6 characters");
+      return false;
+    } else if (password !== conPassword) {
+      setAlert("error", "Password and Confirm password does't match");
+
+      return false;
+    } else return true;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!credIsValid()) return;
-    userSignUp(userData);
-    Navigate("/");
+    userSignUp(userData).then((data) => {
+      if (data.type === "INVALID_DATA") {
+        setAlert("error", data.payload.error);
+      } else {
+        setAlert("success", "Sign up success");
+        Navigate("/parkings");
+      }
+    });
   };
 
   return (
@@ -177,7 +178,9 @@ const UserSignUp = ({ userSignUp, setAlert, resetAlert }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  token: state.auth.token,
+});
 
 export default connect(mapStateToProps, {
   userSignUp,

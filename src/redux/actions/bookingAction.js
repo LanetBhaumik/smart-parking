@@ -6,7 +6,7 @@ export const bookSlot = (bookingData) => async (dispatch) => {
     const response = await newBookingService(bookingData);
     console.log(response.data);
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: BOOKING_SUCCESS,
         payload: response.data,
       });
@@ -14,7 +14,7 @@ export const bookSlot = (bookingData) => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: BOOKING_FAILED,
         payload: {
           error: error.response.data.error,

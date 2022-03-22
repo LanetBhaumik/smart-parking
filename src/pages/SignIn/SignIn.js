@@ -5,16 +5,20 @@ import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignIn.module.css";
 
 import {
+  Box,
+  Button,
+  TextField,
+  Typography,
   Link as MaterialLink,
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import { Box, Button, TextField, Typography } from "@mui/material";
 
 //actions
 import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";
+import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 
-const SignIn = ({ userSignIn, ownerSignIn, token }) => {
+const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
   const Navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -33,21 +37,30 @@ const SignIn = ({ userSignIn, ownerSignIn, token }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(credentials);
     if (role === "user") {
-      userSignIn(credentials);
-      Navigate("/parkings");
-    } else if (role === "owner") {
-      ownerSignIn(credentials);
-      Navigate("/parkings");
+      userSignIn(credentials).then((data) => {
+        if (data.type === "INVALID_DATA") {
+          setAlert("error", data.payload.error);
+        } else {
+          setAlert("success", "Sign in success");
+        }
+      });
+    } else {
+      ownerSignIn(credentials).then((data) => {
+        if (data.type === "INVALID_DATA") {
+          setAlert("error", data.payload.error);
+        } else {
+          setAlert("success", "Sign in success");
+        }
+      });
     }
   };
 
   useEffect(() => {
     if (token && token !== "") {
-      Navigate("/");
+      Navigate("/parkings");
     }
-  }, []);
+  }, [token]);
 
   return (
     <>
@@ -142,4 +155,9 @@ const mapStateToProps = (state) => ({
   token: state.auth.token,
 });
 
-export default connect(mapStateToProps, { userSignIn, ownerSignIn })(SignIn);
+export default connect(mapStateToProps, {
+  userSignIn,
+  ownerSignIn,
+  setAlert,
+  resetAlert,
+})(SignIn);

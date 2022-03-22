@@ -43,6 +43,9 @@ const UserBookings = ({ userBookings, user }) => {
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
           </li>
 
+          {bookings.length === 0 && (
+            <h3 className={classes.heading}>No Bookings</h3>
+          )}
           {bookings &&
             bookings.length > 0 &&
             bookings.map((booking, i) => {

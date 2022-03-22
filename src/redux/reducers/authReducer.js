@@ -1,5 +1,4 @@
 const INITIAL_STATE = {
-  error_msg: "",
   user: {},
   owner: {},
 };
@@ -50,7 +49,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...INITIAL_STATE };
     }
     case INVALID_DATA: {
-      return { ...INITIAL_STATE, error_msg: "Invalid Data" };
+      return { ...INITIAL_STATE, ...action.payload };
     }
 
     default:

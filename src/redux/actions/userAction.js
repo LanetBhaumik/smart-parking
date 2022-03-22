@@ -16,7 +16,7 @@ export const userProfile = () => async (dispatch, getState) => {
     const response = await userProfileService();
     console.log(response);
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: USER_PROFILE,
         payload: { ...user, profile: response.data },
       });
@@ -24,7 +24,7 @@ export const userProfile = () => async (dispatch, getState) => {
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: USER_PROFILE_FAILED,
         payload: {
           error: error.response.data.error,
@@ -40,7 +40,7 @@ export const userBookings = () => async (dispatch, getState) => {
     const response = await userBookingsService();
     console.log(response);
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: USER_BOOKINGS,
         payload: { ...user, bookings: response.data },
       });
@@ -48,7 +48,7 @@ export const userBookings = () => async (dispatch, getState) => {
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: USER_BOOKINGS_FAILED,
         payload: {
           error: error.response.data.error,

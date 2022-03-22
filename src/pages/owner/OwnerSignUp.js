@@ -13,11 +13,12 @@ import {
 
 // actions
 import { ownerSignUp } from "../../redux/actions/authAction";
+import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 
 // css
 import classes from "./OwnerSignUp.module.css";
 
-const OwnerSignUp = ({ ownerSignUp }) => {
+const OwnerSignUp = ({ ownerSignUp, setAlert, resetAlert, token }) => {
   const Navigate = useNavigate();
   const [ownerData, setOwnerData] = useState({
     name: "",
@@ -53,11 +54,38 @@ const OwnerSignUp = ({ ownerSignUp }) => {
     });
   };
 
+  const credIsValid = () => {
+    console.log(total_slots);
+    if (mobile_no.length !== 10) {
+      setAlert("error", "mobile_no is invalid");
+      return false;
+    } else if (pincode.length !== 6) {
+      setAlert("error", "pincode is invalid");
+      return false;
+    } else if (total_slots < 10) {
+      setAlert("error", "you must have more then 10 slots");
+      return false;
+    } else if (password.length < 7) {
+      setAlert("error", "password must be greater than 6 characters");
+      return false;
+    } else if (password !== conPassword) {
+      setAlert("error", "Password and Confirm password does't match");
+
+      return false;
+    } else return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (!credIsValid()) return;
-    ownerSignUp({ ...ownerData, parking });
-    Navigate("/");
+    if (!credIsValid()) return;
+    ownerSignUp({ ...ownerData, parking }).then((data) => {
+      if (data.type === "INVALID_DATA") {
+        setAlert("error", data.payload.error);
+      } else {
+        setAlert("success", "Sign up success");
+        Navigate("/owner/parkings");
+      }
+    });
   };
 
   return (
@@ -115,34 +143,7 @@ const OwnerSignUp = ({ ownerSignUp }) => {
               fullWidth
             />
           </Box>
-          <Box>
-            <TextField
-              id="password"
-              label="password"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              name="password"
-              required
-              value={password}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
-          <Box>
-            <TextField
-              id="conPassword"
-              label="confirm Password"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              name="conPassword"
-              required
-              value={conPassword}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
+
           <div>
             <div className={classes.parkingForm}>
               <div className={classes.container}>
@@ -229,6 +230,34 @@ const OwnerSignUp = ({ ownerSignUp }) => {
               </div>
             </div>
           </div>
+          <Box>
+            <TextField
+              id="password"
+              label="password"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              name="password"
+              required
+              value={password}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Box>
+          <Box>
+            <TextField
+              id="conPassword"
+              label="confirm Password"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              name="conPassword"
+              required
+              value={conPassword}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Box>
           <Box component="div" style={{ marginTop: "12px" }}>
             <Button type="submit" variant="contained" margin="normal" fullWidth>
               Sign Up
@@ -244,8 +273,12 @@ const OwnerSignUp = ({ ownerSignUp }) => {
     </>
   );
 };
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  token: state.auth.token,
+});
 
 export default connect(mapStateToProps, {
   ownerSignUp,
+  setAlert,
+  resetAlert,
 })(OwnerSignUp);

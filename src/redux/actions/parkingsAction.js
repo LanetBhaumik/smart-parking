@@ -19,7 +19,7 @@ export const fetchParkings = () => async (dispatch) => {
       payload[parking._id] = response.data[i];
     });
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: PARKING_SUCCESS,
         payload,
       });
@@ -27,7 +27,7 @@ export const fetchParkings = () => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: PARKING_FAILED,
         payload: {
           error: error.response.data.error,
@@ -42,7 +42,7 @@ export const fetchParkingDetail = (parkingId) => async (dispatch) => {
     const response = await parkingDetailService(parkingId);
     console.log(response.data);
     if (response.status === 200) {
-      dispatch({
+      return dispatch({
         type: PARKING_DETAIL_SUCCESS,
         payload: {
           [parkingId]: response.data,
@@ -52,7 +52,7 @@ export const fetchParkingDetail = (parkingId) => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       console.log(error.response);
-      dispatch({
+      return dispatch({
         type: PARKING_DETAIL_FAILED,
         payload: {
           error: error.response.data.error,

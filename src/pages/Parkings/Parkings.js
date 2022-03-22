@@ -12,7 +12,6 @@ import { Container, Grid } from "@mui/material";
 
 const Parkings = ({ fetchParkings, parkings }) => {
   const ids = Object.keys(parkings);
-  console.log(ids);
 
   useEffect(() => {
     fetchParkings();

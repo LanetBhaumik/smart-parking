@@ -15,7 +15,7 @@ const createBooking = async (req, res) => {
       throw new Error("parking or slot is not valid");
     }
 
-    //logic of slot is occupied or not
+    //logic of time is occupied or not
     const requestedIn = new Date(req.body.in_time);
     const requestedOut = new Date(req.body.out_time);
     const occupied = slotBooking.bookings.some((booking) => {
@@ -98,11 +98,6 @@ const userBookings = async (req, res) => {
         path: "parking",
         select: "parking_name",
       });
-    if (bookings.length == 0) {
-      return res.send({
-        success: "you do not have any bookings",
-      });
-    }
     res.send(bookings);
   } catch (error) {
     console.log(error);
