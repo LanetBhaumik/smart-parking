@@ -1,61 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // material ui
 import {
   AppBar,
-  Toolbar,
-  CssBaseline,
-  Typography,
+  Box,
   Button,
+  Link as MaterialLink,
+  Toolbar,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-
-import CustomLink from "./CustomLink";
 
 // actions
 import { signOut } from "../redux/actions/authAction";
 
-const useStyles = makeStyles((theme) => ({
-  navlinks: {
-    marginLeft: 10,
-    display: "flex",
-  },
-  logo: {
-    flexGrow: "1",
-    cursor: "pointer",
-  },
-  link: {
-    textDecoration: "none",
-    color: "white",
-    fontSize: "20px",
-    marginLeft: 20,
-    "&:hover": {
-      color: "yellow",
-      borderBottom: "1px solid white",
-    },
-  },
-}));
-
-const Navbar = ({ signOut, auth }) => {
-  const classes = useStyles();
-  const Navigate = useNavigate();
-
-  const { role } = auth;
-
-  const handleSignIn = () => {
-    Navigate("/signin");
-  };
-
-  const handleUserSignUp = () => {
-    Navigate("user/signup");
-  };
-
-  const handleOwnerSignUp = () => {
-    Navigate("owner/signup");
-  };
-
+const Navbar = ({ role, signOut }) => {
   const handleSignOut = () => {
     signOut();
   };
@@ -64,97 +23,155 @@ const Navbar = ({ signOut, auth }) => {
   if (role === "user") {
     links = (
       <>
-        <CustomLink to="/parkings" className={classes.link}>
-          Parkings
-        </CustomLink>
-        <CustomLink to="/user/bookings" className={classes.link}>
-          Bookings
-        </CustomLink>
-        <CustomLink to="user/me" className={classes.link}>
-          Profile
-        </CustomLink>
-        <Button
-          variant="outlined"
-          className={classes.link}
-          onClick={handleSignOut}
-        >
-          Sign Out
-        </Button>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/parkings"
+            underline="hover"
+            color="inherit"
+          >
+            Parkings
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/user/bookings"
+            underline="hover"
+            color="inherit"
+          >
+            Bookings
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/user/me"
+            underline="hover"
+            color="inherit"
+          >
+            Profile
+          </MaterialLink>
+        </Box>
+        <Box sx={{ m: 1 }}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            sx={{ fontWeight: "bold" }}
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </Button>
+        </Box>
       </>
     );
   } else if (role === "owner") {
     links = (
       <>
-        <CustomLink to="/" className={classes.link}>
-          Home
-        </CustomLink>
-        <CustomLink to="/owner/parkings" className={classes.link}>
-          Parkings
-        </CustomLink>
-        <CustomLink to="/owner/me" className={classes.link}>
-          Profile
-        </CustomLink>
-        <Button
-          variant="outlined"
-          className={classes.link}
-          onClick={handleSignOut}
-        >
-          Sign Out
-        </Button>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/parkings"
+            underline="hover"
+            color="inherit"
+          >
+            Parkings
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/user/bookings"
+            underline="hover"
+            color="inherit"
+          >
+            Bookings
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/user/me"
+            underline="hover"
+            color="inherit"
+          >
+            Profile
+          </MaterialLink>
+        </Box>
+        <Box sx={{ m: 1 }}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            sx={{ fontWeight: "bold" }}
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </Button>
+        </Box>
       </>
     );
   } else {
     links = (
-      <div>
-        <Button
-          variant="outlined"
-          className={classes.link}
-          onClick={handleSignIn}
-        >
-          Sign In
-        </Button>
-        <Button
-          variant="outlined"
-          className={classes.link}
-          onClick={handleUserSignUp}
-        >
-          User Sign Up
-        </Button>
-        <Button
-          variant="outlined"
-          className={classes.link}
-          onClick={handleOwnerSignUp}
-        >
-          Owner Sign Up
-        </Button>
-      </div>
+      <>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/signin"
+            underline="hover"
+            color="inherit"
+          >
+            Sign In
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/user/signup"
+            underline="hover"
+            color="inherit"
+          >
+            User Sign Up
+          </MaterialLink>
+        </Box>
+        <Box sx={{ fontWeight: "bold", m: 1 }}>
+          <MaterialLink
+            component={Link}
+            to="/owner/signup"
+            underline="hover"
+            color="inherit"
+          >
+            Owner Sign Up
+          </MaterialLink>
+        </Box>
+      </>
     );
   }
 
   return (
-    <AppBar position="relative">
-      <CssBaseline />
+    <AppBar>
       <Toolbar>
-        <Typography
+        <Box
           component={Link}
           to="/"
-          variant="h4"
-          className={classes.logo}
           color="inherit"
+          sx={{
+            fontSize: 20,
+            fontFamily: "Monospace",
+            fontWeight: "bold",
+            m: 1,
+            textDecoration: "none",
+          }}
         >
           Smart Parking
-        </Typography>
-        <div className={classes.navlinks}>
-          {links}
-          <Outlet />
-        </div>
+        </Box>
+        {links}
       </Toolbar>
     </AppBar>
   );
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  role: state.auth.role,
 });
 
 export default connect(mapStateToProps, {
