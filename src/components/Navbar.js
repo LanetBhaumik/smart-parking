@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // material ui
 import {
@@ -16,10 +16,12 @@ import { signOut } from "../redux/actions/authAction";
 import { setAlert } from "../redux/actions/alertAction";
 
 const Navbar = ({ role, signOut, setAlert }) => {
+  const Navigate = useNavigate();
   const handleSignOut = () => {
     signOut().then((data) => {
       if (data.type === "SIGNOUT") {
         setAlert("success", "sign out success");
+        Navigate("/");
       }
     });
   };
@@ -76,7 +78,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
             component={Link}
-            to="/"
+            to="/parkings"
             underline="hover"
             color="inherit"
           >

@@ -15,6 +15,7 @@ const OwnerParkingSlots = ({
   fetchParkingDetail,
   parkings,
 }) => {
+  const currentTime = new Date().getTime();
   const Navigate = useNavigate();
   const params = useParams();
   console.log(params.parkingId);
@@ -27,7 +28,6 @@ const OwnerParkingSlots = ({
   }, []);
 
   const bookings = parkingBookings[params.parkingId];
-  console.log(bookings);
   return (
     <>
       <h2 className={classes.heading}>Bookings of Parking</h2>
@@ -35,10 +35,13 @@ const OwnerParkingSlots = ({
         <div>
           {bookings !== undefined &&
             Object.keys(bookings).map((slot) => {
-              const btnClass =
-                bookings[slot].length === 0
-                  ? "AvailableSlotBtn"
-                  : "OccupiedSlotBtn";
+              const active = bookings[slot].some((booking) => {
+                const bookingIn = new Date(booking.in_time).getTime();
+                const bookingOut = new Date(booking.out_time).getTime();
+                return bookingIn <= currentTime && currentTime <= bookingOut;
+              });
+              const btnClass = active ? "OccupiedSlotBtn" : "AvailableSlotBtn";
+
               return (
                 <button
                   key={slot}

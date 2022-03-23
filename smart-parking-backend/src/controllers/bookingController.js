@@ -19,8 +19,8 @@ const createBooking = async (req, res) => {
     const requestedIn = new Date(req.body.in_time);
     const requestedOut = new Date(req.body.out_time);
     const occupied = slotBooking.bookings.some((booking) => {
-      const bookedIn = new Date(booking.in_time);
-      const bookedOut = new Date(booking.out_time);
+      const bookedIn = new Date(booking.in_time).getTime();
+      const bookedOut = new Date(booking.out_time).getTime();
 
       console.log("for each ------- ", value, booking);
       console.log(req.body.in_time, req.body.out_time);

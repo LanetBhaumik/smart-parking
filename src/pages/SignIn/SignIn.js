@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -43,6 +43,7 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
           setAlert("error", data.payload.error);
         } else {
           setAlert("success", "Sign in success");
+          Navigate("/parkings");
         }
       });
     } else {
@@ -51,16 +52,11 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
           setAlert("error", data.payload.error);
         } else {
           setAlert("success", "Sign in success");
+          Navigate("/owner/parkings");
         }
       });
     }
   };
-
-  useEffect(() => {
-    if (token && token !== "") {
-      Navigate("/parkings");
-    }
-  }, [token]);
 
   return (
     <>
