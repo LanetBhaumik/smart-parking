@@ -23,7 +23,6 @@ const ParkingSlots = ({
   }, []);
 
   const bookings = parkingBookings[params.parkingId];
-  console.log(bookings);
 
   return (
     <>

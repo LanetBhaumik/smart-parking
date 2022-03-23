@@ -24,12 +24,11 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
   const { rate, parkingId, parkingName, slot } = parking;
   const currentTime = new Date();
   const [inTime, setInTime] = useState(
-    new Date().setHours(currentTime.getHours() + 1, 0)
+    new Date().setHours(currentTime.getHours() + 1, 0, 0, 0)
   );
   const [outTime, setOutTime] = useState(
-    new Date().setHours(currentTime.getHours() + 2, 0)
+    new Date().setHours(currentTime.getHours() + 2, 0, 0, 0)
   );
-  console.log(rate, parkingId, parkingName, slot);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState({
     inError: false,
@@ -67,7 +66,7 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
 
   const onSubmitHandle = () => {
     setOpen(false);
-    console.log(inTime, outTime);
+    console.log("on submit --------------", inTime, outTime);
     bookSlot({
       in_time: inTime,
       out_time: outTime,
@@ -79,10 +78,11 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
         setAlert("error", data.payload.error);
       } else {
         setAlert("success", "Parking slot booked");
+        Navigate("/user/bookings");
       }
     });
-    Navigate("/user/bookings");
   };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleOpen}>
@@ -101,7 +101,7 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
               label="in time"
               value={inTime}
               name="inTime"
-              onChange={(newInTime) => setInTime(newInTime)}
+              onChange={(newInTime) => setInTime(new Date(newInTime).getTime())}
               minDateTime={currentTime}
               maxDateTime={new Date().setMonth(currentTime.getMonth() + 1)}
               renderInput={(params) => <TextField {...params} />}
@@ -113,8 +113,10 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
               label="out time"
               name="outTime"
               value={outTime}
-              onChange={(newOutTime) => setOutTime(newOutTime)}
-              minDateTime={inTime}
+              onChange={(newOutTime) =>
+                setOutTime(new Date(newOutTime).getTime())
+              }
+              minDateTime={inTime + 300000} // inTime + 5 minutes
               maxDateTime={new Date().setMonth(currentTime.getMonth() + 1)}
               renderInput={(params) => <TextField {...params} />}
               onError={(e) => onOutError(e)}

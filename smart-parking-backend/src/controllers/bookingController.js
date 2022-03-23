@@ -22,8 +22,12 @@ const createBooking = async (req, res) => {
       const bookedIn = new Date(booking.in_time);
       const bookedOut = new Date(booking.out_time);
       const value =
-        (bookedIn < requestedIn && requestedIn <= bookedOut) ||
+        (bookedIn <= requestedIn && requestedIn < bookedOut) ||
         (bookedIn < requestedOut && requestedOut <= bookedOut);
+      console.log("for each ------- ", value, booking);
+      console.log(requestedIn.getTime(), requestedOut.getTime());
+      console.log(bookedIn.getTime(), bookedOut.getTime());
+
       return value;
     });
     if (occupied) {

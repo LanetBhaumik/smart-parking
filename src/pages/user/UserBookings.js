@@ -49,7 +49,6 @@ const UserBookings = ({ userBookings, user }) => {
           {bookings &&
             bookings.length > 0 &&
             bookings.map((booking, i) => {
-              console.log(booking);
               return (
                 <li className={classes["table-row"]} key={i}>
                   {currentTime > new Date(booking.out_time) && (
