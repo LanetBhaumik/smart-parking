@@ -7,25 +7,27 @@ const Parking = require("../models/parkingModel");
 const createBooking = async (req, res) => {
   try {
     const bookingId = new mongoose.Types.ObjectId();
-    const slotBooking = await ParkingBooking.findOne({
+    const parkingBooking = await ParkingBooking.findOne({
       parking: req.body.parking,
       slot: req.body.slot,
     }).populate("bookings");
-    if (!slotBooking) {
+    if (!parkingBooking) {
       throw new Error("parking or slot is not valid");
     }
 
+    // logic of deleting expired bookings id from parkingBooking
+    const currentTime = new Date().getTime();
+    const newBookings = parkingBooking.bookings.filter((booking) => {
+      const bookedOut = new Date(booking.out_time).getTime();
+      return bookedOut >= currentTime;
+    });
+
     //logic of time is occupied or not
-    const requestedIn = new Date(req.body.in_time);
-    const requestedOut = new Date(req.body.out_time);
-    const occupied = slotBooking.bookings.some((booking) => {
+    const requestedIn = new Date(req.body.in_time).getTime();
+    const requestedOut = new Date(req.body.out_time).getTime();
+    const occupied = parkingBooking.bookings.some((booking) => {
       const bookedIn = new Date(booking.in_time).getTime();
       const bookedOut = new Date(booking.out_time).getTime();
-
-      console.log("for each ------- ", value, booking);
-      console.log(req.body.in_time, req.body.out_time);
-      console.log(booking.in_time, booking.out_time);
-
       return (
         (bookedIn <= requestedIn && requestedIn < bookedOut) ||
         (bookedIn < requestedOut && requestedOut <= bookedOut)
@@ -33,7 +35,7 @@ const createBooking = async (req, res) => {
     });
     if (occupied) {
       return res.status(409).send({
-        error: "this time is already booked",
+        error: "this time is already booked on this slot.",
       });
     }
 
@@ -44,8 +46,9 @@ const createBooking = async (req, res) => {
       ...req.body,
     });
     await booking.save();
-    await slotBooking.bookings.push(bookingId);
-    await slotBooking.save();
+    newBookings.push(bookingId);
+    parkingBooking.bookings = newBookings;
+    await parkingBooking.save();
 
     res.send(booking);
   } catch (error) {
@@ -70,10 +73,14 @@ const deleteBooking = async (req, res) => {
     const parkingBooking = await ParkingBooking.find({
       parking: booking.parking,
       slot: booking.slot,
+    }).populate("bookings");
+
+    // logic of deleting booking and expired bookings id from parkingBooking
+    const currentTime = new Date().getTime();
+    const newBookigs = parkingBooking.bookings.filter((bkng) => {
+      const bookedOut = new Date(bkng.out_time).getTime();
+      return bookedOut >= currentTime || bkng._id !== booking._id;
     });
-    const newBookigs = parkingBooking.bookings.filter(
-      (id) => id != booking._id
-    );
     parkingBooking.bookings = newBookigs;
     await parkingBooking.save();
 
@@ -158,11 +165,20 @@ const parkingSlotBookings = async (req, res) => {
       },
       select: "-parking -slot -__v",
     });
-    if (parkingBooking.length == 0) {
+    if (!parkingBooking)
       return res.status(404).send({
-        error: "parking not found",
+        error: "parking not found or slot not found",
       });
-    }
+
+    // logic of deleting expired bookings id from parkingBooking
+    const currentTime = new Date().getTime();
+    const newBookings = parkingBooking.bookings.filter((booking) => {
+      const bookedOut = new Date(booking.out_time).getTime();
+      return bookedOut >= currentTime;
+    });
+
+    parkingBooking.bookings = newBookings;
+    await parkingBooking.save();
     res.send(parkingBooking.bookings);
   } catch (error) {
     console.log(error);

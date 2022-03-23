@@ -26,13 +26,15 @@ const SlotBookings = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchParkingBookings(parkingId);
-    fetchParkingDetail(parkingId);
-    fetchParkingSlotBookings(parkingId, slot).then((data) => {
+    const fetchData = async () => {
+      await fetchParkingBookings(parkingId);
+      await fetchParkingDetail(parkingId);
+      const data = await fetchParkingSlotBookings(parkingId, slot);
       if (data.type === "SLOT_BOOKINGS_DATA") {
         setLoading(false);
       }
-    });
+    };
+    fetchData();
   }, []);
 
   const parking = parkingBookings[parkingId];

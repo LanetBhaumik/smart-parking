@@ -28,8 +28,8 @@ const Parkings = ({ fetchParkings, parkings }) => {
         </Box>
       )}
       {parkings.error && <p>No Parkings Found</p>}
-      {!parkings.error && ids && ids.length > 0 && (
-        <div style={{ marginTop: "5vh" }}>
+      {!loading && !parkings.error && ids && ids.length > 0 && (
+        <div>
           <Container sx={{ py: 8 }} maxWidth="md">
             <Grid container spacing={4}>
               {ids.map((id) => (
