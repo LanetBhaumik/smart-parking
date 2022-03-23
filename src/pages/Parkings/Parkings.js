@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 // action
@@ -8,17 +8,25 @@ import { fetchParkings } from "../../redux/actions/parkingsAction";
 import ParkingCard from "../../components/ParkingCard";
 
 //material ui
-import { Container, Grid } from "@mui/material";
+import { Box, CircularProgress, Container, Grid } from "@mui/material";
 
 const Parkings = ({ fetchParkings, parkings }) => {
   const ids = Object.keys(parkings);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchParkings();
+    fetchParkings().then((data) => {
+      if (data.type === "PARKING_SUCCESS") setLoading(false);
+    });
   }, []);
 
   return (
     <>
+      {loading && (
+        <Box sx={{ textAlign: "center" }}>
+          <CircularProgress />
+        </Box>
+      )}
       {parkings.error && <p>No Parkings Found</p>}
       {!parkings.error && ids && ids.length > 0 && (
         <div style={{ marginTop: "5vh" }}>

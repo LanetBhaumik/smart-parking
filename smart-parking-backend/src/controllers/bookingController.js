@@ -151,6 +151,7 @@ const parkingSlotBookings = async (req, res) => {
       slot: req.params.slot,
     }).populate({
       path: "bookings",
+      options: { sort: { in_time: -1 } },
       populate: {
         path: "user car",
         select: "name car_no -_id",

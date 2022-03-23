@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 // actions
@@ -8,16 +8,19 @@ import { ownerProfile, addParking } from "../../redux/actions/ownerAction";
 import classes from "./OwnerParkings.module.css";
 
 // material ui
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 import ParkingItem from "./ParkingItem";
 import AddParking from "../../components/AddParking";
 
 const OwnerParkings = ({ ownerProfile, owner }) => {
+  const [loading, setLoading] = useState(true);
   const { profile } = owner;
   useEffect(() => {
     console.log("useEffect in owner parking");
-    ownerProfile();
+    ownerProfile().then((data) => {
+      if (data.type === "OWNER_PROFILE") setLoading(false);
+    });
   }, []);
 
   return (
@@ -26,6 +29,7 @@ const OwnerParkings = ({ ownerProfile, owner }) => {
         <h2 className={classes.heading}>Your Parkings</h2>
         <Box textAlign="center">
           <AddParking />
+          {loading && <CircularProgress sx={{ m: 2 }} />}
         </Box>
         {profile && profile.parkings && profile.parkings.length < 1 && (
           <h3 className={classes.nothing}>No Parkings</h3>

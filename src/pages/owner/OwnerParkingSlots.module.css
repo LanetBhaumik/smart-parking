@@ -19,38 +19,56 @@
   text-decoration: none;
   color: white;
 }
-.available {
-  height: 20px;
-  width: 20px;
-  background: green;
-  margin-right: 10px;
-}
-
-.occupied {
+.noBookings {
   height: 20px;
   width: 20px;
   background: red;
   margin-right: 10px;
 }
 
-.AvailableSlotBtn {
+.hasBookings {
+  height: 20px;
+  width: 20px;
+  background: rgb(200, 200, 0);
+  margin-right: 10px;
+}
+
+.activeBooking {
+  height: 20px;
+  width: 20px;
+  background: green;
+  margin-right: 10px;
+}
+
+.NoBookingsSlotBtn {
   height: 60px;
   width: 60px;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  background: green;
+  background: red;
   outline: none;
   border: none;
   border-radius: 10px;
 }
-.OccupiedSlotBtn {
+.HasBookingsSlotBtn {
   height: 60px;
   width: 60px;
   margin-right: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  background: red;
+  background: rgb(200, 200, 0);
+  outline: none;
+  border: none;
+  border-radius: 10px;
+}
+.ActiveSlotBtn {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: green;
   outline: none;
   border: none;
   border-radius: 10px;

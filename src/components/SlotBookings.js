@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import {
   fetchParkingSlotBookings,
 } from "../redux/actions/parkingBookingAction";
 import { fetchParkingDetail } from "../redux/actions/parkingsAction";
+import { Box, CircularProgress } from "@mui/material";
 
 const SlotBookings = ({
   parkingBookings,
@@ -22,11 +23,16 @@ const SlotBookings = ({
   const params = useParams();
   const parkingId = params.parkingId;
   const slot = params.slot;
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchParkingBookings(parkingId);
     fetchParkingDetail(parkingId);
-    fetchParkingSlotBookings(parkingId, slot);
+    fetchParkingSlotBookings(parkingId, slot).then((data) => {
+      if (data.type === "SLOT_BOOKINGS_DATA") {
+        setLoading(false);
+      }
+    });
   }, []);
 
   const parking = parkingBookings[parkingId];
@@ -34,7 +40,6 @@ const SlotBookings = ({
   if (parking) {
     bookings = parking[slot];
   }
-  console.log(bookings);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
   const timeFormat = (date) => {
@@ -63,10 +68,16 @@ const SlotBookings = ({
             </div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
           </li>
-          {bookings.length === 0 && (
+          {loading && (
+            <Box sx={{ textAlign: "center" }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!loading && bookings.length === 0 && (
             <h3 className={classes.heading}>No Bookings</h3>
           )}
-          {bookings.length > 0 &&
+          {!loading &&
+            bookings.length > 0 &&
             bookings.map((booking, i) => {
               console.log(booking);
               return (
@@ -101,13 +112,13 @@ const SlotBookings = ({
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="User"
                   >
-                    {/* {booking.user.name} */}
+                    {booking.user.name}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Car"
                   >
-                    {/* {booking.car.car_no} */}
+                    {booking.car.car_no}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}

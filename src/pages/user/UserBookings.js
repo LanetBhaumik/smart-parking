@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { userBookings } from "../../redux/actions/userAction";
@@ -7,11 +8,14 @@ import { userBookings } from "../../redux/actions/userAction";
 import classes from "./UserBookings.module.css";
 
 const UserBookings = ({ userBookings, user }) => {
+  const [loading, setLoading] = useState(true);
   const currentTime = new Date();
 
   const { bookings } = user;
   useEffect(() => {
-    userBookings();
+    userBookings().then((data) => {
+      if (data.type === "USER_BOOKINGS") setLoading(false);
+    });
   }, []);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
@@ -42,11 +46,16 @@ const UserBookings = ({ userBookings, user }) => {
             </div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
           </li>
-
-          {bookings.length === 0 && (
+          {loading && (
+            <Box sx={{ textAlign: "center" }}>
+              <CircularProgress />
+            </Box>
+          )}
+          {!loading && bookings.length === 0 && (
             <h3 className={classes.heading}>No Bookings</h3>
           )}
-          {bookings &&
+          {!loading &&
+            bookings &&
             bookings.length > 0 &&
             bookings.map((booking, i) => {
               return (

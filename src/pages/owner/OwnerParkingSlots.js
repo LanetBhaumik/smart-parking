@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import classes from "./OwnerParkingSlots.module.css";
 // action
 import { fetchParkingBookings } from "../../redux/actions/parkingBookingAction";
 import { fetchParkingDetail } from "../../redux/actions/parkingsAction";
+import { Box, CircularProgress } from "@mui/material";
 
 const OwnerParkingSlots = ({
   parkingBookings,
@@ -15,32 +16,42 @@ const OwnerParkingSlots = ({
   fetchParkingDetail,
   parkings,
 }) => {
+  const [loading, setLoading] = useState(true);
   const currentTime = new Date().getTime();
   const Navigate = useNavigate();
   const params = useParams();
-  console.log(params.parkingId);
-  const parkingDetail = parkings[params.parkingId];
-  console.log(parkingDetail);
 
   useEffect(() => {
-    fetchParkingBookings(params.parkingId);
     fetchParkingDetail(params.parkingId);
+    fetchParkingBookings(params.parkingId).then((data) => {
+      if (data.type === "PARKING_BOOKINGS_DATA") setLoading(false);
+    });
   }, []);
 
   const bookings = parkingBookings[params.parkingId];
   return (
     <>
       <h2 className={classes.heading}>Bookings of Parking</h2>
+      {loading && (
+        <Box sx={{ textAlign: "center" }}>
+          <CircularProgress />
+        </Box>
+      )}
       <div className={classes.container}>
         <div>
           {bookings !== undefined &&
             Object.keys(bookings).map((slot) => {
+              let btnClass = null;
               const active = bookings[slot].some((booking) => {
                 const bookingIn = new Date(booking.in_time).getTime();
                 const bookingOut = new Date(booking.out_time).getTime();
                 return bookingIn <= currentTime && currentTime <= bookingOut;
               });
-              const btnClass = active ? "OccupiedSlotBtn" : "AvailableSlotBtn";
+              btnClass = active
+                ? "ActiveSlotBtn"
+                : bookings[slot].length === 0
+                ? (btnClass = "NoBookingsSlotBtn")
+                : (btnClass = "HasBookingsSlotBtn");
 
               return (
                 <button
@@ -56,12 +67,16 @@ const OwnerParkingSlots = ({
             })}
           <div>
             <div style={{ display: "flex", marginBottom: 10 }}>
-              <div className={classes.available}></div>
-              <span>Available</span>
+              <div className={classes.activeBooking}></div>
+              <span>Active Booking</span>
             </div>
-            <div style={{ display: "flex" }}>
-              <div className={classes.occupied}></div>
-              <span>Occupied</span>
+            <div style={{ display: "flex", marginBottom: 10 }}>
+              <div className={classes.hasBookings}></div>
+              <span>Has Bookings</span>
+            </div>
+            <div style={{ display: "flex", marginBottom: 10 }}>
+              <div className={classes.noBookings}></div>
+              <span>No Bookings</span>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 
@@ -44,7 +44,7 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
     return bookingIn <= currentTime && currentTime <= bookingOut;
   });
   const btnClass = active ? "OccupiedSlotBtn" : "AvailableSlotBtn";
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -83,14 +83,16 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
             </TimelineItem>
           </Timeline>
           {parking && (
-            <BookingDialog
-              parking={{
-                rate: parking.rate,
-                parkingName: parking.parking_name,
-                parkingId: params.parkingId,
-                slot: slot,
-              }}
-            />
+            <Box textAlign="center">
+              <BookingDialog
+                parking={{
+                  rate: parking.rate,
+                  parkingName: parking.parking_name,
+                  parkingId: params.parkingId,
+                  slot: slot,
+                }}
+              />
+            </Box>
           )}
         </Box>
       </Modal>
