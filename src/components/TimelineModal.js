@@ -65,6 +65,21 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
       >
         <Box sx={{ ...style, width: 400 }}>
           <Timeline>
+            {bookings.map((booking) => {
+              console.log("timeline ---------");
+              return (
+                <TimelineItem>
+                  <TimelineOppositeContent>
+                    {booking.in_time}
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineDot color="error" />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>{booking.out_time}</TimelineContent>
+                </TimelineItem>
+              );
+            })}
             <TimelineItem>
               <TimelineOppositeContent>In time</TimelineOppositeContent>
               <TimelineSeparator>
@@ -73,15 +88,8 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
               </TimelineSeparator>
               <TimelineContent>Out time</TimelineContent>
             </TimelineItem>
-            <TimelineItem>
-              <TimelineOppositeContent>In time</TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineDot color="error" />
-                <TimelineConnector />
-              </TimelineSeparator>
-              <TimelineContent>Out time</TimelineContent>
-            </TimelineItem>
           </Timeline>
+
           {parking && (
             <Box textAlign="center">
               <BookingDialog
