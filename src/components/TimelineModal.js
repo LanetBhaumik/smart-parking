@@ -21,6 +21,7 @@ import classes from "./TimelineModal.module.css";
 // action
 
 const TimelineModal = ({ slot, bookings, parkings }) => {
+  const currentTime = new Date().getTime();
   const params = useParams();
   const parkingId = params.parkingId;
   const parking = parkings[parkingId];
@@ -37,8 +38,12 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
     pb: 3,
   };
 
-  const btnClass =
-    bookings.length === 0 ? "AvailableSlotBtn" : "OccupiedSlotBtn";
+  const active = bookings.some((booking) => {
+    const bookingIn = new Date(booking.in_time).getTime();
+    const bookingOut = new Date(booking.out_time).getTime();
+    return bookingIn <= currentTime && currentTime <= bookingOut;
+  });
+  const btnClass = active ? "OccupiedSlotBtn" : "AvailableSlotBtn";
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);

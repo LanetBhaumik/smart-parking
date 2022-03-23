@@ -21,14 +21,15 @@ const createBooking = async (req, res) => {
     const occupied = slotBooking.bookings.some((booking) => {
       const bookedIn = new Date(booking.in_time);
       const bookedOut = new Date(booking.out_time);
-      const value =
-        (bookedIn <= requestedIn && requestedIn < bookedOut) ||
-        (bookedIn < requestedOut && requestedOut <= bookedOut);
-      console.log("for each ------- ", value, booking);
-      console.log(requestedIn.getTime(), requestedOut.getTime());
-      console.log(bookedIn.getTime(), bookedOut.getTime());
 
-      return value;
+      console.log("for each ------- ", value, booking);
+      console.log(req.body.in_time, req.body.out_time);
+      console.log(booking.in_time, booking.out_time);
+
+      return (
+        (bookedIn <= requestedIn && requestedIn < bookedOut) ||
+        (bookedIn < requestedOut && requestedOut <= bookedOut)
+      );
     });
     if (occupied) {
       return res.status(409).send({
