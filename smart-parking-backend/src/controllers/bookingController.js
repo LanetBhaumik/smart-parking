@@ -126,9 +126,11 @@ const parkingBookings = async (req, res) => {
       parking: req.params.parkingId,
     })
       .select("-parking")
+
       .populate({
         path: "bookings",
         select: "in_time out_time",
+        options: { sort: { in_time: 1 } },
       });
     if (parkingBookings.length == 0) {
       return res.status(404).send({
@@ -137,8 +139,17 @@ const parkingBookings = async (req, res) => {
     }
 
     const data = {};
-    parkingBookings.forEach((parkingBooking) => {
-      data[parkingBooking.slot] = parkingBooking.bookings;
+    parkingBookings.forEach(async (parkingBooking) => {
+      // logic of deleting expired bookings id from parkingBooking
+      const currentTime = new Date().getTime();
+      const newBookings = parkingBooking.bookings.filter((booking) => {
+        const bookedOut = new Date(booking.out_time).getTime();
+        return bookedOut >= currentTime;
+      });
+
+      data[parkingBooking.slot] = newBookings;
+      parkingBooking.bookings = newBookings;
+      await parkingBooking.save();
     });
 
     res.send(data);

@@ -8,7 +8,6 @@ const createOwner = async (req, res) => {
   try {
     const ownerId = new mongoose.Types.ObjectId();
     const parkingId = new mongoose.Types.ObjectId();
-    console.log(req.body.parking.total_slots);
 
     const parking = new Parking({
       _id: parkingId,

@@ -66,7 +66,6 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
 
   const onSubmitHandle = () => {
     setOpen(false);
-    console.log("on submit --------------", inTime, outTime);
     bookSlot({
       in_time: inTime,
       out_time: outTime,

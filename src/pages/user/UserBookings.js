@@ -24,9 +24,20 @@ const UserBookings = ({ userBookings, user }) => {
     const dd = pad(date.getDate());
     const mm = pad(date.getMonth() + 1);
     const yyyy = date.getFullYear();
-    const hh = pad(date.getHours());
+    let hh = date.getHours();
     const min = pad(date.getMinutes());
-    return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12;
+    hh = hh ? hh : 12; // the hour '0' should be '12'
+    hh = pad(hh);
+    return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
+  };
+  const carNoFormat = (carNo) => {
+    return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
+      4,
+      6
+    )} ${carNo.slice(6)}`;
   };
   return (
     <>
@@ -91,7 +102,7 @@ const UserBookings = ({ userBookings, user }) => {
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Car No"
                   >
-                    {booking.car.car_no}
+                    {carNoFormat(booking.car.car_no)}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}

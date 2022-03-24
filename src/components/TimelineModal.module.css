@@ -1,8 +1,7 @@
 .AvailableSlotBtn {
   height: 60px;
   width: 60px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 8px;
   cursor: pointer;
   background: green;
   outline: none;
@@ -12,8 +11,7 @@
 .OccupiedSlotBtn {
   height: 60px;
   width: 60px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 8px;
   cursor: pointer;
   background: red;
   outline: none;

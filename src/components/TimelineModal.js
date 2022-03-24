@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 
 import BookingDialog from "./BookingDialog";
 
-import { Box, Modal } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import {
   Timeline,
   TimelineConnector,
@@ -18,10 +18,9 @@ import {
 // css
 import classes from "./TimelineModal.module.css";
 
-// action
-
 const TimelineModal = ({ slot, bookings, parkings }) => {
   const currentTime = new Date().getTime();
+
   const params = useParams();
   const parkingId = params.parkingId;
   const parking = parkings[parkingId];
@@ -52,6 +51,71 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
     setOpen(false);
   };
 
+  const pad = (n) => (n < 10 ? "0" + n : n);
+  const timeFormat = (date) => {
+    date = new Date(date);
+    let hh = date.getHours();
+    const min = pad(date.getMinutes());
+
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12;
+    hh = hh ? hh : 12; // the hour '0' should be '12'
+    hh = pad(hh);
+    return `${hh}:${min} ${ampm}`;
+  };
+
+  // timeline logic
+  const getOptimizedBookings = (bookings) => {
+    const optimizedBookings = [];
+    const lastIndex = bookings.length - 1;
+    for (let i = 0; i < lastIndex; i++) {
+      const newIn = bookings[i].in_time;
+      while (
+        i < lastIndex &&
+        bookings[i].out_time === bookings[i + 1].in_time
+      ) {
+        i++;
+      }
+      const newOut = bookings[i].out_time;
+      optimizedBookings.push({
+        status: "booked",
+        in_time: newIn,
+        out_time: newOut,
+      });
+    }
+  };
+
+  // const getTimeline = async (bookings) => {
+  //   const currentTime = new Date().getTime();
+  //   const optimizedBookings = await getOptimizedBookings(bookings);
+  //   if (optimizedBookings.length === 0) return;
+  //   const timeline = [];
+  //   //   if (active) {
+  //   //     timeline.push(optimizedBookings[0]);
+  //   //   } else {
+  //   //     timeline.push({
+  //   //       status: "free",
+  //   //       in_time: currentTime,
+  //   //       out_time: optimizedBookings[0].in_time,
+  //   //     });
+  //   //   }
+  //   for (let i = 0; i < optimizedBookings.length - 1; i++) {
+  //     timeline.push(optimizedBookings[i]);
+  //     timeline.push({
+  //       status: "free",
+  //       in_time: optimizedBookings[i].out_time,
+  //       out_time: optimizedBookings[i + 1].in_time,
+  //     });
+  //   }
+  //   return timeline;
+  // };
+
+  useEffect(() => {
+    const optimization = async () => {
+      await getOptimizedBookings(bookings);
+    };
+    optimization();
+  }, []);
   return (
     <>
       <button className={classes[btnClass]} onClick={handleOpen}>
@@ -69,13 +133,15 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
               return (
                 <TimelineItem>
                   <TimelineOppositeContent>
-                    {booking.in_time}
+                    {timeFormat(booking.in_time)}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
                     <TimelineDot color="error" />
                     <TimelineConnector />
                   </TimelineSeparator>
-                  <TimelineContent>{booking.out_time}</TimelineContent>
+                  <TimelineContent>
+                    {timeFormat(booking.out_time)}
+                  </TimelineContent>
                 </TimelineItem>
               );
             })}
@@ -90,7 +156,30 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
           </Timeline>
 
           {parking && (
-            <Box textAlign="center">
+            <Box
+              textAlign="center"
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                }}
+              >
+                <TimelineDot color="success" />
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    m: 1,
+                  }}
+                >
+                  Free Time
+                </Typography>
+              </Box>
               <BookingDialog
                 parking={{
                   rate: parking.rate,
@@ -99,6 +188,22 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
                   slot: slot,
                 }}
               />
+              <Box
+                sx={{
+                  display: "flex",
+                }}
+              >
+                <TimelineDot color="error" />
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    m: 1,
+                  }}
+                >
+                  Booked Time
+                </Typography>
+              </Box>
             </Box>
           )}
         </Box>

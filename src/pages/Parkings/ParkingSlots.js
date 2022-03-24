@@ -10,7 +10,10 @@ import { fetchParkingBookings } from "../../redux/actions/parkingBookingAction";
 import { fetchParkingDetail } from "../../redux/actions/parkingsAction";
 
 import TimelineModal from "../../components/TimelineModal";
-import { Box, CircularProgress } from "@mui/material";
+
+// material ui
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { TimelineDot } from "@mui/lab";
 
 const ParkingSlots = ({
   parkingBookings,
@@ -36,8 +39,8 @@ const ParkingSlots = ({
           <CircularProgress />
         </Box>
       )}
-      <div className={classes.container}>
-        <div>
+      <div>
+        <div className={classes.container}>
           {!loading &&
             bookings !== undefined &&
             Object.keys(bookings).map((slot) => {
@@ -49,16 +52,47 @@ const ParkingSlots = ({
                 />
               );
             })}
-          <div>
-            <div style={{ display: "flex", marginBottom: 10 }}>
-              <div className={classes.available}></div>
-              <span>Currently Available</span>
-            </div>
-            <div style={{ display: "flex" }}>
-              <div className={classes.occupied}></div>
-              <span>Currently Booked</span>
-            </div>
-          </div>
+          <Box
+            textAlign="center"
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+              }}
+            >
+              <TimelineDot color="success" />
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  m: 1,
+                }}
+              >
+                Currently Available
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+              }}
+            >
+              <TimelineDot color="error" />
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  m: 1,
+                }}
+              >
+                Currently Booked
+              </Typography>
+            </Box>
+          </Box>
         </div>
       </div>
     </>

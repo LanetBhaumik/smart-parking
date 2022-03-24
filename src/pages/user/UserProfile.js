@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { userProfile } from "../../redux/actions/userAction";
 import { signOut } from "../../redux/actions/authAction";
 
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import classes from "./UserProfile.module.css";
 
@@ -14,39 +14,70 @@ const UserProfile = ({ userProfile, signOut, profile }) => {
     signOut();
   };
 
+  const carNoFormat = (carNo) => {
+    return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
+      4,
+      6
+    )} ${carNo.slice(6)}`;
+  };
   useEffect(() => {
     userProfile();
   }, []);
 
   return (
     <>
-      {profile &&
-        Object.keys(profile).length > 0 && (
-          <>
-            <div className={classes.card}>
-              <img
-                src="/images/profile.jpg"
-                alt="Avatar"
-                style={{ width: "100%" }}
-              />
-              <div className={classes.container}>
-                <h4>
-                  <b>{profile.name}</b>
-                </h4>
-                <p>{`Email: ${profile.email}`}</p>
-                <p>{`Mobile No: ${profile.mobile_no}`}</p>
-                <p>{`Primary Car : ${profile.car.car_no}`}</p>
-                <p>{`Your Cars : `}</p>
-                {profile.cars.map((car) => (
-                  <p key={car.car_no}>{`${car.car_no}`}</p>
-                ))}
-              </div>
-              <Button size="small" color="primary" onClick={onSignOutHandle}>
-                Sign Out
+      {profile && Object.keys(profile).length > 0 && (
+        <>
+          <div className={classes.card}>
+            <img
+              src="/images/profile.jpg"
+              alt="Avatar"
+              style={{ width: "100%" }}
+            />
+            <div className={classes.container}>
+              <p>
+                <b>Name : </b>
+                {profile.name}
+              </p>
+              <p>
+                <b>Email : </b>
+                {profile.email}
+              </p>
+              <p>
+                <b>Mobile No : </b>
+                {profile.mobile_no}
+              </p>
+              <p>
+                <b>Primary Car : </b>
+                {carNoFormat(profile.car.car_no)}
+              </p>
+              <p>
+                <b>Your Cars : </b>
+              </p>
+              {profile.cars.map((car) => (
+                <p key={car.car_no}>{carNoFormat(car.car_no)}</p>
+              ))}
+              <Button
+                size="small"
+                variant="outlined"
+                color="primary"
+                onClick={onSignOutHandle}
+              >
+                Add Car
               </Button>
             </div>
-          </>
-        )}
+            <Box sx={{ textAlign: "center" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={onSignOutHandle}
+              >
+                Sign Out
+              </Button>
+            </Box>
+          </div>
+        </>
+      )}
     </>
   );
 };

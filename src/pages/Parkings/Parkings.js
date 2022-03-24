@@ -16,7 +16,7 @@ const Parkings = ({ fetchParkings, parkings }) => {
 
   useEffect(() => {
     fetchParkings().then((data) => {
-      if (data.type === "PARKING_SUCCESS") setLoading(false);
+      setLoading(false);
     });
   }, []);
 
