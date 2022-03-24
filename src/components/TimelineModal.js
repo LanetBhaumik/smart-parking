@@ -66,7 +66,6 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
         <Box sx={{ ...style, width: 400 }}>
           <Timeline>
             {bookings.map((booking) => {
-              console.log("timeline ---------");
               return (
                 <TimelineItem>
                   <TimelineOppositeContent>
