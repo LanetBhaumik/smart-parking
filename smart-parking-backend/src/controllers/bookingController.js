@@ -3,6 +3,9 @@ const Booking = require("../models/bookingModel");
 const ParkingBooking = require("../models/parkingBookingModal");
 const Parking = require("../models/parkingModel");
 
+const endOfDay = require("date-fns/endOfDay");
+const startOfDay = require("date-fns/startOfDay");
+
 // New booking
 const createBooking = async (req, res) => {
   try {
@@ -126,9 +129,11 @@ const parkingBookings = async (req, res) => {
       parking: req.params.parkingId,
     })
       .select("-parking")
-
       .populate({
         path: "bookings",
+        match: {
+          in_time: { $gte: startOfDay(new Date()), $lte: endOfDay(new Date()) },
+        },
         select: "in_time out_time",
         options: { sort: { in_time: 1 } },
       });
@@ -169,7 +174,7 @@ const parkingSlotBookings = async (req, res) => {
       slot: req.params.slot,
     }).populate({
       path: "bookings",
-      options: { sort: { in_time: -1 } },
+      options: { sort: { in_time: 1 } },
       populate: {
         path: "user car",
         select: "name car_no -_id",

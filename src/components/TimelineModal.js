@@ -18,7 +18,57 @@ import {
 // css
 import classes from "./TimelineModal.module.css";
 
+const pad = (n) => (n < 10 ? "0" + n : n);
+const timeFormat = (date) => {
+  date = new Date(date);
+  let hh = date.getHours();
+  const min = pad(date.getMinutes());
+
+  const ampm = hh >= 12 ? "PM" : "AM";
+  hh = hh % 12;
+  hh = hh ? hh : 12; // the hour '0' should be '12'
+  hh = pad(hh);
+  return `${hh}:${min} ${ampm}`;
+};
+
+// timeline logic
+
+const getTimeline = (bkgs) => {
+  const currentTime = new Date().getTime();
+  if (bkgs.length === 0)
+    return [
+      {
+        color: "success",
+        in_time: currentTime,
+        out_time: new Date().setHours(12, 0),
+      },
+    ];
+  const timelineArray = [];
+  //   if (active) {
+  //     timeline.push(bkgs[0]);
+  //   } else {
+  //     timeline.push({
+  //       status: "free",
+  //       in_time: currentTime,
+  //       out_time: bkgs[0].in_time,
+  //     });
+  //   }
+  for (let i = 0; i < bkgs.length - 1; i++) {
+    timelineArray.push(bkgs[i]);
+    timelineArray.push({
+      color: "success",
+      in_time: bkgs[i].out_time,
+      out_time: bkgs[i + 1].in_time,
+    });
+  }
+  timelineArray.push(bkgs[bkgs.length - 1]);
+
+  return timelineArray;
+};
+
 const TimelineModal = ({ slot, bookings, parkings }) => {
+  const [timeline, setTimeline] = useState([]);
+  const [open, setOpen] = useState(false);
   const currentTime = new Date().getTime();
 
   const params = useParams();
@@ -43,7 +93,6 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
     return bookingIn <= currentTime && currentTime <= bookingOut;
   });
   const btnClass = active ? "OccupiedSlotBtn" : "AvailableSlotBtn";
-  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -51,71 +100,11 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
     setOpen(false);
   };
 
-  const pad = (n) => (n < 10 ? "0" + n : n);
-  const timeFormat = (date) => {
-    date = new Date(date);
-    let hh = date.getHours();
-    const min = pad(date.getMinutes());
-
-    const ampm = hh >= 12 ? "PM" : "AM";
-    hh = hh % 12;
-    hh = hh ? hh : 12; // the hour '0' should be '12'
-    hh = pad(hh);
-    return `${hh}:${min} ${ampm}`;
-  };
-
-  // timeline logic
-  const getOptimizedBookings = (bookings) => {
-    const optimizedBookings = [];
-    const lastIndex = bookings.length - 1;
-    for (let i = 0; i < lastIndex; i++) {
-      const newIn = bookings[i].in_time;
-      while (
-        i < lastIndex &&
-        bookings[i].out_time === bookings[i + 1].in_time
-      ) {
-        i++;
-      }
-      const newOut = bookings[i].out_time;
-      optimizedBookings.push({
-        status: "booked",
-        in_time: newIn,
-        out_time: newOut,
-      });
-    }
-  };
-
-  // const getTimeline = async (bookings) => {
-  //   const currentTime = new Date().getTime();
-  //   const optimizedBookings = await getOptimizedBookings(bookings);
-  //   if (optimizedBookings.length === 0) return;
-  //   const timeline = [];
-  //   //   if (active) {
-  //   //     timeline.push(optimizedBookings[0]);
-  //   //   } else {
-  //   //     timeline.push({
-  //   //       status: "free",
-  //   //       in_time: currentTime,
-  //   //       out_time: optimizedBookings[0].in_time,
-  //   //     });
-  //   //   }
-  //   for (let i = 0; i < optimizedBookings.length - 1; i++) {
-  //     timeline.push(optimizedBookings[i]);
-  //     timeline.push({
-  //       status: "free",
-  //       in_time: optimizedBookings[i].out_time,
-  //       out_time: optimizedBookings[i + 1].in_time,
-  //     });
-  //   }
-  //   return timeline;
-  // };
-
   useEffect(() => {
-    const optimization = async () => {
-      await getOptimizedBookings(bookings);
-    };
-    optimization();
+    const newTimeline = getTimeline(bookings);
+    setTimeline(newTimeline);
   }, []);
+
   return (
     <>
       <button className={classes[btnClass]} onClick={handleOpen}>
@@ -129,14 +118,14 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
       >
         <Box sx={{ ...style, width: 400 }}>
           <Timeline>
-            {bookings.map((booking) => {
+            {timeline.map((booking) => {
               return (
-                <TimelineItem>
+                <TimelineItem key={booking._id}>
                   <TimelineOppositeContent>
                     {timeFormat(booking.in_time)}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
-                    <TimelineDot color="error" />
+                    <TimelineDot color={booking.color} />
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
@@ -145,14 +134,6 @@ const TimelineModal = ({ slot, bookings, parkings }) => {
                 </TimelineItem>
               );
             })}
-            <TimelineItem>
-              <TimelineOppositeContent>In time</TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineDot color="success" />
-                <TimelineConnector />
-              </TimelineSeparator>
-              <TimelineContent>Out time</TimelineContent>
-            </TimelineItem>
           </Timeline>
 
           {parking && (

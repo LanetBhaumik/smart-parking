@@ -15,21 +15,62 @@ import TimelineModal from "../../components/TimelineModal";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { TimelineDot } from "@mui/lab";
 
+// optimization of bookings array
+const getOptimizedBookings = (bkgs) => {
+  if (bkgs.length === 0) return [];
+  const optimizedBookingsArr = [];
+  const lastIndex = bkgs.length - 1;
+  for (let i = 0; i < lastIndex; i++) {
+    const newIn = bkgs[i].in_time;
+    while (i < lastIndex && bkgs[i].out_time === bkgs[i + 1].in_time) {
+      i++;
+    }
+    const newOut = bkgs[i].out_time;
+    optimizedBookingsArr.push({
+      color: "error",
+      in_time: newIn,
+      out_time: newOut,
+    });
+  }
+  if (
+    optimizedBookingsArr[optimizedBookingsArr.length - 1].out_time !==
+    bkgs[lastIndex].out_time
+  ) {
+    optimizedBookingsArr.push({
+      color: "error",
+      in_time: bkgs[lastIndex].in_time,
+      out_time: bkgs[lastIndex].out_time,
+    });
+  }
+  return optimizedBookingsArr;
+};
+
 const ParkingSlots = ({
   parkingBookings,
   fetchParkingBookings,
   fetchParkingDetail,
 }) => {
   const [loading, setLoading] = useState(true);
+  const [showTimeline, setShowTimeline] = useState({});
   const params = useParams();
-  useEffect(() => {
-    fetchParkingDetail(params.parkingId);
-    fetchParkingBookings(params.parkingId).then((data) => {
-      if (data.type === "PARKING_BOOKINGS_DATA") setLoading(false);
-    });
-  }, []);
+  let bookings = parkingBookings[params.parkingId];
+  const optimizedBookings = {};
 
-  const bookings = parkingBookings[params.parkingId];
+  useEffect(() => {
+    const fetchBookingData = async () => {
+      await fetchParkingDetail(params.parkingId);
+      const data = await fetchParkingBookings(params.parkingId);
+      if (data.type === "PARKING_BOOKINGS_DATA") {
+        setLoading(false);
+        bookings = data.payload[params.parkingId];
+        Object.keys(bookings).forEach((slot) => {
+          optimizedBookings[slot] = getOptimizedBookings(bookings[slot]);
+        });
+        setShowTimeline(optimizedBookings);
+      }
+    };
+    fetchBookingData();
+  }, []);
 
   return (
     <>
@@ -42,13 +83,13 @@ const ParkingSlots = ({
       <div>
         <div className={classes.container}>
           {!loading &&
-            bookings !== undefined &&
-            Object.keys(bookings).map((slot) => {
+            // optimizedBookings &&
+            Object.keys(showTimeline).map((slot) => {
               return (
                 <TimelineModal
                   key={slot}
                   slot={slot}
-                  bookings={bookings[slot]}
+                  bookings={showTimeline[slot]}
                 />
               );
             })}

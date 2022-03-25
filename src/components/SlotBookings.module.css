@@ -13,8 +13,10 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 4rem;
-  padding-left: 10px;
-  padding-right: 10px;
+}
+
+.responsive-table {
+  padding: 0;
 }
 
 .responsive-table li {
@@ -40,6 +42,7 @@
 
 .responsive-table .col-1 {
   flex-basis: 20%;
+  margin: 8px;
 }
 
 @media all and (max-width: 767px) {

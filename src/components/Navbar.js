@@ -3,13 +3,7 @@ import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 // material ui
-import {
-  AppBar,
-  Box,
-  Button,
-  Link as MaterialLink,
-  Toolbar,
-} from "@mui/material";
+import { AppBar, Box, Button, Link as MaterialLink } from "@mui/material";
 
 // actions
 import { signOut } from "../redux/actions/authAction";
@@ -60,16 +54,6 @@ const Navbar = ({ role, signOut, setAlert }) => {
             Profile
           </MaterialLink>
         </Box>
-        <Box sx={{ m: 1 }}>
-          <Button
-            variant="outlined"
-            color="inherit"
-            sx={{ fontWeight: "bold" }}
-            onClick={handleSignOut}
-          >
-            Sign Out
-          </Button>
-        </Box>
       </>
     );
   } else if (role === "owner") {
@@ -104,16 +88,6 @@ const Navbar = ({ role, signOut, setAlert }) => {
           >
             Profile
           </MaterialLink>
-        </Box>
-        <Box sx={{ m: 1 }}>
-          <Button
-            variant="outlined"
-            color="inherit"
-            sx={{ fontWeight: "bold" }}
-            onClick={handleSignOut}
-          >
-            Sign Out
-          </Button>
         </Box>
       </>
     );
@@ -156,23 +130,44 @@ const Navbar = ({ role, signOut, setAlert }) => {
 
   return (
     <AppBar position="fixed">
-      <Toolbar>
-        <Box
-          component={Link}
-          to="/"
-          color="inherit"
-          sx={{
-            fontSize: 20,
-            fontFamily: "Monospace",
-            fontWeight: "bold",
-            m: 1,
-            textDecoration: "none",
-          }}
-        >
-          Smart Parking
-        </Box>
-        {links}
-      </Toolbar>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          minHeight: "65px",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Box
+            component={Link}
+            to="/"
+            color="inherit"
+            sx={{
+              fontSize: 20,
+              fontFamily: "Monospace",
+              fontWeight: "bold",
+              m: 1,
+              textDecoration: "none",
+            }}
+          >
+            Smart Parking
+          </Box>
+          {links}
+        </div>
+        {(role === "user" || role === "owner") && (
+          <Box sx={{ m: 1 }}>
+            <Button
+              variant="outlined"
+              color="inherit"
+              sx={{ fontWeight: "bold" }}
+              onClick={handleSignOut}
+            >
+              Sign Out
+            </Button>
+          </Box>
+        )}
+      </div>
     </AppBar>
   );
 };

@@ -57,14 +57,14 @@ const UserProfile = ({ userProfile, signOut, profile }) => {
               {profile.cars.map((car) => (
                 <p key={car.car_no}>{carNoFormat(car.car_no)}</p>
               ))}
-              <Button
+              {/* <Button
                 size="small"
                 variant="outlined"
                 color="primary"
                 onClick={onSignOutHandle}
               >
                 Add Car
-              </Button>
+              </Button> */}
             </div>
             <Box sx={{ textAlign: "center" }}>
               <Button

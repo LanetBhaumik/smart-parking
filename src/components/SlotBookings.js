@@ -49,9 +49,14 @@ const SlotBookings = ({
     const dd = pad(date.getDate());
     const mm = pad(date.getMonth() + 1);
     const yyyy = date.getFullYear();
-    const hh = pad(date.getHours());
+    let hh = date.getHours();
     const min = pad(date.getMinutes());
-    return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+
+    const ampm = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12;
+    hh = hh ? hh : 12; // the hour '0' should be '12'
+    hh = pad(hh);
+    return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
   };
   const carNoFormat = (carNo) => {
     return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
@@ -87,7 +92,6 @@ const SlotBookings = ({
           {!loading &&
             bookings.length > 0 &&
             bookings.map((booking, i) => {
-              console.log(booking);
               return (
                 <li className={classes["table-row"]} key={i}>
                   {currentTime > new Date(booking.out_time) && (
