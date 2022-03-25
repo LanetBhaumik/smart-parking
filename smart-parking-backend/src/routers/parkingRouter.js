@@ -14,6 +14,7 @@ const {
 router.post("/owners/parkings", Auth, createParking);
 
 // Read All Parkings
+//GET /parkings?limit=10&skip=0
 router.get("/parkings", readAllParkings);
 
 // Read Parking

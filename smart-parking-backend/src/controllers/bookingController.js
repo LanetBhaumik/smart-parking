@@ -103,6 +103,8 @@ const userBookings = async (req, res) => {
     const bookings = await Booking.find({
       user: req.user._id,
     })
+      .limit(parseInt(req.query.limit))
+      .skip(parseInt(req.query.skip))
       .select("-user")
       .sort({ in_time: -1 })
       .populate({

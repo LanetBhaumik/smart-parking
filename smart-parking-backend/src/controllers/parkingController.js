@@ -37,10 +37,13 @@ const createParking = async (req, res) => {
 
 const readAllParkings = async (req, res) => {
   try {
-    const parkings = await Parking.find().populate({
-      path: "owner",
-      select: "name",
-    });
+    const parkings = await Parking.find()
+      .populate({
+        path: "owner",
+        select: "name",
+      })
+      .limit(parseInt(req.query.limit))
+      .skip(parseInt(req.query.skip));
 
     if (parkings.length === 0) {
       throw new Error("No parking found");
