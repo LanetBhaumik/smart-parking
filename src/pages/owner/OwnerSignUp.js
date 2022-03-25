@@ -9,16 +9,18 @@ import {
   Button,
   Link as MaterialLink,
   Box,
+  CircularProgress,
 } from "@mui/material";
 
 // actions
 import { ownerSignUp } from "../../redux/actions/authAction";
-import { setAlert, resetAlert } from "../../redux/actions/alertAction";
+import { setAlert } from "../../redux/actions/alertAction";
 
 // css
 import classes from "./OwnerSignUp.module.css";
 
-const OwnerSignUp = ({ ownerSignUp, setAlert, resetAlert, token }) => {
+const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
+  const [loading, setLoading] = useState(false);
   const Navigate = useNavigate();
   const [ownerData, setOwnerData] = useState({
     name: "",
@@ -77,7 +79,11 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, resetAlert, token }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!credIsValid()) return;
+    setLoading(true);
+    if (!credIsValid()) {
+      setLoading(false);
+      return;
+    }
     ownerSignUp({ ...ownerData, parking }).then((data) => {
       if (data.type === "INVALID_DATA") {
         setAlert("error", data.payload.error);
@@ -85,6 +91,7 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, resetAlert, token }) => {
         setAlert("success", "Sign up success");
         Navigate("/owner/parkings");
       }
+      setLoading(false);
     });
   };
 
@@ -258,10 +265,28 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, resetAlert, token }) => {
               fullWidth
             />
           </Box>
-          <Box component="div" style={{ marginTop: "12px" }}>
-            <Button type="submit" variant="contained" margin="normal" fullWidth>
+          <Box component="div" sx={{ m: 1, position: "relative" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              margin="normal"
+              fullWidth
+              disabled={loading}
+            >
               Sign Up
             </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
           </Box>
           <div style={{ justifyContent: "center", textAlign: "center" }}>
             <MaterialLink component={Link} to="/signin" variant="body2">
@@ -273,12 +298,9 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, resetAlert, token }) => {
     </>
   );
 };
-const mapStateToProps = (state) => ({
-  token: state.auth.token,
-});
+const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, {
   ownerSignUp,
   setAlert,
-  resetAlert,
 })(OwnerSignUp);

@@ -3,7 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 //material ui
-import { Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Link as MaterialLink } from "@mui/material";
 //css
 import classes from "./UserSignUp.module.css";
@@ -13,6 +19,7 @@ import { userSignUp } from "../../redux/actions/authAction";
 import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 
 const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
+  const [loading, setLoading] = useState(false);
   const Navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
@@ -52,7 +59,11 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!credIsValid()) return;
+    setLoading(true);
+    if (!credIsValid()) {
+      setLoading(false);
+      return;
+    }
     userSignUp(userData).then((data) => {
       if (data.type === "INVALID_DATA") {
         setAlert("error", data.payload.error);
@@ -60,6 +71,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
         setAlert("success", "Sign up success");
         Navigate("/parkings");
       }
+      setLoading(false);
     });
   };
 
@@ -162,11 +174,30 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
               fullWidth
             />
           </div>
-          <div>
-            <Button type="submit" variant="contained" margin="normal" fullWidth>
+          <Box sx={{ m: 1, position: "relative" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              margin="normal"
+              fullWidth
+              sx={{ m: 1, position: "relative" }}
+              disabled={loading}
+            >
               Sign Up
             </Button>
-          </div>
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
+          </Box>
           <div style={{ justifyContent: "center", textAlign: "center" }}>
             <MaterialLink component={Link} to="/signin" variant="body2">
               {"Already have an account? Sign in"}

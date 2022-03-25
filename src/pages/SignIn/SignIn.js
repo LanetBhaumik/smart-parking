@@ -12,6 +12,7 @@ import {
   Link as MaterialLink,
   ToggleButton,
   ToggleButtonGroup,
+  CircularProgress,
 } from "@mui/material";
 
 //actions
@@ -19,6 +20,7 @@ import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";
 import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 
 const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
+  const [loading, setLoading] = useState(false);
   const Navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
@@ -37,6 +39,7 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (role === "user") {
       userSignIn(credentials).then((data) => {
         if (data.type === "INVALID_DATA") {
@@ -45,6 +48,7 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
           setAlert("success", "Sign in success");
           Navigate("/parkings");
         }
+        setLoading(false);
       });
     } else {
       ownerSignIn(credentials).then((data) => {
@@ -116,10 +120,27 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
               fullWidth
             />
           </div>
-          <Box margin="normal">
-            <Button type="submit" variant="contained" fullWidth>
+          <Box sx={{ m: 1, position: "relative" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              disabled={loading}
+            >
               Sign In
             </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
           </Box>
           <Box margin="normal">
             <MaterialLink

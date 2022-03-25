@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // material ui
 import { AppBar, Box, Button, Link as MaterialLink } from "@mui/material";
@@ -26,7 +26,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
       <>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/parkings"
             underline="hover"
             color="inherit"
@@ -36,7 +36,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         </Box>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/user/bookings"
             underline="hover"
             color="inherit"
@@ -46,7 +46,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         </Box>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/user/me"
             underline="hover"
             color="inherit"
@@ -61,7 +61,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
       <>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/parkings"
             underline="hover"
             color="inherit"
@@ -71,7 +71,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         </Box>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/owner/parkings"
             underline="hover"
             color="inherit"
@@ -81,7 +81,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         </Box>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/owner/me"
             underline="hover"
             color="inherit"
@@ -96,7 +96,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
       <>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/signin"
             underline="hover"
             color="inherit"
@@ -106,7 +106,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         </Box>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/user/signup"
             underline="hover"
             color="inherit"
@@ -116,7 +116,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         </Box>
         <Box sx={{ fontWeight: "bold", m: 1 }}>
           <MaterialLink
-            component={Link}
+            component={NavLink}
             to="/owner/signup"
             underline="hover"
             color="inherit"
@@ -140,7 +140,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <Box
-            component={Link}
+            component={NavLink}
             to="/"
             color="inherit"
             sx={{
