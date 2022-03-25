@@ -22,11 +22,6 @@ const Parkings = ({ fetchParkings, parkings }) => {
 
   return (
     <>
-      {loading && (
-        <Box sx={{ textAlign: "center" }}>
-          <CircularProgress />
-        </Box>
-      )}
       {parkings.error && <p>No Parkings Found</p>}
       {!loading && !parkings.error && ids && ids.length > 0 && (
         <div>
@@ -38,6 +33,11 @@ const Parkings = ({ fetchParkings, parkings }) => {
             </Grid>
           </Container>
         </div>
+      )}
+      {loading && (
+        <Box sx={{ textAlign: "center" }}>
+          <CircularProgress />
+        </Box>
       )}
     </>
   );

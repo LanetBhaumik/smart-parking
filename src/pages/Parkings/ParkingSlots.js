@@ -33,8 +33,8 @@ const getOptimizedBookings = (bkgs) => {
     });
   }
   if (
-    optimizedBookingsArr[optimizedBookingsArr.length - 1].out_time !==
-    bkgs[lastIndex].out_time
+    // optimizedBookingsArr.length > 0 &&
+    optimizedBookingsArr.at(-1).out_time !== bkgs.at(-1).out_time
   ) {
     optimizedBookingsArr.push({
       color: "error",
