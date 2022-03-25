@@ -20,110 +20,55 @@ const Navbar = ({ role, signOut, setAlert }) => {
     });
   };
 
+  const Nav = (path, title) => {
+    return (
+      <Box sx={{ fontWeight: "bold", m: 1 }}>
+        <MaterialLink
+          component={NavLink}
+          to={path}
+          underline="hover"
+          color="inherit"
+          sx={{
+            p: 1,
+          }}
+          style={({ isActive }) =>
+            isActive
+              ? {
+                  background: "#0c56a5",
+                  borderRadius: "4px",
+                }
+              : {}
+          }
+        >
+          {title}
+        </MaterialLink>
+      </Box>
+    );
+  };
+
   let links = null;
   if (role === "user") {
     links = (
       <>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/parkings"
-            underline="hover"
-            color="inherit"
-          >
-            Parkings
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/user/bookings"
-            underline="hover"
-            color="inherit"
-          >
-            Bookings
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/user/me"
-            underline="hover"
-            color="inherit"
-          >
-            Profile
-          </MaterialLink>
-        </Box>
+        {Nav("/parkings", "Parkings")}
+        {Nav("/user/bookings", "Bookings")}
+        {Nav("/user/me", "Profile")}
       </>
     );
   } else if (role === "owner") {
     links = (
       <>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/parkings"
-            underline="hover"
-            color="inherit"
-          >
-            Home
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/owner/parkings"
-            underline="hover"
-            color="inherit"
-          >
-            Parkings
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/owner/me"
-            underline="hover"
-            color="inherit"
-          >
-            Profile
-          </MaterialLink>
-        </Box>
+        {Nav("/parkings", "Home")}
+        {Nav("/owner/parkings", "Parkings")}
+        {Nav("/owner/me", "Profile")}
       </>
     );
   } else {
     links = (
       <>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/signin"
-            underline="hover"
-            color="inherit"
-          >
-            Sign In
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/user/signup"
-            underline="hover"
-            color="inherit"
-          >
-            User Sign Up
-          </MaterialLink>
-        </Box>
-        <Box sx={{ fontWeight: "bold", m: 1 }}>
-          <MaterialLink
-            component={NavLink}
-            to="/owner/signup"
-            underline="hover"
-            color="inherit"
-          >
-            Owner Sign Up
-          </MaterialLink>
-        </Box>
+        {Nav("/signin", "Sign In")}
+        {Nav("/user/signup", "User Sign Up")}
+        {Nav("/owner/signup", "Owner Sign Up")}
       </>
     );
   }
