@@ -1,0 +1,134 @@
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+
+// material ui
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Box,
+  Button,
+  SwipeableDrawer,
+  ListItem,
+  ListItemText,
+  List,
+} from "@mui/material";
+
+// actions
+import { signOut } from "../../redux/actions/authAction";
+import { setAlert } from "../../redux/actions/alertAction";
+
+const DrawerComponent = ({ role, signOut, setAlert }) => {
+  const [open, setOpen] = useState(false);
+  const Navigate = useNavigate();
+
+  const toggleDrawer = (value) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setOpen(value);
+  };
+
+  const handleSignOut = () => {
+    signOut().then((data) => {
+      if (data.type === "SIGNOUT") {
+        setAlert("success", "sign out success");
+        Navigate("/");
+      }
+    });
+  };
+
+  const CustomListItem = (path, title) => {
+    return (
+      <ListItem button component={NavLink} to={path}>
+        <ListItemText primary={title} />
+      </ListItem>
+    );
+  };
+
+  let list = null;
+  if (role === "user") {
+    list = (
+      <>
+        {CustomListItem("/parkings", "Parkings")}
+        {CustomListItem("/user/bookings", "Bookings")}
+        {CustomListItem("/user/me", "Profile")}
+        <Box sx={{ m: 1 }}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            sx={{ fontWeight: "bold" }}
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </Button>
+        </Box>
+      </>
+    );
+  } else if (role === "owner") {
+    list = (
+      <>
+        {CustomListItem("/parkings", "Home")}
+        {CustomListItem("/owner/parkings", "Parkings")}
+        {CustomListItem("/owner/me", "Profile")}
+        <Box sx={{ m: 1 }}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            sx={{ fontWeight: "bold" }}
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </Button>
+        </Box>
+      </>
+    );
+  } else {
+    list = (
+      <>
+        {CustomListItem("/signin", "Sign In")}
+        {CustomListItem("/user/signup", "User Sign Up")}
+        {CustomListItem("/owner/signup", "Owner Sign Up")}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <MenuIcon
+        onClick={toggleDrawer(true)}
+        sx={{
+          cursor: "pointer",
+        }}
+      />
+      <SwipeableDrawer
+        anchor="right"
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          <List>{list}</List>
+        </Box>
+      </SwipeableDrawer>
+    </>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  role: state.auth.role,
+});
+
+export default connect(mapStateToProps, {
+  signOut,
+  setAlert,
+})(DrawerComponent);
