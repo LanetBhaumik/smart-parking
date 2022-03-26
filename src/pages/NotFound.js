@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -9,15 +10,12 @@ const NotFound = () => {
     <div className={classes.container}>
       <main className={classes.main}>
         <h1 data-test-id="text-404">404</h1>
-        <p>
+        <Typography color="inherit">
           I'm afraid you've found a page that doesn't exist on Smart Parking.
           That can happen when you follow a link to something that has since
-          been deleted. Or the link was incorrect to begin&nbsp;with.
-        </p>
-        <p>
-          Sorry about that. We've logged the error for review, in case it's our
-          fault.
-        </p>
+          been deleted. Or the link was incorrect to begin&nbsp;with. Sorry
+          about that. We've logged the error for review, in case it's our fault.
+        </Typography>
         <ul>
           <li>
             <Link className={classes.link} to="/">

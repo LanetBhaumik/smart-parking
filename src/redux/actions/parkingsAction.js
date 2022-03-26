@@ -9,19 +9,14 @@ import {
   PARKING_DETAIL_FAILED,
 } from "../reducers/parkingReducer";
 
-export const fetchParkings = () => async (dispatch) => {
+export const fetchParkings = (limit, skip) => async (dispatch) => {
   try {
-    const response = await getParkingsService();
+    const response = await getParkingsService(limit, skip);
     console.log(response.data);
-
-    const payload = {};
-    response.data.forEach((parking, i) => {
-      payload[parking._id] = response.data[i];
-    });
     if (response.status === 200) {
       return dispatch({
         type: PARKING_SUCCESS,
-        payload,
+        payload: response.data,
       });
     }
   } catch (error) {

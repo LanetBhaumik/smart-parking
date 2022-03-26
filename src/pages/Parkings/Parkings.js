@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 // action
 import { fetchParkings } from "../../redux/actions/parkingsAction";
@@ -8,37 +9,73 @@ import { fetchParkings } from "../../redux/actions/parkingsAction";
 import ParkingCard from "../../components/ParkingCard";
 
 //material ui
-import { Box, CircularProgress, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, CircularProgress } from "@mui/material";
 
-const Parkings = ({ fetchParkings, parkings }) => {
-  const ids = Object.keys(parkings);
+const Parkings = ({ fetchParkings }) => {
+  const [parkings, setParkings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+
+  const updateParkings = async () => {
+    try {
+      setLoading(true);
+      let data = await fetchParkings(10, 0);
+      if (data && data.type === "PARKING_SUCCESS") {
+        setParkings(parkings.concat(data.payload.parkings));
+        setTotalResults(data.payload.totalResults);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  const fetchMoreData = async () => {
+    try {
+      let data = await fetchParkings(10, page * 10);
+      if (data && data.type === "PARKING_SUCCESS") {
+        setParkings(parkings.concat(data.payload.parkings));
+        setPage(page + 1);
+        setTotalResults(data.payload.totalResults);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    fetchParkings().then((data) => {
-      setLoading(false);
-    });
+    updateParkings();
   }, []);
 
   return (
     <>
       {parkings.error && <p>No Parkings Found</p>}
-      {!loading && !parkings.error && ids && ids.length > 0 && (
-        <div>
-          <Container sx={{ py: 8 }} maxWidth="md">
-            <Grid container spacing={4}>
-              {ids.map((id) => (
-                <ParkingCard parking={parkings[id]} key={id} />
-              ))}
-            </Grid>
-          </Container>
-        </div>
-      )}
       {loading && (
         <Box sx={{ textAlign: "center" }}>
           <CircularProgress />
         </Box>
       )}
+      <InfiniteScroll
+        dataLength={parkings.length}
+        next={fetchMoreData}
+        hasMore={parkings.length !== totalResults}
+        loader={
+          <Box sx={{ textAlign: "center" }}>
+            <h4>Loading.....</h4>
+          </Box>
+        }
+      >
+        <Container sx={{ py: 8 }} maxWidth="md">
+          <Grid container spacing={4}>
+            {parkings.map((parking) => (
+              <ParkingCard parking={parking} key={parking._id} />
+            ))}
+          </Grid>
+        </Container>
+      </InfiniteScroll>
     </>
   );
 };

@@ -115,7 +115,10 @@ const userBookings = async (req, res) => {
         path: "parking",
         select: "parking_name",
       });
-    res.send(bookings);
+    const totalResults = await Booking.find({
+      user: req.user._id,
+    }).count();
+    res.send({ bookings, totalResults });
   } catch (error) {
     console.log(error);
     res.status(400).send({

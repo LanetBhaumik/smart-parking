@@ -34,15 +34,19 @@ export const userProfile = () => async (dispatch, getState) => {
   }
 };
 
-export const userBookings = () => async (dispatch, getState) => {
+export const userBookings = (limit, skip) => async (dispatch, getState) => {
   try {
     const user = getState().user;
-    const response = await userBookingsService();
+    const response = await userBookingsService(limit, skip);
     console.log(response);
     if (response.status === 200) {
       return dispatch({
         type: USER_BOOKINGS,
-        payload: { ...user, bookings: response.data },
+        payload: {
+          ...user,
+          bookings: response.data.bookings,
+          totalResults: response.data.totalResults,
+        },
       });
     }
   } catch (error) {

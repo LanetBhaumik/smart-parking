@@ -1,4 +1,4 @@
-const INITIAL_STATE = {};
+const INITIAL_STATE = [];
 
 export const PARKING_SUCCESS = "PARKING_SUCCESS";
 export const PARKING_FAILED = "PARKING_FAILED";
@@ -8,19 +8,13 @@ export const PARKING_DETAIL_FAILED = "PARKING_DETAIL_FAILED";
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PARKING_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-      };
+      return [...state, ...action.payload.parkings];
     }
     case PARKING_FAILED: {
       return action.payload;
     }
     case PARKING_DETAIL_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-      };
+      return [...state, ...action.payload];
     }
     case PARKING_DETAIL_FAILED: {
       return action.payload;

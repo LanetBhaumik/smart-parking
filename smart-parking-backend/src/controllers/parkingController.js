@@ -44,11 +44,14 @@ const readAllParkings = async (req, res) => {
       })
       .limit(parseInt(req.query.limit))
       .skip(parseInt(req.query.skip));
-
+    const totalResults = await Parking.count();
     if (parkings.length === 0) {
       throw new Error("No parking found");
     }
-    res.send(parkings);
+    res.send({
+      parkings,
+      totalResults,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({

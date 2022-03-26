@@ -1,21 +1,52 @@
-import { Box, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { userBookings } from "../../redux/actions/userAction";
 
 // css
 import classes from "./UserBookings.module.css";
 
-const UserBookings = ({ userBookings, user }) => {
+import { Box, CircularProgress } from "@mui/material";
+
+const UserBookings = ({ userBookings }) => {
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
   const currentTime = new Date();
 
-  const { bookings } = user;
+  const updateBookings = async () => {
+    try {
+      setLoading(true);
+      let data = await userBookings(10, 0);
+      if (data && data.type === "USER_BOOKINGS") {
+        setBookings(bookings.concat(data.payload.bookings));
+        setTotalResults(data.payload.totalResults);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  const fetchMoreData = async () => {
+    try {
+      let data = await userBookings(10, page * 10);
+      if (data && data.type === "USER_BOOKINGS") {
+        setBookings(bookings.concat(data.payload.bookings));
+        setPage(page + 1);
+        setTotalResults(data.payload.totalResults);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    userBookings().then((data) => {
-      if (data.type === "USER_BOOKINGS") setLoading(false);
-    });
+    updateBookings();
   }, []);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
@@ -65,78 +96,90 @@ const UserBookings = ({ userBookings, user }) => {
           {!loading && bookings.length === 0 && (
             <h3 className={classes.heading}>No Bookings</h3>
           )}
-          {!loading &&
-            bookings &&
-            bookings.length > 0 &&
-            bookings.map((booking, i) => {
-              return (
-                <li className={classes["table-row"]} key={i}>
-                  {currentTime > new Date(booking.out_time) && (
-                    <div
-                      className={`${classes.col} ${classes["col-1"]}`}
-                      data-label="Status"
-                    >
-                      <span className={classes.expired}>Expired</span>
-                    </div>
-                  )}
 
-                  {currentTime < new Date(booking.in_time) && (
-                    <div
-                      className={`${classes.col} ${classes["col-1"]}`}
-                      data-label="Status"
-                    >
-                      <span className={classes.upcoming}>Upcoming</span>
-                    </div>
-                  )}
-                  {currentTime >= new Date(booking.in_time) &&
-                    currentTime <= new Date(booking.out_time) && (
+          <InfiniteScroll
+            dataLength={bookings.length}
+            next={fetchMoreData}
+            hasMore={bookings.length !== totalResults}
+            loader={
+              <Box sx={{ textAlign: "center" }}>
+                <h4>Loading.....</h4>
+              </Box>
+            }
+          >
+            {!loading &&
+              bookings &&
+              bookings.length > 0 &&
+              bookings.map((booking, i) => {
+                return (
+                  <li className={classes["table-row"]} key={i}>
+                    {currentTime > new Date(booking.out_time) && (
                       <div
                         className={`${classes.col} ${classes["col-1"]}`}
                         data-label="Status"
                       >
-                        <span className={classes.active}>Active</span>
+                        <span className={classes.expired}>Expired</span>
                       </div>
                     )}
 
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Car No"
-                  >
-                    {carNoFormat(booking.car.car_no)}
-                  </div>
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Parking"
-                  >
-                    {booking.parking.parking_name}
-                  </div>
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Slot"
-                  >
-                    {booking.slot}
-                  </div>
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Entry Time"
-                  >
-                    {timeFormat(booking.in_time)}
-                  </div>
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Exit Time"
-                  >
-                    {timeFormat(booking.out_time)}
-                  </div>
-                  <div
-                    className={`${classes.col} ${classes["col-1"]}`}
-                    data-label="Charge"
-                  >
-                    {`${booking.charge} Rs.`}
-                  </div>
-                </li>
-              );
-            })}
+                    {currentTime < new Date(booking.in_time) && (
+                      <div
+                        className={`${classes.col} ${classes["col-1"]}`}
+                        data-label="Status"
+                      >
+                        <span className={classes.upcoming}>Upcoming</span>
+                      </div>
+                    )}
+                    {currentTime >= new Date(booking.in_time) &&
+                      currentTime <= new Date(booking.out_time) && (
+                        <div
+                          className={`${classes.col} ${classes["col-1"]}`}
+                          data-label="Status"
+                        >
+                          <span className={classes.active}>Active</span>
+                        </div>
+                      )}
+
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Car No"
+                    >
+                      {carNoFormat(booking.car.car_no)}
+                    </div>
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Parking"
+                    >
+                      {booking.parking.parking_name}
+                    </div>
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Slot"
+                    >
+                      {booking.slot}
+                    </div>
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Entry Time"
+                    >
+                      {timeFormat(booking.in_time)}
+                    </div>
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Exit Time"
+                    >
+                      {timeFormat(booking.out_time)}
+                    </div>
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Charge"
+                    >
+                      {`${booking.charge} Rs.`}
+                    </div>
+                  </li>
+                );
+              })}
+          </InfiniteScroll>
         </ul>
       </div>
       <div className={classes.note}>
@@ -151,9 +194,7 @@ const UserBookings = ({ userBookings, user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
+const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, {
   userBookings,

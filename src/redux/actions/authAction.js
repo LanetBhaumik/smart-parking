@@ -28,7 +28,7 @@ export const userSignIn = (Credentials) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log({ error });
+    console.log(error);
     if (error.response) {
       return dispatch({
         type: INVALID_DATA,
