@@ -10,9 +10,9 @@ const composeEnhancer =
 const enhancer = composeEnhancer(applyMiddleware(thunk));
 
 const token = localStorage.getItem("token");
-const role = localStorage.getItem("role");
 
 const INITIAL_STATE = {
+  loading: true,
   auth: {
     error_msg: "",
   },
@@ -22,6 +22,5 @@ const INITIAL_STATE = {
 };
 if (token) {
   INITIAL_STATE.auth.token = token;
-  INITIAL_STATE.auth.role = role;
 }
 export default createStore(reducer, INITIAL_STATE, enhancer);

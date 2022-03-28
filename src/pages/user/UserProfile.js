@@ -1,27 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 // actions
 import { userProfile } from "../../redux/actions/userAction";
 import { signOut } from "../../redux/actions/authAction";
 
-import { Box, Button } from "@mui/material";
-
+// css
 import classes from "./UserProfile.module.css";
 
-const UserProfile = ({ userProfile, signOut, profile }) => {
+// material ui
+import { Box, Button } from "@mui/material";
+
+const carNoFormat = (carNo) => {
+  return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
+    4,
+    6
+  )} ${carNo.slice(6)}`;
+};
+
+const UserProfile = ({ userProfile, signOut }) => {
+  const [profile, setProfile] = useState({});
+  const mountedRef = useRef(true);
+
   const onSignOutHandle = () => {
     signOut();
   };
 
-  const carNoFormat = (carNo) => {
-    return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
-      4,
-      6
-    )} ${carNo.slice(6)}`;
-  };
   useEffect(() => {
-    userProfile();
+    const fetchProfile = async () => {
+      const data = await userProfile();
+      if (data.type === "USER_PROFILE") {
+        if (!mountedRef.current) return null;
+        setProfile(data.payload.profile);
+      }
+    };
+
+    fetchProfile();
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (
@@ -82,9 +100,7 @@ const UserProfile = ({ userProfile, signOut, profile }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  profile: state.user.profile,
-});
+const mapStateToProps = (state) => ({});
 export default connect(mapStateToProps, {
   userProfile,
   signOut,

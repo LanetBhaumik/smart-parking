@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router";
 
@@ -64,23 +64,31 @@ const ParkingSlots = ({
   let bookings = parkingBookings[params.parkingId];
   const optimizedBookings = {};
 
+  const mountedRef = useRef(true);
+
   useEffect(() => {
     const fetchBookingData = async () => {
       const parkingData = await fetchParkingDetail(params.parkingId);
       if (parkingData.type === "PARKING_DETAIL_SUCCESS") {
+        if (!mountedRef.current) return null;
         setParking(parkingData.payload);
       }
       const data = await fetchParkingBookings(params.parkingId);
       if (data.type === "PARKING_BOOKINGS_DATA") {
+        if (!mountedRef.current) return null;
         setLoading(false);
         bookings = data.payload[params.parkingId];
         Object.keys(bookings).forEach((slot) => {
           optimizedBookings[slot] = getOptimizedBookings(bookings[slot]);
         });
+        if (!mountedRef.current) return null;
         setShowTimeline(optimizedBookings);
       }
     };
     fetchBookingData();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (

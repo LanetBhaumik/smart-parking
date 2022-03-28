@@ -116,9 +116,9 @@ const TimelineModal = ({ slot, bookings, parking }) => {
       >
         <Box sx={{ ...style, width: 400 }}>
           <Timeline>
-            {timeline.map((booking) => {
+            {timeline.map((booking, i) => {
               return (
-                <TimelineItem key={booking._id}>
+                <TimelineItem key={i}>
                   <TimelineOppositeContent>
                     {timeFormat(booking.in_time)}
                   </TimelineOppositeContent>

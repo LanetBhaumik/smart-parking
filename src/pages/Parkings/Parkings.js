@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -16,6 +16,8 @@ const Parkings = ({ fetchParkings }) => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
+
+  const mountedRef = useRef(true);
 
   const updateParkings = async () => {
     setLoading(true);
@@ -38,7 +40,14 @@ const Parkings = ({ fetchParkings }) => {
   };
 
   useEffect(() => {
-    updateParkings();
+    const fetchData = async () => {
+      await updateParkings();
+    };
+    if (!mountedRef.current) return null;
+    fetchData();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (

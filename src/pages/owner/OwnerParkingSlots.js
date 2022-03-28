@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -20,12 +20,21 @@ const OwnerParkingSlots = ({
   const currentTime = new Date().getTime();
   const Navigate = useNavigate();
   const params = useParams();
+  const mountedRef = useRef(true);
 
   useEffect(() => {
-    fetchParkingDetail(params.parkingId);
-    fetchParkingBookings(params.parkingId).then((data) => {
-      if (data.type === "PARKING_BOOKINGS_DATA") setLoading(false);
-    });
+    const apiCall = async () => {
+      await fetchParkingDetail(params.parkingId);
+      const data = await fetchParkingBookings(params.parkingId);
+      if (data.type === "PARKING_BOOKINGS_DATA") {
+        if (!mountedRef.current) return null;
+        setLoading(false);
+      }
+    };
+    apiCall();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const bookings = parkingBookings[params.parkingId];

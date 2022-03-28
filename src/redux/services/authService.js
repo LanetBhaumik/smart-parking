@@ -14,9 +14,14 @@ export const ownerSignUpService = (ownerData) => {
   return baseService.post("/owners", ownerData);
 };
 
+export const getProfileService = () => {
+  return baseService.get("/profile");
+};
+
 export default {
   userSignInService,
   ownerSignInService,
   userSignUpService,
   ownerSignUpService,
+  getProfileService,
 };

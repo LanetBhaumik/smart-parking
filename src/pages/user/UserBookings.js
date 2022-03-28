@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -15,6 +15,8 @@ const UserBookings = ({ userBookings }) => {
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
   const currentTime = new Date();
+
+  const mountedRef = useRef(true);
 
   const updateBookings = async () => {
     setLoading(true);
@@ -36,7 +38,14 @@ const UserBookings = ({ userBookings }) => {
   };
 
   useEffect(() => {
-    updateBookings();
+    const fetchData = async () => {
+      await updateBookings();
+    };
+    if (!mountedRef.current) return null;
+    fetchData();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const pad = (n) => (n < 10 ? "0" + n : n);

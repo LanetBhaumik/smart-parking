@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 // actions
@@ -16,10 +16,18 @@ import AddParking from "../../components/AddParking";
 const OwnerParkings = ({ ownerProfile, owner }) => {
   const [loading, setLoading] = useState(true);
   const { profile } = owner;
+  const mountedRef = useRef(true);
+
   useEffect(() => {
-    ownerProfile().then((data) => {
+    const fetchProfile = async () => {
+      const data = await ownerProfile();
+      if (!mountedRef.current) return null;
       if (data.type === "OWNER_PROFILE") setLoading(false);
-    });
+    };
+    fetchProfile();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (

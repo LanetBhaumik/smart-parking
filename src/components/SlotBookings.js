@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -24,6 +24,7 @@ const SlotBookings = ({
   const parkingId = params.parkingId;
   const slot = params.slot;
   const [loading, setLoading] = useState(true);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,10 +32,14 @@ const SlotBookings = ({
       await fetchParkingDetail(parkingId);
       const data = await fetchParkingSlotBookings(parkingId, slot);
       if (data.type === "SLOT_BOOKINGS_DATA") {
+        if (!mountedRef.current) return null;
         setLoading(false);
       }
     };
     fetchData();
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   const parking = parkingBookings[parkingId];

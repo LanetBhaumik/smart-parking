@@ -3,6 +3,7 @@ import {
   userSignUpService,
   ownerSignInService,
   ownerSignUpService,
+  getProfileService,
 } from "../services/authService";
 import {
   USER_SIGNIN,
@@ -14,12 +15,35 @@ import {
 } from "../reducers/authReducer";
 import { setAuthToken } from "../../utils/setAuthToken";
 
+export const getProfile = () => async (dispatch) => {
+  try {
+    const response = await getProfileService();
+    if (response.status === 200 && response.data.user) {
+      return dispatch({
+        type: USER_SIGNIN,
+        payload: response.data,
+      });
+    } else if (response.status === 200 && response.data.owner) {
+      return dispatch({
+        type: OWNER_SIGNIN,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    if (error.response) {
+      return dispatch({
+        type: INVALID_DATA,
+        payload: error.response.data,
+      });
+    }
+  }
+};
+
 export const userSignIn = (Credentials) => async (dispatch) => {
   try {
     const response = await userSignInService(Credentials);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", "user");
       setAuthToken(response.data.token);
       return dispatch({
         type: USER_SIGNIN,
@@ -41,7 +65,6 @@ export const userSignUp = (userData) => async (dispatch) => {
     const response = await userSignUpService(userData);
     if (response.status === 201) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", "user");
       setAuthToken(response.data.token);
       return dispatch({
         type: USER_SIGNUP,
@@ -63,7 +86,6 @@ export const ownerSignIn = (Credentials) => async (dispatch) => {
     const response = await ownerSignInService(Credentials);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", "owner");
       setAuthToken(response.data.token);
       return dispatch({
         type: OWNER_SIGNIN,
@@ -85,7 +107,6 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
     const response = await ownerSignUpService(ownerData);
     if (response.status === 201) {
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", "owner");
       setAuthToken(response.data.token);
       return dispatch({
         type: OWNER_SIGNUP,
@@ -104,7 +125,6 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
 
 export const signOut = () => async (dispatch) => {
   localStorage.removeItem("token");
-  localStorage.removeItem("role");
 
   setAuthToken();
   return dispatch({
@@ -118,4 +138,5 @@ export default {
   userSignUp,
   ownerSignUp,
   signOut,
+  getProfile,
 };
