@@ -29,7 +29,6 @@ const AddParking = ({ addParking, setAlert }) => {
       ...parking,
       [name]: value,
     });
-    console.log(parking);
   };
 
   const { parking_name, address, pincode, total_slots, rate } = parking;

@@ -17,7 +17,6 @@ import { setAuthToken } from "../../utils/setAuthToken";
 export const userSignIn = (Credentials) => async (dispatch) => {
   try {
     const response = await userSignInService(Credentials);
-    console.log("signin-----", response);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");
@@ -28,7 +27,6 @@ export const userSignIn = (Credentials) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log(error);
     if (error.response) {
       return dispatch({
         type: INVALID_DATA,
@@ -40,9 +38,7 @@ export const userSignIn = (Credentials) => async (dispatch) => {
 
 export const userSignUp = (userData) => async (dispatch) => {
   try {
-    console.log(userData);
     const response = await userSignUpService(userData);
-    console.log(response);
     if (response.status === 201) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "user");
@@ -65,7 +61,6 @@ export const userSignUp = (userData) => async (dispatch) => {
 export const ownerSignIn = (Credentials) => async (dispatch) => {
   try {
     const response = await ownerSignInService(Credentials);
-    console.log(response);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "owner");
@@ -87,9 +82,7 @@ export const ownerSignIn = (Credentials) => async (dispatch) => {
 
 export const ownerSignUp = (ownerData) => async (dispatch) => {
   try {
-    console.log(ownerData);
     const response = await ownerSignUpService(ownerData);
-    console.log(response);
     if (response.status === 201) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", "owner");

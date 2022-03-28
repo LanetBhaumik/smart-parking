@@ -18,31 +18,22 @@ const Parkings = ({ fetchParkings }) => {
   const [totalResults, setTotalResults] = useState(0);
 
   const updateParkings = async () => {
-    try {
-      setLoading(true);
-      let data = await fetchParkings(10, 0);
-      if (data && data.type === "PARKING_SUCCESS") {
-        setParkings(parkings.concat(data.payload.parkings));
-        setTotalResults(data.payload.totalResults);
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
+    setLoading(true);
+    let data = await fetchParkings(10, 0);
+    if (data && data.type === "PARKING_SUCCESS") {
+      setParkings(parkings.concat(data.payload.parkings));
+      setTotalResults(data.payload.totalResults);
+    } else {
     }
     setLoading(false);
   };
 
   const fetchMoreData = async () => {
-    try {
-      let data = await fetchParkings(10, page * 10);
-      if (data && data.type === "PARKING_SUCCESS") {
-        setParkings(parkings.concat(data.payload.parkings));
-        setPage(page + 1);
-        setTotalResults(data.payload.totalResults);
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
+    let data = await fetchParkings(10, page * 10);
+    if (data && data.type === "PARKING_SUCCESS") {
+      setParkings(parkings.concat(data.payload.parkings));
+      setPage(page + 1);
+      setTotalResults(data.payload.totalResults);
     }
   };
 

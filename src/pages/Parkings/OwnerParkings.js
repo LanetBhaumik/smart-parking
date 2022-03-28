@@ -17,7 +17,6 @@ const OwnerParkings = ({ ownerProfile, owner }) => {
   const [loading, setLoading] = useState(true);
   const { profile } = owner;
   useEffect(() => {
-    console.log("useEffect in owner parking");
     ownerProfile().then((data) => {
       if (data.type === "OWNER_PROFILE") setLoading(false);
     });

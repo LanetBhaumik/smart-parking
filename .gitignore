@@ -2,8 +2,6 @@
 
 # dependencies
 /node_modules
-/smart-parking-backend/node_modules
-/smart-parking-backend/config
 /.pnp
 .pnp.js
 

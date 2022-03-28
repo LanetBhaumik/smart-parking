@@ -12,7 +12,6 @@ import {
 export const fetchParkings = (limit, skip) => async (dispatch) => {
   try {
     const response = await getParkingsService(limit, skip);
-    console.log(response.data);
     if (response.status === 200) {
       return dispatch({
         type: PARKING_SUCCESS,
@@ -21,7 +20,6 @@ export const fetchParkings = (limit, skip) => async (dispatch) => {
     }
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       return dispatch({
         type: PARKING_FAILED,
         payload: {
@@ -35,7 +33,6 @@ export const fetchParkings = (limit, skip) => async (dispatch) => {
 export const fetchParkingDetail = (parkingId) => async (dispatch) => {
   try {
     const response = await parkingDetailService(parkingId);
-    console.log(response.data);
     if (response.status === 200) {
       return dispatch({
         type: PARKING_DETAIL_SUCCESS,
@@ -44,7 +41,6 @@ export const fetchParkingDetail = (parkingId) => async (dispatch) => {
     }
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       return dispatch({
         type: PARKING_DETAIL_FAILED,
         payload: {

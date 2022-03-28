@@ -57,7 +57,6 @@ const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
   };
 
   const credIsValid = () => {
-    console.log(total_slots);
     if (mobile_no.length !== 10) {
       setAlert("error", "mobile_no is invalid");
       return false;

@@ -14,7 +14,6 @@ export const ownerProfile = () => async (dispatch, getState) => {
   try {
     const owner = getState().owner;
     const response = await ownerProfileService();
-    console.log(response);
     if (response.status === 200) {
       return dispatch({
         type: OWNER_PROFILE,
@@ -23,7 +22,6 @@ export const ownerProfile = () => async (dispatch, getState) => {
     }
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       return dispatch({
         type: OWNER_PROFILE_FAILED,
         payload: {
@@ -36,10 +34,8 @@ export const ownerProfile = () => async (dispatch, getState) => {
 
 export const addParking = (parkingData) => async (dispatch, getState) => {
   try {
-    console.log(parkingData);
     const owner = getState().owner;
     const response = await addParkingService(parkingData);
-    console.log(response);
     if (response.status === 201) {
       return dispatch({
         type: ADD_PARKING_SUCCESS,
@@ -48,7 +44,6 @@ export const addParking = (parkingData) => async (dispatch, getState) => {
     }
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       return dispatch({
         type: ADD_PARKING_FAILED,
         payload: error.response.data,

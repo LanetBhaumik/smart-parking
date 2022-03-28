@@ -17,31 +17,21 @@ const UserBookings = ({ userBookings }) => {
   const currentTime = new Date();
 
   const updateBookings = async () => {
-    try {
-      setLoading(true);
-      let data = await userBookings(10, 0);
-      if (data && data.type === "USER_BOOKINGS") {
-        setBookings(bookings.concat(data.payload.bookings));
-        setTotalResults(data.payload.totalResults);
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
+    setLoading(true);
+    let data = await userBookings(10, 0);
+    if (data && data.type === "USER_BOOKINGS") {
+      setBookings(bookings.concat(data.payload.bookings));
+      setTotalResults(data.payload.totalResults);
     }
     setLoading(false);
   };
 
   const fetchMoreData = async () => {
-    try {
-      let data = await userBookings(10, page * 10);
-      if (data && data.type === "USER_BOOKINGS") {
-        setBookings(bookings.concat(data.payload.bookings));
-        setPage(page + 1);
-        setTotalResults(data.payload.totalResults);
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
+    let data = await userBookings(10, page * 10);
+    if (data && data.type === "USER_BOOKINGS") {
+      setBookings(bookings.concat(data.payload.bookings));
+      setPage(page + 1);
+      setTotalResults(data.payload.totalResults);
     }
   };
 

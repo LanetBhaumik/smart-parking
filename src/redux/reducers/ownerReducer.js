@@ -23,15 +23,12 @@ export default (state = INITIAL_STATE, action) => {
       };
     }
     case ADD_PARKING_SUCCESS: {
-      console.log("add parking success");
       return {
         ...state,
         ...action.payload,
       };
     }
     case ADD_PARKING_FAILED: {
-      console.log("add parking failed");
-
       return {
         ...state,
         ...action.payload,
