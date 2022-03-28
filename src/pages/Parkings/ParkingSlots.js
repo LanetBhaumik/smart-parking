@@ -32,6 +32,13 @@ const getOptimizedBookings = (bkgs) => {
       out_time: newOut,
     });
   }
+  if (optimizedBookingsArr.length === 0) {
+    optimizedBookingsArr.push({
+      color: "error",
+      in_time: bkgs.at(-1).in_time,
+      out_time: bkgs.at(-1).out_time,
+    });
+  }
   if (
     // optimizedBookingsArr.length > 0 &&
     optimizedBookingsArr.at(-1).out_time !== bkgs.at(-1).out_time
@@ -50,6 +57,7 @@ const ParkingSlots = ({
   fetchParkingBookings,
   fetchParkingDetail,
 }) => {
+  const [parking, setParking] = useState({});
   const [loading, setLoading] = useState(true);
   const [showTimeline, setShowTimeline] = useState({});
   const params = useParams();
@@ -58,7 +66,10 @@ const ParkingSlots = ({
 
   useEffect(() => {
     const fetchBookingData = async () => {
-      await fetchParkingDetail(params.parkingId);
+      const parkingData = await fetchParkingDetail(params.parkingId);
+      if (parkingData.type === "PARKING_DETAIL_SUCCESS") {
+        setParking(parkingData.payload);
+      }
       const data = await fetchParkingBookings(params.parkingId);
       if (data.type === "PARKING_BOOKINGS_DATA") {
         setLoading(false);
@@ -90,6 +101,7 @@ const ParkingSlots = ({
                   key={slot}
                   slot={slot}
                   bookings={showTimeline[slot]}
+                  parking={parking}
                 />
               );
             })}

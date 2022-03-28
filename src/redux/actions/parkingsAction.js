@@ -39,9 +39,7 @@ export const fetchParkingDetail = (parkingId) => async (dispatch) => {
     if (response.status === 200) {
       return dispatch({
         type: PARKING_DETAIL_SUCCESS,
-        payload: {
-          [parkingId]: response.data,
-        },
+        payload: response.data,
       });
     }
   } catch (error) {

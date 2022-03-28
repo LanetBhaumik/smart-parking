@@ -14,7 +14,7 @@ export default (state = INITIAL_STATE, action) => {
       return action.payload;
     }
     case PARKING_DETAIL_SUCCESS: {
-      return [...state, ...action.payload];
+      return [...state, action.payload];
     }
     case PARKING_DETAIL_FAILED: {
       return action.payload;

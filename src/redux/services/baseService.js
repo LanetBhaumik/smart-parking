@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseUrl = "http://localhost:3000";
+export const baseUrl = "https://peaceful-spire-05224.herokuapp.com";
 
 const token = localStorage.getItem("token");
 axios.defaults.headers.common["Authorization"] = "Bearer " + token;

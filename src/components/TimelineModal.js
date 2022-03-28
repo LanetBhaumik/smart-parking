@@ -66,20 +66,18 @@ const getTimeline = (bkgs) => {
   return timelineArray;
 };
 
-const TimelineModal = ({ slot, bookings, parkings }) => {
+const TimelineModal = ({ slot, bookings, parking }) => {
   const [timeline, setTimeline] = useState([]);
   const [open, setOpen] = useState(false);
   const currentTime = new Date().getTime();
 
   const params = useParams();
-  const parkingId = params.parkingId;
-  const parking = parkings[parkingId];
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: "60vw",
     bgcolor: "background.paper",
     boxShadow: 24,
     pt: 2,
