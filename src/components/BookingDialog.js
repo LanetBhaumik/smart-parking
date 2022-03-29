@@ -42,7 +42,7 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
     if (role === "user") {
       setOpen(true);
     } else {
-      Navigate("/user/signup");
+      Navigate("/signin");
     }
   };
   const onInError = (e) => {

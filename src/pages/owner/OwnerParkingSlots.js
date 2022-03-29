@@ -14,8 +14,8 @@ const OwnerParkingSlots = ({
   parkingBookings,
   fetchParkingBookings,
   fetchParkingDetail,
-  parkings,
 }) => {
+  const [parking, setParking] = useState({});
   const [loading, setLoading] = useState(true);
   const currentTime = new Date().getTime();
   const Navigate = useNavigate();
@@ -24,7 +24,11 @@ const OwnerParkingSlots = ({
 
   useEffect(() => {
     const apiCall = async () => {
-      await fetchParkingDetail(params.parkingId);
+      const parkingData = await fetchParkingDetail(params.parkingId);
+      if (parkingData.type === "PARKING_DETAIL_SUCCESS") {
+        if (!mountedRef.current) return null;
+        setParking(parkingData.payload);
+      }
       const data = await fetchParkingBookings(params.parkingId);
       if (data.type === "PARKING_BOOKINGS_DATA") {
         if (!mountedRef.current) return null;
@@ -40,7 +44,9 @@ const OwnerParkingSlots = ({
   const bookings = parkingBookings[params.parkingId];
   return (
     <>
-      <h2 className={classes.heading}>Bookings of Parking</h2>
+      <h2
+        className={classes.heading}
+      >{`Bookings of ${parking.parking_name}`}</h2>
       {loading && (
         <Box sx={{ textAlign: "center" }}>
           <CircularProgress />
@@ -81,7 +87,7 @@ const OwnerParkingSlots = ({
             </div>
             <div style={{ display: "flex", marginBottom: 10 }}>
               <div className={classes.hasBookings}></div>
-              <span>Has Bookings</span>
+              <span>Has Future Bookings</span>
             </div>
             <div style={{ display: "flex", marginBottom: 10 }}>
               <div className={classes.noBookings}></div>
@@ -96,7 +102,6 @@ const OwnerParkingSlots = ({
 
 const mapStateToProps = (state) => ({
   parkingBookings: state.parkingBookings,
-  parkings: state.parkings,
 });
 
 export default connect(mapStateToProps, {

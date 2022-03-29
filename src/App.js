@@ -41,12 +41,12 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
     const fetchProfile = async () => {
       const data = await getProfile();
       if (data) {
-        setLoading(false);
       }
     };
 
     if (!mountedRef.current) return null;
     fetchProfile();
+    setLoading(false);
 
     return () => {
       mountedRef.current = false;

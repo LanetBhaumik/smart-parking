@@ -12,7 +12,6 @@ const enhancer = composeEnhancer(applyMiddleware(thunk));
 const token = localStorage.getItem("token");
 
 const INITIAL_STATE = {
-  loading: true,
   auth: {
     error_msg: "",
   },

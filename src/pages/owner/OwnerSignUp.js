@@ -18,8 +18,10 @@ import { setAlert } from "../../redux/actions/alertAction";
 
 // css
 import classes from "./OwnerSignUp.module.css";
+import { useMedia } from "react-use";
 
 const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
+  const isMobile = useMedia("(max-width: 720px)");
   const [loading, setLoading] = useState(false);
   const Navigate = useNavigate();
   const [ownerData, setOwnerData] = useState({
@@ -83,7 +85,8 @@ const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
       setLoading(false);
       return;
     }
-    ownerSignUp({ ...ownerData, parking }).then((data) => {
+    const signUpRequest = async (payload) => {
+      const data = await ownerSignUp(payload);
       if (data.type === "INVALID_DATA") {
         setAlert("error", data.payload.error);
       } else {
@@ -91,209 +94,212 @@ const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
         Navigate("/owner/parkings");
       }
       setLoading(false);
-    });
+    };
+    signUpRequest({ ...ownerData, parking });
   };
 
   return (
     <>
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <div className={classes.container}>
-          <Typography
-            variant="h4"
-            gutterBottom
-            component="div"
-            margin="normal"
-            align="center"
-          >
-            Sign Up To List Your Park
-          </Typography>
-          <Box>
-            <TextField
-              id="name"
-              label="name"
-              variant="outlined"
-              required
-              type="text"
+      <Box sx={{ width: isMobile ? "100vw" : "60vw", margin: "auto" }}>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <div className={classes.container}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              component="div"
               margin="normal"
-              value={name}
-              name="name"
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
-          <Box>
-            <TextField
-              id="email"
-              label="email"
-              variant="outlined"
-              required
-              type="email"
-              margin="normal"
-              value={email}
-              name="email"
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
-          <Box>
-            <TextField
-              id="mobile_no"
-              label="mobile_no"
-              variant="outlined"
-              required
-              type="tel"
-              margin="normal"
-              value={mobile_no}
-              name="mobile_no"
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
+              align="center"
+            >
+              Sign Up To List Your Park
+            </Typography>
+            <Box>
+              <TextField
+                id="name"
+                label="name"
+                variant="outlined"
+                required
+                type="text"
+                margin="normal"
+                value={name}
+                name="name"
+                onChange={handleChange}
+                fullWidth
+              />
+            </Box>
+            <Box>
+              <TextField
+                id="email"
+                label="email"
+                variant="outlined"
+                required
+                type="email"
+                margin="normal"
+                value={email}
+                name="email"
+                onChange={handleChange}
+                fullWidth
+              />
+            </Box>
+            <Box>
+              <TextField
+                id="mobile_no"
+                label="mobile_no"
+                variant="outlined"
+                required
+                type="tel"
+                margin="normal"
+                value={mobile_no}
+                name="mobile_no"
+                onChange={handleChange}
+                fullWidth
+              />
+            </Box>
 
-          <div>
-            <div className={classes.parkingForm}>
-              <div className={classes.container}>
-                <Typography
-                  variant="h4"
-                  gutterBottom
-                  component="div"
-                  margin="normal"
-                  align="center"
-                >
-                  Parking Details
-                </Typography>
-                <Box>
-                  <TextField
-                    id="parking_name"
-                    label="Name of Parking"
-                    variant="outlined"
-                    required
-                    type="text"
+            <div>
+              <div className={classes.parkingForm}>
+                <div className={classes.container}>
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    component="div"
                     margin="normal"
-                    value={parking_name}
-                    name="parking_name"
-                    onChange={handleParkingChange}
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    id="address"
-                    label="Parking Address"
-                    variant="outlined"
-                    required
-                    type="text"
-                    margin="normal"
-                    value={address}
-                    name="address"
-                    onChange={handleParkingChange}
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    id="pincode"
-                    label="Pincode"
-                    variant="outlined"
-                    required
-                    type="text"
-                    margin="normal"
-                    value={pincode}
-                    name="pincode"
-                    onChange={handleParkingChange}
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    id="total_slots"
-                    label="Total slots"
-                    variant="outlined"
-                    required
-                    type="text"
-                    margin="normal"
-                    value={total_slots}
-                    name="total_slots"
-                    onChange={handleParkingChange}
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    id="rate"
-                    label="Rate of parking"
-                    helperText="per hour in rupees"
-                    variant="outlined"
-                    required
-                    type="text"
-                    margin="normal"
-                    value={rate}
-                    name="rate"
-                    onChange={handleParkingChange}
-                    fullWidth
-                  />
-                </Box>
+                    align="center"
+                  >
+                    Parking Details
+                  </Typography>
+                  <Box>
+                    <TextField
+                      id="parking_name"
+                      label="Name of Parking"
+                      variant="outlined"
+                      required
+                      type="text"
+                      margin="normal"
+                      value={parking_name}
+                      name="parking_name"
+                      onChange={handleParkingChange}
+                      fullWidth
+                    />
+                  </Box>
+                  <Box>
+                    <TextField
+                      id="address"
+                      label="Parking Address"
+                      variant="outlined"
+                      required
+                      type="text"
+                      margin="normal"
+                      value={address}
+                      name="address"
+                      onChange={handleParkingChange}
+                      fullWidth
+                    />
+                  </Box>
+                  <Box>
+                    <TextField
+                      id="pincode"
+                      label="Pincode"
+                      variant="outlined"
+                      required
+                      type="text"
+                      margin="normal"
+                      value={pincode}
+                      name="pincode"
+                      onChange={handleParkingChange}
+                      fullWidth
+                    />
+                  </Box>
+                  <Box>
+                    <TextField
+                      id="total_slots"
+                      label="Total slots"
+                      variant="outlined"
+                      required
+                      type="text"
+                      margin="normal"
+                      value={total_slots}
+                      name="total_slots"
+                      onChange={handleParkingChange}
+                      fullWidth
+                    />
+                  </Box>
+                  <Box>
+                    <TextField
+                      id="rate"
+                      label="Rate of parking"
+                      helperText="per hour in rupees"
+                      variant="outlined"
+                      required
+                      type="text"
+                      margin="normal"
+                      value={rate}
+                      name="rate"
+                      onChange={handleParkingChange}
+                      fullWidth
+                    />
+                  </Box>
+                </div>
               </div>
             </div>
-          </div>
-          <Box>
-            <TextField
-              id="password"
-              label="password"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              name="password"
-              required
-              value={password}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
-          <Box>
-            <TextField
-              id="conPassword"
-              label="confirm Password"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              name="conPassword"
-              required
-              value={conPassword}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Box>
-          <Box component="div" sx={{ m: 1, position: "relative" }}>
-            <Button
-              type="submit"
-              variant="contained"
-              margin="normal"
-              fullWidth
-              disabled={loading}
-            >
-              Sign Up
-            </Button>
-            {loading && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
-                }}
+            <Box>
+              <TextField
+                id="password"
+                label="password"
+                type="password"
+                variant="outlined"
+                margin="normal"
+                name="password"
+                required
+                value={password}
+                onChange={handleChange}
+                fullWidth
               />
-            )}
-          </Box>
-          <div style={{ justifyContent: "center", textAlign: "center" }}>
-            <MaterialLink component={Link} to="/signin" variant="body2">
-              {"Already have an account? Sign in"}
-            </MaterialLink>
+            </Box>
+            <Box>
+              <TextField
+                id="conPassword"
+                label="confirm Password"
+                type="password"
+                variant="outlined"
+                margin="normal"
+                name="conPassword"
+                required
+                value={conPassword}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Box>
+            <Box component="div" sx={{ m: 1, position: "relative" }}>
+              <Button
+                type="submit"
+                variant="contained"
+                margin="normal"
+                fullWidth
+                disabled={loading}
+              >
+                Sign Up
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-12px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              )}
+            </Box>
+            <div style={{ justifyContent: "center", textAlign: "center" }}>
+              <MaterialLink component={Link} to="/signin" variant="body2">
+                {"Already have an account? Sign in"}
+              </MaterialLink>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </Box>
     </>
   );
 };

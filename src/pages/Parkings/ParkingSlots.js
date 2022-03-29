@@ -93,7 +93,7 @@ const ParkingSlots = ({
 
   return (
     <>
-      <h2 className={classes.heading}>Bookings of Parking</h2>
+      <h2 className={classes.heading}>Parking Slots Availability</h2>
       {loading && (
         <Box sx={{ textAlign: "center" }}>
           <CircularProgress />

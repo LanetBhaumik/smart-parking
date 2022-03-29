@@ -1,23 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 // actions
 import { ownerProfile } from "../../redux/actions/ownerAction";
 import { signOut } from "../../redux/actions/authAction";
 
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import classes from "./OwnerProfile.module.css";
 
-const OwnerProfile = ({ ownerProfile, signOut, owner }) => {
-  const { profile } = owner;
+const OwnerProfile = ({ ownerProfile, signOut }) => {
+  const [profile, setProfile] = useState({});
+  const mountedRef = useRef(true);
 
   const onSignOutHandle = () => {
     signOut();
   };
 
   useEffect(() => {
-    ownerProfile();
+    const fetchProfile = async () => {
+      const data = await ownerProfile();
+      if (data.type === "OWNER_PROFILE") {
+        if (!mountedRef.current) return null;
+        setProfile(data.payload.profile);
+      }
+    };
+
+    fetchProfile();
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (
@@ -41,9 +54,15 @@ const OwnerProfile = ({ ownerProfile, signOut, owner }) => {
                 <p key={parking._id}>{`${parking.parking_name}`}</p>
               ))}
             </div>
-            <Button size="small" color="primary" onClick={onSignOutHandle}>
-              Sign Out
-            </Button>
+            <Box sx={{ textAlign: "center", p: 1 }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={onSignOutHandle}
+              >
+                Sign Out
+              </Button>
+            </Box>
           </div>
         </>
       )}

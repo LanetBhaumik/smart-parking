@@ -4,7 +4,6 @@
   transition: 0.3s;
   border-radius: 5px;
   height: auto;
-  width: 70vw;
   margin: auto;
   margin-top: 50px;
   display: flex;
@@ -29,4 +28,5 @@
 /* Add some padding inside the card container */
 .container {
   padding: 2px 16px;
+  text-align: center;
 }

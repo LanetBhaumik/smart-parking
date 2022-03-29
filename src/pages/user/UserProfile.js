@@ -84,7 +84,7 @@ const UserProfile = ({ userProfile, signOut }) => {
                 Add Car
               </Button> */}
             </div>
-            <Box sx={{ textAlign: "center" }}>
+            <Box sx={{ textAlign: "center", p: 1 }}>
               <Button
                 variant="outlined"
                 color="primary"
