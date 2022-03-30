@@ -20,9 +20,12 @@ import { setAlert, resetAlert } from "../../redux/actions/alertAction";
 import { useMedia } from "react-use";
 
 const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
+  const Navigate = useNavigate();
+  if (token) {
+    Navigate("/");
+  }
   const isMobile = useMedia("(max-width: 720px)");
   const [loading, setLoading] = useState(false);
-  const Navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -203,11 +206,11 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
                 />
               )}
             </Box>
-            <div style={{ justifyContent: "center", textAlign: "center" }}>
+            <Box sx={{ justifyContent: "center", textAlign: "center", m: 1 }}>
               <MaterialLink component={Link} to="/signin" variant="body2">
                 {"Already have an account? Sign in"}
               </MaterialLink>
-            </div>
+            </Box>
           </div>
         </form>
       </Box>

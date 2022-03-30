@@ -14,6 +14,7 @@ import {
   INVALID_DATA,
 } from "../reducers/authReducer";
 import { setAuthToken } from "../../utils/setAuthToken";
+import { setWithExpiry } from "../../utils/localStorage";
 
 export const getProfile = () => async (dispatch) => {
   try {
@@ -43,7 +44,7 @@ export const userSignIn = (Credentials) => async (dispatch) => {
   try {
     const response = await userSignInService(Credentials);
     if (response.status === 200) {
-      localStorage.setItem("token", response.data.token);
+      setWithExpiry("token", response.data.token, 30 * 60 * 1000);
       setAuthToken(response.data.token);
       return dispatch({
         type: USER_SIGNIN,
@@ -64,7 +65,7 @@ export const userSignUp = (userData) => async (dispatch) => {
   try {
     const response = await userSignUpService(userData);
     if (response.status === 201) {
-      localStorage.setItem("token", response.data.token);
+      setWithExpiry("token", response.data.token, 30 * 60 * 1000);
       setAuthToken(response.data.token);
       return dispatch({
         type: USER_SIGNUP,
@@ -85,7 +86,7 @@ export const ownerSignIn = (Credentials) => async (dispatch) => {
   try {
     const response = await ownerSignInService(Credentials);
     if (response.status === 200) {
-      localStorage.setItem("token", response.data.token);
+      setWithExpiry("token", response.data.token, 30 * 60 * 1000);
       setAuthToken(response.data.token);
       return dispatch({
         type: OWNER_SIGNIN,
@@ -106,7 +107,7 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
   try {
     const response = await ownerSignUpService(ownerData);
     if (response.status === 201) {
-      localStorage.setItem("token", response.data.token);
+      setWithExpiry("token", response.data.token, 30 * 60 * 1000);
       setAuthToken(response.data.token);
       return dispatch({
         type: OWNER_SIGNUP,

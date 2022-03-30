@@ -1,5 +1,6 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
+import { getWithExpiry } from "../utils/localStorage";
 import reducer from "./reducers/index";
 
 const composeEnhancer =
@@ -9,7 +10,7 @@ const composeEnhancer =
 
 const enhancer = composeEnhancer(applyMiddleware(thunk));
 
-const token = localStorage.getItem("token");
+const token = getWithExpiry("token");
 
 const INITIAL_STATE = {
   auth: {

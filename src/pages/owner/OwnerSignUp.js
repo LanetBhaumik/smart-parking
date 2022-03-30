@@ -20,10 +20,13 @@ import { setAlert } from "../../redux/actions/alertAction";
 import classes from "./OwnerSignUp.module.css";
 import { useMedia } from "react-use";
 
-const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
+const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
+  const Navigate = useNavigate();
+  if (token) {
+    Navigate("/");
+  }
   const isMobile = useMedia("(max-width: 720px)");
   const [loading, setLoading] = useState(false);
-  const Navigate = useNavigate();
   const [ownerData, setOwnerData] = useState({
     name: "",
     email: "",
@@ -292,18 +295,20 @@ const OwnerSignUp = ({ ownerSignUp, setAlert }) => {
                 />
               )}
             </Box>
-            <div style={{ justifyContent: "center", textAlign: "center" }}>
+            <Box sx={{ justifyContent: "center", textAlign: "center", m: 1 }}>
               <MaterialLink component={Link} to="/signin" variant="body2">
                 {"Already have an account? Sign in"}
               </MaterialLink>
-            </div>
+            </Box>
           </div>
         </form>
       </Box>
     </>
   );
 };
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  token: state.auth.token,
+});
 
 export default connect(mapStateToProps, {
   ownerSignUp,

@@ -32,7 +32,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
 
   const CustomNavItem = (path, title) => {
     return (
-      <Box sx={{ fontWeight: "bold", m: 1 }}>
+      <Box sx={{ m: 1 }}>
         <MaterialLink
           component={NavLink}
           to={path}
@@ -64,12 +64,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         {CustomNavItem("/user/bookings", "Bookings")}
         {CustomNavItem("/user/me", "Profile")}
         <Box sx={{ m: 1 }}>
-          <Button
-            variant="outlined"
-            color="inherit"
-            sx={{ fontWeight: "bold" }}
-            onClick={handleSignOut}
-          >
+          <Button variant="outlined" color="inherit" onClick={handleSignOut}>
             Sign Out
           </Button>
         </Box>
@@ -82,12 +77,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
         {CustomNavItem("/owner/parkings", "Parkings")}
         {CustomNavItem("/owner/me", "Profile")}
         <Box sx={{ m: 1 }}>
-          <Button
-            variant="outlined"
-            color="inherit"
-            sx={{ fontWeight: "bold" }}
-            onClick={handleSignOut}
-          >
+          <Button variant="outlined" color="inherit" onClick={handleSignOut}>
             Sign Out
           </Button>
         </Box>
@@ -104,28 +94,38 @@ const Navbar = ({ role, signOut, setAlert }) => {
   }
 
   return (
-    <AppBar position="fixed">
-      <Toolbar
-        sx={{
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography
-          component={NavLink}
-          to="/"
-          color="inherit"
-          variant="h4"
+    <div style={{ paddingTop: 64 }}>
+      <AppBar position="fixed">
+        <Toolbar
           sx={{
-            cursor: "pointer",
-            m: 1,
-            textDecoration: "none",
+            justifyContent: "space-between",
           }}
         >
-          Smart Parking
-        </Typography>
-        {isMobile ? <DrawerComponent /> : <>{links}</>}
-      </Toolbar>
-    </AppBar>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {isMobile && <DrawerComponent />}
+            <Typography
+              component={NavLink}
+              to="/"
+              color="inherit"
+              sx={{
+                cursor: "pointer",
+                m: 1,
+                textDecoration: "none",
+              }}
+            >
+              Smart Parking
+            </Typography>
+          </Box>
+          {!isMobile && <>{links}</>}
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 };
 

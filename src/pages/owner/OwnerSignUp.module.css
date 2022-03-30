@@ -4,8 +4,7 @@
   transition: 0.3s;
   border-radius: 5px;
   height: auto;
-  margin: auto;
-  margin-top: 50px;
+  margin: 16px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

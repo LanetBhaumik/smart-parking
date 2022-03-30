@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Routes, Navigate } from "react-router-dom";
 
+// components
 import Navbar from "./components/Navbar/Navbar";
 import SlotBookings from "./components/SlotBookings";
 
@@ -26,6 +27,7 @@ import { Alert, Box, CircularProgress, Snackbar } from "@mui/material";
 import { getProfile } from "./redux/actions/authAction";
 import { resetAlert } from "./redux/actions/alertAction";
 import Slide from "@mui/material/Slide";
+import { getWithExpiry } from "./utils/localStorage";
 
 function SlideTransition(props) {
   return <Slide {...props} direction="down" />;
@@ -33,30 +35,20 @@ function SlideTransition(props) {
 
 const App = ({ role, alert, resetAlert, getProfile }) => {
   const [loading, setLoading] = useState(true);
-  const mountedRef = useRef(true);
-  const token = localStorage.getItem("token");
+  const token = getWithExpiry("token");
   const handleClose = () => resetAlert();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const data = await getProfile();
-      if (data) {
-      }
-    };
-
-    if (!mountedRef.current) return null;
-    fetchProfile();
+  useEffect(async () => {
+    await getProfile();
     setLoading(false);
-
-    return () => {
-      mountedRef.current = false;
-    };
   }, []);
 
   return (
     <>
-      <Navbar />
-      <div style={{ marginTop: "4rem" }}>
+      <header>
+        <Navbar />
+      </header>
+      <main>
         {alert.status && (
           <Snackbar
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -80,45 +72,47 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
           </Box>
         )}
         {!loading && (
-          <Routes>
-            <Route path="/">
-              <Route index element={<Homepage />} />
-              <Route path="parkings" element={<Parkings />} />
-              <Route path="signin" element={<SignIn />} />
-              <Route path="user/signup" element={<UserSignUp />} />
-              <Route path="owner/signup" element={<OwnerSignUp />} />
-              <Route path="parkings/:parkingId" element={<ParkingSlots />} />
-            </Route>
-
-            {token && role === "user" && (
-              <Route path="user">
-                <Route path="bookings" element={<UserBookings />} />
-                <Route path="me" element={<UserProfile />} />
+          <div>
+            <Routes>
+              <Route path="/">
+                <Route index element={<Homepage />} />
+                <Route path="parkings" element={<Parkings />} />
+                <Route path="signin" element={<SignIn />} />
+                <Route path="user/signup" element={<UserSignUp />} />
+                <Route path="owner/signup" element={<OwnerSignUp />} />
+                <Route path="parkings/:parkingId" element={<ParkingSlots />} />
               </Route>
-            )}
 
-            {token && role === "owner" && (
-              <Route path="owner">
-                <Route path="parkings">
-                  <Route index element={<OwnerParkings />} />
-                  <Route path=":parkingId">
-                    <Route index element={<OwnerParkingSlots />} />
-                    <Route path=":slot" element={<SlotBookings />}></Route>
-                  </Route>
+              {token && role === "user" && (
+                <Route path="user">
+                  <Route path="bookings" element={<UserBookings />} />
+                  <Route path="me" element={<UserProfile />} />
                 </Route>
-                <Route path="me" element={<OwnerProfile />} />
-              </Route>
-            )}
-            {!role && (
-              <>
-                <Route path="user/*" element={<Navigate to="/signin" />} />
-                <Route path="owner/*" element={<Navigate to="/signin" />} />
-              </>
-            )}
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
+              )}
+
+              {token && role === "owner" && (
+                <Route path="owner">
+                  <Route path="parkings">
+                    <Route index element={<OwnerParkings />} />
+                    <Route path=":parkingId">
+                      <Route index element={<OwnerParkingSlots />} />
+                      <Route path=":slot" element={<SlotBookings />}></Route>
+                    </Route>
+                  </Route>
+                  <Route path="me" element={<OwnerProfile />} />
+                </Route>
+              )}
+              {!role && (
+                <>
+                  <Route path="user/*" element={<Navigate to="/signin" />} />
+                  <Route path="owner/*" element={<Navigate to="/signin" />} />
+                </>
+              )}
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </div>
         )}
-      </div>
+      </main>
     </>
   );
 };

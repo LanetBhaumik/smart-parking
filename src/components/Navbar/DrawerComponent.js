@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 // material ui
 import MenuIcon from "@mui/icons-material/Menu";
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Box,
   Button,
@@ -11,6 +12,7 @@ import {
   ListItem,
   ListItemText,
   List,
+  IconButton,
 } from "@mui/material";
 
 // actions
@@ -57,7 +59,7 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
         {CustomListItem("/parkings", "Parkings")}
         {CustomListItem("/user/bookings", "Bookings")}
         {CustomListItem("/user/me", "Profile")}
-        <Box sx={{ m: 1 }}>
+        <Box sx={{ m: 1, textAlign: "center" }}>
           <Button
             variant="outlined"
             color="inherit"
@@ -75,7 +77,7 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
         {CustomListItem("/parkings", "Home")}
         {CustomListItem("/owner/parkings", "Parkings")}
         {CustomListItem("/owner/me", "Profile")}
-        <Box sx={{ m: 1 }}>
+        <Box sx={{ m: 1, textAlign: "center" }}>
           <Button
             variant="outlined"
             color="inherit"
@@ -106,7 +108,7 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
         }}
       />
       <SwipeableDrawer
-        anchor="right"
+        anchor="left"
         open={open}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
@@ -117,6 +119,11 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
+          <Box sx={{ textAlign: "right", m: 1 }}>
+            <IconButton onClick={toggleDrawer(false)}>
+              <CancelIcon />
+            </IconButton>
+          </Box>
           <List>{list}</List>
         </Box>
       </SwipeableDrawer>

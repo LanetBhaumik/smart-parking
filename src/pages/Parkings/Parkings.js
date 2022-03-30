@@ -68,7 +68,7 @@ const Parkings = ({ fetchParkings }) => {
           </Box>
         }
       >
-        <Container sx={{ py: 8 }} maxWidth="md">
+        <Container sx={{ py: 2 }} maxWidth="md">
           <Grid container spacing={4}>
             {parkings.map((parking) => (
               <ParkingCard parking={parking} key={parking._id} />
