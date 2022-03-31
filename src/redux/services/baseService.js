@@ -1,8 +1,7 @@
 import axios from "axios";
 import { getWithExpiry } from "../../utils/localStorage";
 
-// export const baseURL = "https://smart-parking-backend-536.herokuapp.com";
-export const baseURL = "http://localhost:3000";
+export const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 const token = getWithExpiry("token");
 axios.defaults.headers.common["Authorization"] = "Bearer " + token;
