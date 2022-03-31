@@ -12,7 +12,6 @@ export const getWithExpiry = (key) => {
   if (!itemStr) {
     return null;
   }
-  console.log(itemStr);
   const item = JSON.parse(itemStr);
   const now = new Date();
   if (now.getTime() > item.expiry) {

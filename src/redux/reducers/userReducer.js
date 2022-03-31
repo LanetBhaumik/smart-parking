@@ -13,6 +13,14 @@ export const ADD_CAR = "ADD_CAR";
 export const ADD_CAR_SUCCESS = "ADD_CAR_SUCCESS";
 export const ADD_CAR_ERROR = "ADD_CAR_ERROR";
 
+export const DELETE_CAR = "DELETE_CAR";
+export const DELETE_CAR_SUCCESS = "DELETE_CAR_SUCCESS";
+export const DELETE_CAR_ERROR = "DELETE_CAR_ERROR";
+
+export const PRIMARY_CAR = "PRIMARY_CAR";
+export const PRIMARY_CAR_SUCCESS = "PRIMARY_CAR_SUCCESS";
+export const PRIMARY_CAR_ERROR = "PRIMARY_CAR_ERROR";
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case USER_PROFILE: {
@@ -49,6 +57,38 @@ export default (state = INITIAL_STATE, action) => {
       };
     }
     case ADD_CAR_ERROR: {
+      return {
+        ...action.payload,
+      };
+    }
+    case DELETE_CAR: {
+      return {
+        ...action.payload,
+      };
+    }
+    case DELETE_CAR_SUCCESS: {
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    }
+    case DELETE_CAR_ERROR: {
+      return {
+        ...action.payload,
+      };
+    }
+    case PRIMARY_CAR: {
+      return {
+        ...action.payload,
+      };
+    }
+    case PRIMARY_CAR_SUCCESS: {
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    }
+    case PRIMARY_CAR_ERROR: {
       return {
         ...action.payload,
       };

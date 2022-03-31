@@ -39,7 +39,9 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
   const handleClose = () => resetAlert();
 
   useEffect(async () => {
-    await getProfile();
+    if (token) {
+      await getProfile();
+    }
     setLoading(false);
   }, []);
 

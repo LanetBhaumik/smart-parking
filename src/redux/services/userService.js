@@ -7,8 +7,16 @@ export const userBookingsService = (limit, skip) =>
 
 export const addCarService = (car) => baseService.post("/user/cars", car);
 
+export const deleteCarService = (carId) =>
+  baseService.delete(`/user/cars/${carId}`);
+
+export const primaryCarService = (carId) =>
+  baseService.post(`/user/primary_car/${carId}`);
+
 export default {
   userProfileService,
   userBookingsService,
   addCarService,
+  deleteCarService,
+  primaryCarService,
 };

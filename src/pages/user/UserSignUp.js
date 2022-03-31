@@ -49,7 +49,9 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
     if (mobile_no.length !== 10) {
       setAlert("error", "mobile number is invalid");
       return false;
-    } else if (!/[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}/.test(car.toUpperCase())) {
+    } else if (
+      !/[A-Z]{2}[ ][0-9]{2}[ ][A-Z]{2}[ ][0-9]{4}/.test(car.toUpperCase())
+    ) {
       setAlert("error", "vehicle number is invalid");
       return false;
     } else if (password.length < 7) {
@@ -143,7 +145,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
               <TextField
                 id="car"
                 label="vehicle Number"
-                helperText="in XX00XX000 format"
+                helperText="in XX 00 XX 0000 format"
                 variant="outlined"
                 required
                 type="text"

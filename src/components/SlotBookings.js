@@ -63,12 +63,6 @@ const SlotBookings = ({
     hh = pad(hh);
     return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
   };
-  const carNoFormat = (carNo) => {
-    return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
-      4,
-      6
-    )} ${carNo.slice(6)}`;
-  };
   return (
     <>
       <h2 className={classes.heading}>Bookings of slot {slot} </h2>
@@ -135,7 +129,7 @@ const SlotBookings = ({
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Car"
                   >
-                    {carNoFormat(booking.car.car_no)}
+                    {booking.car.car_no}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}

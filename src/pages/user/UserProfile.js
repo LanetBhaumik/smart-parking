@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useMedia } from "react-use";
 
+// components
+import AddCar from "../../components/AddCar";
+
 // actions
 import { userProfile } from "../../redux/actions/userAction";
 import { signOut } from "../../redux/actions/authAction";
@@ -10,15 +13,9 @@ import { signOut } from "../../redux/actions/authAction";
 import classes from "./UserProfile.module.css";
 
 // material ui
-import { Box, Button } from "@mui/material";
-import AddCar from "../../components/AddCar";
-
-const carNoFormat = (carNo) => {
-  return `${carNo.slice(0, 2)} ${carNo.slice(2, 4)} ${carNo.slice(
-    4,
-    6
-  )} ${carNo.slice(6)}`;
-};
+import { Box, Button, Typography } from "@mui/material";
+import PrimaryCar from "../../components/PrimaryCar";
+import DeleteCar from "../../components/DeleteCar";
 
 const UserProfile = ({ userProfile, signOut }) => {
   const [imageLoading, setImageLoading] = useState(true);
@@ -80,28 +77,23 @@ const UserProfile = ({ userProfile, signOut }) => {
             />
           </Box>
           <div className={classes.container}>
-            <p>
+            <Typography sx={{ m: 1 }}>
               <b>Name : </b>
               {profile.name}
-            </p>
-            <p>
+            </Typography>
+
+            <Typography sx={{ m: 1 }}>
               <b>Email : </b>
               {profile.email}
-            </p>
-            <p>
+            </Typography>
+
+            <Typography sx={{ m: 1 }}>
               <b>Mobile No : </b>
               {profile.mobile_no}
-            </p>
-            <p>
-              <b>Primary Car : </b>
-              {carNoFormat(profile.car.car_no)}
-            </p>
-            <p>
-              <b>Your Cars : </b>
-            </p>
-            {profile.cars.map((car) => (
-              <p key={car.car_no}>{carNoFormat(car.car_no)}</p>
-            ))}
+            </Typography>
+
+            <PrimaryCar profile={profile} />
+            <DeleteCar profile={profile} />
             <AddCar />
           </div>
           <Box sx={{ textAlign: "center", p: 1 }}>
