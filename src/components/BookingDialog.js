@@ -20,7 +20,20 @@ import { DateTimePicker } from "@mui/lab";
 import { bookSlot } from "../redux/actions/bookingAction";
 import { setAlert } from "../redux/actions/alertAction";
 
-const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
+//logic of time is occupied or not
+const validateOperation = (requestedIn, requestedOut, bookings) => {
+  const occupied = bookings.some((booking) => {
+    const bookedIn = new Date(booking.in_time).getTime();
+    const bookedOut = new Date(booking.out_time).getTime();
+    return (
+      (bookedIn <= requestedIn && requestedIn < bookedOut) ||
+      (bookedIn < requestedOut && requestedOut <= bookedOut)
+    );
+  });
+  return !occupied;
+};
+
+const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
   const { rate, parkingId, parkingName, slot } = parking;
   const currentTime = new Date();
   const [inTime, setInTime] = useState(
@@ -64,22 +77,27 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert }) => {
         });
   };
 
-  const onSubmitHandle = () => {
-    setOpen(false);
-    bookSlot({
-      in_time: inTime,
-      out_time: outTime,
-      parking: parkingId,
-      charge,
-      slot,
-    }).then((data) => {
+  const onSubmitHandle = async () => {
+    const valid = validateOperation(inTime, outTime, bookings);
+    if (valid) {
+      const data = await bookSlot({
+        in_time: inTime,
+        out_time: outTime,
+        parking: parkingId,
+        charge,
+        slot,
+      });
       if (data.type === "BOOKING_FAILED") {
         setAlert("error", data.payload.error);
       } else {
         setAlert("success", "Parking slot booked");
         Navigate("/user/bookings");
       }
-    });
+    } else {
+      setAlert("error", "This time is already booked on this slot.");
+    }
+
+    setOpen(false);
   };
 
   return (

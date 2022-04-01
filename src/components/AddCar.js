@@ -43,17 +43,15 @@ const AddCar = ({ addCar, setAlert, setProfile }) => {
     setOpen(false);
   };
 
-  const onSubmitHandle = () => {
+  const onSubmitHandle = async () => {
+    const data = await addCar({ car: car });
+    if (data.type === "ADD_CAR_SUCCESS") {
+      setAlert("success", "car added successfully");
+      setProfile(data.payload.user);
+    } else {
+      setAlert("error", data.payload.error);
+    }
     setOpen(false);
-
-    addCar({ car: car }).then((data) => {
-      if (data.type === "ADD_CAR_SUCCESS") {
-        setAlert("success", "car added successfully");
-        setProfile(data.payload.user);
-      } else {
-        setAlert("error", data.payload.error);
-      }
-    });
   };
   return (
     <div>

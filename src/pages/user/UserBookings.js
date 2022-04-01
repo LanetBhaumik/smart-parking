@@ -18,16 +18,6 @@ const UserBookings = ({ userBookings }) => {
 
   const mountedRef = useRef(true);
 
-  const updateBookings = async () => {
-    setLoading(true);
-    let data = await userBookings(10, 0);
-    if (data && data.type === "USER_BOOKINGS") {
-      setBookings(bookings.concat(data.payload.bookings));
-      setTotalResults(data.payload.totalResults);
-    }
-    setLoading(false);
-  };
-
   const fetchMoreData = async () => {
     let data = await userBookings(10, page * 10);
     if (data && data.type === "USER_BOOKINGS") {
@@ -38,15 +28,21 @@ const UserBookings = ({ userBookings }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await updateBookings();
+    const updateBookings = async () => {
+      setLoading(true);
+      let data = await userBookings(10, 0);
+      if (data && data.type === "USER_BOOKINGS") {
+        setBookings(bookings.concat(data.payload.bookings));
+        setTotalResults(data.payload.totalResults);
+      }
+      setLoading(false);
     };
     if (!mountedRef.current) return null;
-    fetchData();
+    updateBookings();
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [bookings, userBookings]);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
   const timeFormat = (date) => {
@@ -137,7 +133,7 @@ const UserBookings = ({ userBookings }) => {
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Car No"
                     >
-                      {booking.car.car_no}
+                      {booking?.car.car_no}
                     </div>
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}

@@ -1,23 +1,46 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import React, { useState } from "react";
+
+// material ui
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Box,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, IconButton, Typography } from "@mui/material";
+import { connect } from "react-redux";
 
-export default function DeleteCar({ profile }) {
-  const [open, setOpen] = React.useState(false);
+// actions
+import { deleteCar } from "../redux/actions/userAction";
+import { setAlert } from "../redux/actions/alertAction";
 
-  const handleClickOpen = () => {
-    setOpen(true);
+const DeleteCar = ({ profile, deleteCar, setProfile }) => {
+  const [open, setOpen] = useState(false);
+  const [carToBeDeleted, setCarToBeDeleted] = useState({
+    id: "",
+    car_no: "",
+  });
+
+  const onSubmitHandle = async () => {
+    const data = await deleteCar(carToBeDeleted._id);
+    if (data.type === "DELETE_CAR_SUCCESS") {
+      setAlert("success", "car deleted successfully");
+      setProfile(data.payload.user);
+    } else {
+      setAlert("error", data.payload.error);
+    }
+    setOpen(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const onDeleteHandle = (car) => {
+    setOpen(true);
+    setCarToBeDeleted(car);
   };
 
   return (
@@ -25,12 +48,15 @@ export default function DeleteCar({ profile }) {
       <Typography sx={{ fontWeight: 600, m: 1 }}>Your Cars : </Typography>
       {profile.cars.map((car) => {
         return (
-          <Box sx={{ display: "flex", alignItems: "center" }} key={car._id}>
+          <Box
+            sx={{ display: "flex", alignItems: "center", m: 1 }}
+            key={car._id}
+          >
             <Typography>{car.car_no}</Typography>
             <IconButton
               title="Delete Car"
               variant="outlined"
-              onClick={handleClickOpen}
+              onClick={() => onDeleteHandle(car)}
             >
               <DeleteIcon />
             </IconButton>
@@ -38,25 +64,24 @@ export default function DeleteCar({ profile }) {
         );
       })}
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>{"Are you sure?"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {` will be removed from your car list`}
+          <DialogContentText>
+            {`${carToBeDeleted.car_no} will be removed from your car list`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>No</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={() => setOpen(false)}>No</Button>
+          <Button onClick={onSubmitHandle} autoFocus>
             Yes
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, { deleteCar })(DeleteCar);

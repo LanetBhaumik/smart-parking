@@ -19,12 +19,12 @@ import DeleteCar from "../../components/DeleteCar";
 
 const UserProfile = ({ userProfile, signOut }) => {
   const [imageLoading, setImageLoading] = useState(true);
+  const [profile, setProfile] = useState({});
 
   const onLoad = () => {
     setImageLoading(false);
   };
   const isMobile = useMedia("(max-width: 720px)");
-  const [profile, setProfile] = useState({});
   const mountedRef = useRef(true);
 
   const onSignOutHandle = () => {
@@ -92,9 +92,9 @@ const UserProfile = ({ userProfile, signOut }) => {
               {profile.mobile_no}
             </Typography>
 
-            <PrimaryCar profile={profile} />
-            <DeleteCar profile={profile} />
-            <AddCar />
+            <PrimaryCar profile={profile} setProfile={setProfile} />
+            <DeleteCar profile={profile} setProfile={setProfile} />
+            <AddCar setProfile={setProfile} />
           </div>
           <Box sx={{ textAlign: "center", p: 1 }}>
             <Button

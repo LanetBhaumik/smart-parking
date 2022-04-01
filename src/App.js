@@ -38,12 +38,15 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
   const token = getWithExpiry("token");
   const handleClose = () => resetAlert();
 
-  useEffect(async () => {
-    if (token) {
+  useEffect(() => {
+    const getUser = async () => {
       await getProfile();
+    };
+    if (token) {
+      getUser();
     }
     setLoading(false);
-  }, []);
+  }, [getProfile, token]);
 
   return (
     <>

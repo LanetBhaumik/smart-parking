@@ -85,11 +85,11 @@ const Navbar = ({ role, signOut, setAlert }) => {
     );
   } else {
     links = (
-      <>
+      <div style={{ display: "flex", alignItems: "center" }}>
         {CustomNavItem("/signin", "Sign In")}
         {CustomNavItem("/user/signup", "User Sign Up")}
         {CustomNavItem("/owner/signup", "Owner Sign Up")}
-      </>
+      </div>
     );
   }
 

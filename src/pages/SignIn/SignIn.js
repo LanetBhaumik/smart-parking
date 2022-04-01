@@ -42,28 +42,26 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     if (role === "user") {
-      userSignIn(credentials).then((data) => {
-        if (data.type === "INVALID_DATA") {
-          setAlert("error", data.payload.error);
-        } else {
-          setAlert("success", "Sign in success");
-          Navigate(-1);
-        }
-        setLoading(false);
-      });
+      const data = await userSignIn(credentials);
+      if (data.type === "INVALID_DATA") {
+        setAlert("error", data.payload.error);
+      } else {
+        setAlert("success", "Sign in success");
+        Navigate(-1);
+      }
+      setLoading(false);
     } else {
-      ownerSignIn(credentials).then((data) => {
-        if (data.type === "INVALID_DATA") {
-          setAlert("error", data.payload.error);
-        } else {
-          setAlert("success", "Sign in success");
-          Navigate("/owner/parkings");
-        }
-      });
+      const data = await ownerSignIn(credentials);
+      if (data.type === "INVALID_DATA") {
+        setAlert("error", data.payload.error);
+      } else {
+        setAlert("success", "Sign in success");
+        Navigate("/owner/parkings");
+      }
     }
   };
 

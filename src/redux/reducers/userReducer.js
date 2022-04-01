@@ -61,11 +61,6 @@ export default (state = INITIAL_STATE, action) => {
         ...action.payload,
       };
     }
-    case DELETE_CAR: {
-      return {
-        ...action.payload,
-      };
-    }
     case DELETE_CAR_SUCCESS: {
       return {
         ...state,
@@ -73,11 +68,6 @@ export default (state = INITIAL_STATE, action) => {
       };
     }
     case DELETE_CAR_ERROR: {
-      return {
-        ...action.payload,
-      };
-    }
-    case PRIMARY_CAR: {
       return {
         ...action.payload,
       };

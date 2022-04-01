@@ -44,15 +44,6 @@ const getTimeline = (bkgs) => {
       },
     ];
   const timelineArray = [];
-  //   if (active) {
-  //     timeline.push(bkgs[0]);
-  //   } else {
-  //     timeline.push({
-  //       status: "free",
-  //       in_time: currentTime,
-  //       out_time: bkgs[0].in_time,
-  //     });
-  //   }
   for (let i = 0; i < bkgs.length - 1; i++) {
     timelineArray.push(bkgs[i]);
     timelineArray.push({
@@ -166,6 +157,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
                   parkingId: params.parkingId,
                   slot: slot,
                 }}
+                bookings={bookings}
               />
               <Box
                 sx={{

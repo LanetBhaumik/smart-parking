@@ -114,7 +114,7 @@ export const deleteCar = (carId) => async (dispatch) => {
   }
 };
 
-export const primaryCar = (carId) => async (dispatch) => {
+export const makeCarPrimary = (carId) => async (dispatch) => {
   try {
     dispatch({
       type: PRIMARY_CAR,
@@ -142,4 +142,6 @@ export default {
   userProfile,
   userBookings,
   addCar,
+  deleteCar,
+  makeCarPrimary,
 };
