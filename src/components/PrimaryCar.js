@@ -68,6 +68,7 @@ const PrimaryCar = ({ profile, setProfile, makeCarPrimary, setAlert }) => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ m: 1, position: "relative" }}>
             <Fab
+              title="make primary"
               aria-label="save"
               color="primary"
               disabled={success}

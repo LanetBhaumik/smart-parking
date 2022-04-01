@@ -5,13 +5,21 @@ import { connect } from "react-redux";
 import { ownerProfile } from "../../redux/actions/ownerAction";
 import { signOut } from "../../redux/actions/authAction";
 
-import { Box, Button } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
 import classes from "./OwnerProfile.module.css";
+import { useMedia } from "react-use";
+import ParkingCard from "../../components/ParkingCard";
 
 const OwnerProfile = ({ ownerProfile, signOut }) => {
+  const [imageLoading, setImageLoading] = useState(true);
+  const isMobile = useMedia("(max-width: 720px)");
   const [profile, setProfile] = useState({});
   const mountedRef = useRef(true);
+
+  const onLoad = () => {
+    setImageLoading(false);
+  };
 
   const onSignOutHandle = () => {
     signOut();
@@ -31,40 +39,75 @@ const OwnerProfile = ({ ownerProfile, signOut }) => {
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [ownerProfile]);
 
   return (
     <>
       {Object.keys(profile).length !== 0 && (
-        <>
-          <div className={classes.card}>
+        <Box
+          className={classes.card}
+          sx={{ width: isMobile ? "90vw" : "60vw" }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+              p: 1,
+            }}
+          >
             <img
-              src="/images/profile.jpg"
-              alt="Avatar"
-              style={{ width: "100%" }}
+              alt="profile-placeholder"
+              width={256}
+              src="/images/profile-placeholder.png"
+              style={{ display: imageLoading ? "block" : "none" }}
             />
-            <div className={classes.container}>
-              <h4>
-                <b>{profile.name}</b>
-              </h4>
-              <p>{`Email: ${profile.email}`}</p>
-              <p>{`Mobile No: ${profile.mobile_no}`}</p>
-              <p>{`Your Parkings : `}</p>
-              {profile.parkings.map((parking) => (
-                <p key={parking._id}>{`${parking.parking_name}`}</p>
-              ))}
+            <img
+              alt="profile"
+              width={256}
+              src="/images/profile.jpg"
+              style={{ display: imageLoading ? "none" : "block" }}
+              onLoad={onLoad}
+            />
+          </Box>
+          <div className={classes.container}>
+            <Typography sx={{ m: 1 }}>
+              <b>Name : </b>
+              {profile.name}
+            </Typography>
+
+            <Typography sx={{ m: 1 }}>
+              <b>Email : </b>
+              {profile.email}
+            </Typography>
+
+            <Typography sx={{ m: 1 }}>
+              <b>Mobile No : </b>
+              {profile.mobile_no}
+            </Typography>
+            <div>
+              <Typography sx={{ fontWeight: 600, m: 1 }}>
+                Your Parkings :{" "}
+              </Typography>
+              <Container sx={{ py: 2 }} maxWidth="md">
+                <Grid container spacing={4}>
+                  {profile.parkings.map((parking) => {
+                    return <ParkingCard parking={parking} key={parking._id} />;
+                  })}
+                </Grid>
+              </Container>
             </div>
-            <Box sx={{ textAlign: "center", p: 1 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={onSignOutHandle}
-              >
-                Sign Out
-              </Button>
-            </Box>
           </div>
-        </>
+          <Box sx={{ textAlign: "center", p: 1 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={onSignOutHandle}
+            >
+              Sign Out
+            </Button>
+          </Box>
+        </Box>
       )}
     </>
   );

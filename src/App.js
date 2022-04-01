@@ -39,11 +39,8 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
   const handleClose = () => resetAlert();
 
   useEffect(() => {
-    const getUser = async () => {
-      await getProfile();
-    };
     if (token) {
-      getUser();
+      getProfile().then((data) => {});
     }
     setLoading(false);
   }, [getProfile, token]);
@@ -107,7 +104,7 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
                   <Route path="me" element={<OwnerProfile />} />
                 </Route>
               )}
-              {!role && (
+              {!loading && !role && (
                 <>
                   <Route path="user/*" element={<Navigate to="/signin" />} />
                   <Route path="owner/*" element={<Navigate to="/signin" />} />
