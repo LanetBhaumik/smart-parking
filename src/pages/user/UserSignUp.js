@@ -124,6 +124,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
                 name="email"
                 onChange={handleChange}
                 fullWidth
+                autoComplete="email"
               />
             </div>
             <div>
@@ -168,6 +169,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
                 value={password}
                 onChange={handleChange}
                 fullWidth
+                autoComplete="password"
               />
             </div>
             <div>
@@ -182,6 +184,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
                 value={conPassword}
                 onChange={handleChange}
                 fullWidth
+                autoComplete="confirm-password"
               />
             </div>
             <Box sx={{ m: 1, position: "relative" }}>

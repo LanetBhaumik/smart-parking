@@ -21,6 +21,7 @@ import { deleteCar } from "../redux/actions/userAction";
 import { setAlert } from "../redux/actions/alertAction";
 
 const DeleteCar = ({ profile, deleteCar, setProfile }) => {
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [carToBeDeleted, setCarToBeDeleted] = useState({
     id: "",
@@ -28,13 +29,17 @@ const DeleteCar = ({ profile, deleteCar, setProfile }) => {
   });
 
   const onSubmitHandle = async () => {
-    const data = await deleteCar(carToBeDeleted._id);
-    if (data.type === "DELETE_CAR_SUCCESS") {
-      setAlert("success", "car deleted successfully");
-      setProfile(data.payload.user);
-    } else {
-      setAlert("error", data.payload.error);
+    if (!loading) {
+      setLoading(true);
+      const data = await deleteCar(carToBeDeleted._id);
+      if (data.type === "DELETE_CAR_SUCCESS") {
+        setAlert("success", "car deleted successfully");
+        setProfile(data.payload.user);
+      } else {
+        setAlert("error", data.payload.error);
+      }
     }
+    setLoading(false);
     setOpen(false);
   };
 
@@ -57,6 +62,7 @@ const DeleteCar = ({ profile, deleteCar, setProfile }) => {
               title="Delete Car"
               variant="outlined"
               onClick={() => onDeleteHandle(car)}
+              style={{ color: "red" }}
             >
               <DeleteIcon />
             </IconButton>
@@ -68,7 +74,10 @@ const DeleteCar = ({ profile, deleteCar, setProfile }) => {
         <DialogTitle>{"Are you sure?"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {`${carToBeDeleted.car_no} will be removed from your car list`}
+            <Typography style={{ color: "red" }}>
+              {carToBeDeleted.car_no}
+            </Typography>
+            will be removed from your car list
           </DialogContentText>
         </DialogContent>
         <DialogActions>

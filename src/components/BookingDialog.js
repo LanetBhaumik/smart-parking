@@ -34,6 +34,7 @@ const validateOperation = (requestedIn, requestedOut, bookings) => {
 };
 
 const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
+  const [loading, setLoading] = useState(false);
   const { rate, parkingId, parkingName, slot } = parking;
   const currentTime = new Date();
   const [inTime, setInTime] = useState(
@@ -79,7 +80,8 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
 
   const onSubmitHandle = async () => {
     const valid = validateOperation(inTime, outTime, bookings);
-    if (valid) {
+    if (valid && !loading) {
+      setLoading(true);
       const data = await bookSlot({
         in_time: inTime,
         out_time: outTime,
@@ -96,7 +98,7 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
     } else {
       setAlert("error", "This time is already booked on this slot.");
     }
-
+    setLoading(false);
     setOpen(false);
   };
 

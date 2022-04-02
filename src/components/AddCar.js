@@ -16,9 +16,10 @@ import {
 import { addCar } from "../redux/actions/userAction";
 import { setAlert } from "../redux/actions/alertAction";
 
-import AddIcon from "@mui/icons-material/Add";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 const AddCar = ({ addCar, setAlert, setProfile }) => {
+  const [loading, setLoading] = useState(false);
   const [car, setCar] = useState("");
   const [disabled, setDisabled] = useState(true);
 
@@ -44,19 +45,27 @@ const AddCar = ({ addCar, setAlert, setProfile }) => {
   };
 
   const onSubmitHandle = async () => {
-    const data = await addCar({ car: car });
-    if (data.type === "ADD_CAR_SUCCESS") {
-      setAlert("success", "car added successfully");
-      setProfile(data.payload.user);
-    } else {
-      setAlert("error", data.payload.error);
+    if (!loading) {
+      setLoading(true);
+      const data = await addCar({ car: car });
+      if (data.type === "ADD_CAR_SUCCESS") {
+        setAlert("success", "car added successfully");
+        setProfile(data.payload.user);
+      } else {
+        setAlert("error", data.payload.error);
+      }
     }
+    setLoading(false);
     setOpen(false);
   };
   return (
     <div>
-      <IconButton onClick={onAddHandle} title="Add Car">
-        <AddIcon />
+      <IconButton
+        onClick={onAddHandle}
+        title="add car"
+        style={{ color: "green" }}
+      >
+        <AddCircleRoundedIcon fontSize="large" />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add New Car</DialogTitle>

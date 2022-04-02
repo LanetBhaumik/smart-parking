@@ -21,13 +21,13 @@ import ParkingSlots from "./pages/Parkings/ParkingSlots";
 import Homepage from "./pages/Homepage";
 
 // material ui
-import { Alert, Box, CircularProgress, Snackbar } from "@mui/material";
+import { Alert, Box, CircularProgress, Snackbar, Slide } from "@mui/material";
+
+import { getWithExpiry } from "./utils/localStorage";
 
 // action
 import { getProfile } from "./redux/actions/authAction";
 import { resetAlert } from "./redux/actions/alertAction";
-import Slide from "@mui/material/Slide";
-import { getWithExpiry } from "./utils/localStorage";
 
 function SlideTransition(props) {
   return <Slide {...props} direction="down" />;
@@ -40,9 +40,12 @@ const App = ({ role, alert, resetAlert, getProfile }) => {
 
   useEffect(() => {
     if (token) {
-      getProfile().then((data) => {});
+      getProfile().then((data) => {
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, [getProfile, token]);
 
   return (
