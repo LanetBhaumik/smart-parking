@@ -11,5 +11,3 @@ export const resetAlert = () => async (dispatch) => {
     type: RESET_ALERT,
   });
 };
-
-export default { setAlert, resetAlert };

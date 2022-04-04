@@ -4,4 +4,6 @@ export const newBookingService = (bookingData) => {
   return baseService.post("/bookings", bookingData);
 };
 
-export default { newBookingService };
+export const deleteBookingService = (bookingId) => {
+  return baseService.delete(`/bookings/${bookingId}`);
+};

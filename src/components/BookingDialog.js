@@ -89,7 +89,7 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
         charge,
         slot,
       });
-      if (data.type === "BOOKING_FAILED") {
+      if (data.type === "NEW_BOOKING_ERROR") {
         setAlert("error", data.payload.error);
       } else {
         setAlert("success", "Parking slot booked");

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router";
 
@@ -61,35 +61,26 @@ const ParkingSlots = ({
   const [loading, setLoading] = useState(true);
   const [showTimeline, setShowTimeline] = useState({});
   const params = useParams();
-  let bookings = parkingBookings[params.parkingId];
-  const optimizedBookings = {};
-
-  const mountedRef = useRef(true);
+  const parkingId = params.parkingId;
 
   useEffect(() => {
-    const fetchBookingData = async () => {
-      const parkingData = await fetchParkingDetail(params.parkingId);
+    const optimizedBookings = {};
+    fetchParkingDetail(parkingId).then((parkingData) => {
       if (parkingData.type === "PARKING_DETAIL_SUCCESS") {
-        if (!mountedRef.current) return null;
         setParking(parkingData.payload);
       }
-      const data = await fetchParkingBookings(params.parkingId);
+    });
+    fetchParkingBookings(parkingId).then((data) => {
       if (data.type === "PARKING_BOOKINGS_DATA") {
-        if (!mountedRef.current) return null;
-        setLoading(false);
-        bookings = data.payload[params.parkingId];
-        Object.keys(bookings).forEach((slot) => {
-          optimizedBookings[slot] = getOptimizedBookings(bookings[slot]);
+        const bookingList = data.payload[parkingId];
+        Object.keys(bookingList).forEach((slot) => {
+          optimizedBookings[slot] = getOptimizedBookings(bookingList[slot]);
         });
-        if (!mountedRef.current) return null;
         setShowTimeline(optimizedBookings);
       }
-    };
-    fetchBookingData();
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
+    });
+    setLoading(false);
+  }, [fetchParkingBookings, fetchParkingDetail, parkingId]);
 
   return (
     <>

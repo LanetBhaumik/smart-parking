@@ -19,17 +19,6 @@ const Parkings = ({ fetchParkings }) => {
 
   const mountedRef = useRef(true);
 
-  const updateParkings = async () => {
-    setLoading(true);
-    let data = await fetchParkings(10, 0);
-    if (data && data.type === "PARKING_SUCCESS") {
-      setParkings(parkings.concat(data.payload.parkings));
-      setTotalResults(data.payload.totalResults);
-    } else {
-    }
-    setLoading(false);
-  };
-
   const fetchMoreData = async () => {
     let data = await fetchParkings(10, page * 10);
     if (data && data.type === "PARKING_SUCCESS") {
@@ -40,6 +29,16 @@ const Parkings = ({ fetchParkings }) => {
   };
 
   useEffect(() => {
+    const updateParkings = async () => {
+      setLoading(true);
+      let data = await fetchParkings(10, 0);
+      if (data && data.type === "PARKING_SUCCESS") {
+        setParkings(parkings.concat(data.payload.parkings));
+        setTotalResults(data.payload.totalResults);
+      } else {
+      }
+      setLoading(false);
+    };
     const fetchData = async () => {
       await updateParkings();
     };
@@ -48,7 +47,7 @@ const Parkings = ({ fetchParkings }) => {
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [fetchParkings, parkings]);
 
   return (
     <>

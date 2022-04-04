@@ -6,5 +6,3 @@ export const getParkingsService = (limit = 10, skip = 0) => {
 export const parkingDetailService = (parkingId) => {
   return baseService.get(`/parkings/${parkingId}`);
 };
-
-export default { getParkingsService, parkingDetailService };

@@ -6,5 +6,3 @@ export const parkingBookingsService = (parkingId) => {
 export const parkingSlotBookingsService = (parkingId, slot) => {
   return baseService.get(`/bookings/parking/${parkingId}/${slot}`);
 };
-
-export default { parkingBookingsService };

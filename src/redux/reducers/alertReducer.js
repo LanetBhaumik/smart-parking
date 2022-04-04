@@ -5,7 +5,7 @@ const INITIAL_STATE = {
 export const SET_ALERT = "SET_ALERT";
 export const RESET_ALERT = "RESET_ALERT";
 
-export default (state = INITIAL_STATE, action) => {
+const alertReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_ALERT: {
       return {
@@ -24,3 +24,4 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+export default alertReducer;

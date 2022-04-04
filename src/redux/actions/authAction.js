@@ -7,8 +7,10 @@ import {
 } from "../services/authService";
 import {
   USER_SIGNIN,
+  USER_SIGNIN_SUCCESS,
   USER_SIGNUP,
   OWNER_SIGNIN,
+  OWNER_SIGNIN_SUCCESS,
   OWNER_SIGNUP,
   SIGNOUT,
   INVALID_DATA,
@@ -18,15 +20,18 @@ import { setWithExpiry } from "../../utils/localStorage";
 
 export const getProfile = () => async (dispatch) => {
   try {
+    dispatch({
+      type: USER_SIGNIN,
+    });
     const response = await getProfileService();
     if (response.status === 200 && response.data.user) {
       return dispatch({
-        type: USER_SIGNIN,
+        type: USER_SIGNIN_SUCCESS,
         payload: response.data,
       });
     } else if (response.status === 200 && response.data.owner) {
       return dispatch({
-        type: OWNER_SIGNIN,
+        type: OWNER_SIGNIN_SUCCESS,
         payload: response.data,
       });
     }
@@ -42,12 +47,15 @@ export const getProfile = () => async (dispatch) => {
 
 export const userSignIn = (Credentials) => async (dispatch) => {
   try {
+    dispatch({
+      type: USER_SIGNIN,
+    });
     const response = await userSignInService(Credentials);
     if (response.status === 200) {
       setWithExpiry("token", response.data.token, 30 * 60 * 1000);
       setAuthToken(response.data.token);
       return dispatch({
-        type: USER_SIGNIN,
+        type: USER_SIGNIN_SUCCESS,
         payload: response.data,
       });
     }
@@ -84,12 +92,16 @@ export const userSignUp = (userData) => async (dispatch) => {
 
 export const ownerSignIn = (Credentials) => async (dispatch) => {
   try {
+    dispatch({
+      type: OWNER_SIGNIN,
+    });
+
     const response = await ownerSignInService(Credentials);
     if (response.status === 200) {
       setWithExpiry("token", response.data.token, 30 * 60 * 1000);
       setAuthToken(response.data.token);
       return dispatch({
-        type: OWNER_SIGNIN,
+        type: OWNER_SIGNIN_SUCCESS,
         payload: response.data,
       });
     }
@@ -131,13 +143,4 @@ export const signOut = () => async (dispatch) => {
   return dispatch({
     type: SIGNOUT,
   });
-};
-
-export default {
-  userSignIn,
-  ownerSignIn,
-  userSignUp,
-  ownerSignUp,
-  signOut,
-  getProfile,
 };

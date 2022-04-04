@@ -43,6 +43,7 @@
 .responsive-table .col-1 {
   flex-basis: 20%;
   margin: 8px;
+  text-align: center;
 }
 
 @media all and (max-width: 767px) {

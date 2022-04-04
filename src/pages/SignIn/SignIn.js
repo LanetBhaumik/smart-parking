@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useMedia } from "react-use";
@@ -18,13 +18,10 @@ import {
 
 //actions
 import { userSignIn, ownerSignIn } from "../../redux/actions/authAction";
-import { setAlert, resetAlert } from "../../redux/actions/alertAction";
+import { setAlert } from "../../redux/actions/alertAction";
 
 const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
   const Navigate = useNavigate();
-  if (token) {
-    Navigate("/");
-  }
   const isMobile = useMedia("(max-width: 720px)");
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
@@ -42,28 +39,33 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     if (role === "user") {
-      const data = await userSignIn(credentials);
-      if (data.type === "INVALID_DATA") {
-        setAlert("error", data.payload.error);
-      } else {
-        setAlert("success", "Sign in success");
-        Navigate(-1);
-      }
-      setLoading(false);
-    } else {
-      const data = await ownerSignIn(credentials);
-      if (data.type === "INVALID_DATA") {
-        setAlert("error", data.payload.error);
-      } else {
-        setAlert("success", "Sign in success");
-        Navigate("/owner/parkings");
-      }
+      userSignIn(credentials).then((data) => {
+        if (data.type === "USER_SIGNIN_SUCCESS") {
+          Navigate(-1);
+        } else if (data.type === "INVALID_DATA") {
+          setAlert("error", data.payload.error);
+        }
+      });
+    } else if (role === "owner") {
+      ownerSignIn(credentials).then((data) => {
+        if (data.type === "OWNER_SIGNIN_SUCCESS") {
+          Navigate("/owner/parkings");
+        } else if (data.type === "INVALID_DATA") {
+          setAlert("error", data.payload.error);
+        }
+      });
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      Navigate("/");
+    }
+  }, [token, Navigate]);
 
   return (
     <form
@@ -179,5 +181,4 @@ export default connect(mapStateToProps, {
   userSignIn,
   ownerSignIn,
   setAlert,
-  resetAlert,
 })(SignIn);

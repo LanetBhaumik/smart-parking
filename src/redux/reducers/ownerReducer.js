@@ -8,7 +8,7 @@ export const OWNER_PROFILE_FAILED = "OWNER_PROFILE_FAILED";
 export const ADD_PARKING_SUCCESS = "ADD_PARKING_SUCCESS";
 export const ADD_PARKING_FAILED = "ADD_PARKING_FAILED";
 
-export default (state = INITIAL_STATE, action) => {
+const ownerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case OWNER_PROFILE: {
       return {
@@ -39,3 +39,4 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+export default ownerReducer;

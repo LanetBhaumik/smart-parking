@@ -12,11 +12,3 @@ export const deleteCarService = (carId) =>
 
 export const primaryCarService = (carId) =>
   baseService.post(`/user/primary_car/${carId}`);
-
-export default {
-  userProfileService,
-  userBookingsService,
-  addCarService,
-  deleteCarService,
-  primaryCarService,
-};

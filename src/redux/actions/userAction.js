@@ -7,9 +7,10 @@ import {
 } from "../services/userService.js";
 import {
   USER_PROFILE,
-  USER_BOOKINGS,
-  USER_BOOKINGS_FAILED,
   USER_PROFILE_FAILED,
+  USER_BOOKINGS,
+  USER_BOOKINGS_SUCCESS,
+  USER_BOOKINGS_ERROR,
   ADD_CAR,
   ADD_CAR_SUCCESS,
   ADD_CAR_ERROR,
@@ -19,7 +20,11 @@ import {
   PRIMARY_CAR,
   PRIMARY_CAR_SUCCESS,
   PRIMARY_CAR_ERROR,
+  DELETE_BOOKING,
+  DELETE_BOOKING_SUCCESS,
+  DELETE_BOOKING_ERROR,
 } from "../reducers/userReducer";
+import { deleteBookingService } from "../services/bookingService.js";
 
 export const userProfile = () => async (dispatch) => {
   try {
@@ -44,10 +49,13 @@ export const userProfile = () => async (dispatch) => {
 
 export const userBookings = (limit, skip) => async (dispatch) => {
   try {
+    dispatch({
+      type: USER_BOOKINGS,
+    });
     const response = await userBookingsService(limit, skip);
     if (response.status < 350) {
       return dispatch({
-        type: USER_BOOKINGS,
+        type: USER_BOOKINGS_SUCCESS,
         payload: {
           bookings: response.data.bookings,
           totalResults: response.data.totalResults,
@@ -57,7 +65,7 @@ export const userBookings = (limit, skip) => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       return dispatch({
-        type: USER_BOOKINGS_FAILED,
+        type: USER_BOOKINGS_ERROR,
         payload: {
           error: error.response.data.error,
         },
@@ -138,10 +146,26 @@ export const makeCarPrimary = (carId) => async (dispatch) => {
   }
 };
 
-export default {
-  userProfile,
-  userBookings,
-  addCar,
-  deleteCar,
-  makeCarPrimary,
+export const deleteBookingAction = (bookingId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: DELETE_BOOKING,
+    });
+    const response = await deleteBookingService(bookingId);
+    if (response.status < 350) {
+      return dispatch({
+        type: DELETE_BOOKING_SUCCESS,
+        payload: response.data,
+      });
+    }
+  } catch (error) {
+    if (error.response) {
+      return dispatch({
+        type: DELETE_BOOKING_ERROR,
+        payload: {
+          error: error.response.data.error,
+        },
+      });
+    }
+  }
 };

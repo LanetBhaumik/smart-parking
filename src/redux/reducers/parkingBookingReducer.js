@@ -5,7 +5,7 @@ export const PARKING_BOOKINGS_DATA_FAILED = "PARKING_BOOKINGS_DATA_FAILED";
 export const SLOT_BOOKINGS_DATA = "SLOT_BOOKINGS_DATA";
 export const SLOT_BOOKINGS_DATA_FAILED = "SLOT_BOOKINGS_DATA_FAILED";
 
-export default (state = INITIAL_STATE, action) => {
+const parkingBookingReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PARKING_BOOKINGS_DATA: {
       return { ...state, ...action.payload };
@@ -32,3 +32,4 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+export default parkingBookingReducer;

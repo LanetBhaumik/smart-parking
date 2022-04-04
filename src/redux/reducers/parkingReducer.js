@@ -5,7 +5,7 @@ export const PARKING_FAILED = "PARKING_FAILED";
 export const PARKING_DETAIL_SUCCESS = "PARKING_DETAIL_SUCCESS";
 export const PARKING_DETAIL_FAILED = "PARKING_DETAIL_FAILED";
 
-export default (state = INITIAL_STATE, action) => {
+const parkingReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PARKING_SUCCESS: {
       return [...state, ...action.payload.parkings];
@@ -23,3 +23,4 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+export default parkingReducer;

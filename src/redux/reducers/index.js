@@ -6,7 +6,6 @@ import parkings from "./parkingReducer";
 import alert from "./alertReducer";
 import user from "./userReducer";
 import owner from "./ownerReducer";
-import bookings from "./bookingReducer";
 import parkingBookings from "./parkingBookingReducer";
 
 export default combineReducers({
@@ -15,6 +14,5 @@ export default combineReducers({
   alert,
   owner,
   user,
-  bookings,
   parkingBookings,
 });

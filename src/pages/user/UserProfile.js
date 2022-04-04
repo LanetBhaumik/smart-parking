@@ -45,7 +45,7 @@ const UserProfile = ({ userProfile, signOut }) => {
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [userProfile]);
 
   return (
     <>

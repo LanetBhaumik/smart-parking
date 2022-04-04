@@ -50,5 +50,3 @@ export const fetchParkingDetail = (parkingId) => async (dispatch) => {
     }
   }
 };
-
-export default { fetchParkings, fetchParkingDetail };

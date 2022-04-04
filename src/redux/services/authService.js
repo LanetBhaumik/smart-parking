@@ -17,11 +17,3 @@ export const ownerSignUpService = (ownerData) => {
 export const getProfileService = () => {
   return baseService.get("/profile");
 };
-
-export default {
-  userSignInService,
-  ownerSignInService,
-  userSignUpService,
-  ownerSignUpService,
-  getProfileService,
-};

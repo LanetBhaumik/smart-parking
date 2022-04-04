@@ -2,14 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { userBookings } from "../../redux/actions/userAction";
-
 // css
 import classes from "./UserBookings.module.css";
 
-import { Box, CircularProgress } from "@mui/material";
+// material ui
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const UserBookings = ({ userBookings }) => {
+import { Box, CircularProgress, IconButton } from "@mui/material";
+
+// action
+import { setAlert } from "../../redux/actions/alertAction";
+import {
+  deleteBookingAction,
+  userBookings,
+} from "../../redux/actions/userAction";
+
+const UserBookings = ({ userBookings, deleteBookingAction }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -20,7 +28,7 @@ const UserBookings = ({ userBookings }) => {
 
   const fetchMoreData = async () => {
     let data = await userBookings(10, page * 10);
-    if (data && data.type === "USER_BOOKINGS") {
+    if (data && data.type === "USER_BOOKINGS_SUCCESS") {
       setBookings(bookings.concat(data.payload.bookings));
       setPage(page + 1);
       setTotalResults(data.payload.totalResults);
@@ -31,7 +39,7 @@ const UserBookings = ({ userBookings }) => {
     const updateBookings = async () => {
       setLoading(true);
       let data = await userBookings(10, 0);
-      if (data && data.type === "USER_BOOKINGS") {
+      if (data && data.type === "USER_BOOKINGS_SUCCESS") {
         setBookings(bookings.concat(data.payload.bookings));
         setTotalResults(data.payload.totalResults);
       }
@@ -59,6 +67,20 @@ const UserBookings = ({ userBookings }) => {
     hh = pad(hh);
     return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
   };
+
+  const onDeleteBooking = async (bookingId) => {
+    if (!loading) {
+      setLoading(true);
+      const data = await deleteBookingAction(bookingId);
+      if (data.type === "DELETE_BOOKING_SUCCESS") {
+        setAlert("success", "booking deleted successfully");
+      } else {
+        setAlert("error", data.payload.error);
+      }
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <h2 className={classes.heading}>Your Bookings</h2>
@@ -76,6 +98,7 @@ const UserBookings = ({ userBookings }) => {
               Exit Time
             </div>
             <div className={`${classes.col} ${classes["col-1"]}`}>Charge</div>
+            <div className={`${classes.col} ${classes["col-1"]}`}>Action</div>
           </li>
           {loading && (
             <Box sx={{ textAlign: "center" }}>
@@ -165,6 +188,19 @@ const UserBookings = ({ userBookings }) => {
                     >
                       {`${booking.charge} Rs.`}
                     </div>
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Action"
+                    >
+                      <IconButton
+                        title="Delete Booking"
+                        variant="outlined"
+                        onClick={() => onDeleteBooking(booking._id)}
+                        style={{ color: "red" }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
                   </li>
                 );
               })}
@@ -187,4 +223,6 @@ const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, {
   userBookings,
+  setAlert,
+  deleteBookingAction,
 })(UserBookings);

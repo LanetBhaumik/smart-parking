@@ -51,5 +51,3 @@ export const addParking = (parkingData) => async (dispatch, getState) => {
     }
   }
 };
-
-export default { ownerProfile, addParking };

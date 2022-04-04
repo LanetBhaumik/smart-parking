@@ -20,16 +20,17 @@ const OwnerParkingSlots = ({
   const currentTime = new Date().getTime();
   const Navigate = useNavigate();
   const params = useParams();
+  const parkingId = params.parkingId;
   const mountedRef = useRef(true);
 
   useEffect(() => {
     const apiCall = async () => {
-      const parkingData = await fetchParkingDetail(params.parkingId);
+      const parkingData = await fetchParkingDetail(parkingId);
       if (parkingData.type === "PARKING_DETAIL_SUCCESS") {
         if (!mountedRef.current) return null;
         setParking(parkingData.payload);
       }
-      const data = await fetchParkingBookings(params.parkingId);
+      const data = await fetchParkingBookings(parkingId);
       if (data.type === "PARKING_BOOKINGS_DATA") {
         if (!mountedRef.current) return null;
         setLoading(false);
@@ -39,9 +40,9 @@ const OwnerParkingSlots = ({
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [fetchParkingBookings, fetchParkingDetail, parkingId]);
 
-  const bookings = parkingBookings[params.parkingId];
+  const bookings = parkingBookings[parkingId];
   return (
     <>
       <h2
@@ -73,7 +74,7 @@ const OwnerParkingSlots = ({
                   key={slot}
                   className={classes[btnClass]}
                   onClick={() =>
-                    Navigate(`/owner/parkings/${params.parkingId}/${slot}`)
+                    Navigate(`/owner/parkings/${parkingId}/${slot}`)
                   }
                 >
                   <h2>{slot}</h2>

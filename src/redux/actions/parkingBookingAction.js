@@ -30,27 +30,24 @@ export const fetchParkingBookings = (parkingId) => async (dispatch) => {
   }
 };
 
-export const fetchParkingSlotBookings = (parkingId, slot) => async (
-  dispatch
-) => {
-  try {
-    const response = await parkingSlotBookingsService(parkingId, slot);
-    if (response.status === 200) {
-      return dispatch({
-        type: SLOT_BOOKINGS_DATA,
-        payload: { parkingId, slot, bookings: response.data },
-      });
+export const fetchParkingSlotBookings =
+  (parkingId, slot) => async (dispatch) => {
+    try {
+      const response = await parkingSlotBookingsService(parkingId, slot);
+      if (response.status === 200) {
+        return dispatch({
+          type: SLOT_BOOKINGS_DATA,
+          payload: { parkingId, slot, bookings: response.data },
+        });
+      }
+    } catch (error) {
+      if (error.response) {
+        return dispatch({
+          type: SLOT_BOOKINGS_DATA_FAILED,
+          payload: {
+            error: error.response.data.error,
+          },
+        });
+      }
     }
-  } catch (error) {
-    if (error.response) {
-      return dispatch({
-        type: SLOT_BOOKINGS_DATA_FAILED,
-        payload: {
-          error: error.response.data.error,
-        },
-      });
-    }
-  }
-};
-
-export default { fetchParkingBookings, fetchParkingSlotBookings };
+  };
