@@ -17,20 +17,20 @@ import {
   userBookings,
 } from "../../redux/actions/userAction";
 
-const UserBookings = ({ userBookings, deleteBookingAction }) => {
+const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [skip, setSkip] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
   const currentTime = new Date();
 
   const mountedRef = useRef(true);
 
   const fetchMoreData = async () => {
-    let data = await userBookings(10, page * 10);
+    let data = await userBookings(10, skip);
     if (data && data.type === "USER_BOOKINGS_SUCCESS") {
       setBookings(bookings.concat(data.payload.bookings));
-      setPage(page + 1);
+      setSkip(skip + 10);
       setTotalResults(data.payload.totalResults);
     }
   };
@@ -38,11 +38,12 @@ const UserBookings = ({ userBookings, deleteBookingAction }) => {
   useEffect(() => {
     const updateBookings = async () => {
       setLoading(true);
-      let data = await userBookings(10, 0);
+      let data = await userBookings(10, skip);
       if (data && data.type === "USER_BOOKINGS_SUCCESS") {
         setBookings(bookings.concat(data.payload.bookings));
         setTotalResults(data.payload.totalResults);
       }
+      setSkip(skip + 10);
       setLoading(false);
     };
     if (!mountedRef.current) return null;
@@ -73,6 +74,12 @@ const UserBookings = ({ userBookings, deleteBookingAction }) => {
       setLoading(true);
       const data = await deleteBookingAction(bookingId);
       if (data.type === "DELETE_BOOKING_SUCCESS") {
+        setBookings(
+          bookings.filter((bkng) => {
+            return bkng._id != bookingId;
+          })
+        );
+        setSkip(skip - 1);
         setAlert("success", "booking deleted successfully");
       } else {
         setAlert("error", data.payload.error);
@@ -112,7 +119,7 @@ const UserBookings = ({ userBookings, deleteBookingAction }) => {
           <InfiniteScroll
             dataLength={bookings.length}
             next={fetchMoreData}
-            hasMore={bookings.length !== totalResults}
+            hasMore={bookings.length < totalResults}
             loader={
               <Box sx={{ textAlign: "center" }}>
                 <h4>Loading.....</h4>
