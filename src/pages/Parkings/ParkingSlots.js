@@ -65,21 +65,23 @@ const ParkingSlots = ({
 
   useEffect(() => {
     const optimizedBookings = {};
-    fetchParkingDetail(parkingId).then((parkingData) => {
+    const fetchData = async () => {
+      const parkingData = await fetchParkingDetail(parkingId);
       if (parkingData.type === "PARKING_DETAIL_SUCCESS") {
         setParking(parkingData.payload);
       }
-    });
-    fetchParkingBookings(parkingId).then((data) => {
+
+      const data = await fetchParkingBookings(parkingId);
       if (data.type === "PARKING_BOOKINGS_DATA") {
         const bookingList = data.payload[parkingId];
         Object.keys(bookingList).forEach((slot) => {
           optimizedBookings[slot] = getOptimizedBookings(bookingList[slot]);
         });
         setShowTimeline(optimizedBookings);
+        setLoading(false);
       }
-    });
-    setLoading(false);
+    };
+    fetchData();
   }, [fetchParkingBookings, fetchParkingDetail, parkingId]);
 
   return (

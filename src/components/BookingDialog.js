@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -149,12 +150,26 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button
-            onClick={onSubmitHandle}
-            disabled={error.inError || error.outError}
-          >
-            Book
-          </Button>
+          <Box sx={{ m: 1, position: "relative" }}>
+            <Button
+              onClick={onSubmitHandle}
+              disabled={loading || error.inError || error.outError}
+            >
+              Book
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={20}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
+          </Box>
         </DialogActions>
       </Dialog>
     </div>
