@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import { getWithExpiry } from "../utils/localStorage";
-import reducer from "./reducers/index";
+import { rootReducer } from "./reducers/index";
 
 const composeEnhancer =
   (process.env.NODE_ENV === "development"
@@ -23,4 +23,4 @@ const INITIAL_STATE = {
 if (token) {
   INITIAL_STATE.auth.token = token;
 }
-export default createStore(reducer, INITIAL_STATE, enhancer);
+export default createStore(rootReducer, INITIAL_STATE, enhancer);

@@ -18,16 +18,6 @@ const ParkingCard = ({ parking }) => {
       <Grid item key={parking} xs={12} sm={6} md={4}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <CardActionArea component={Link} to={`/parkings/${parking._id}`}>
-            {/* <CardMedia
-            component="img"
-            sx={{
-              // 16:9
-              pt: "56.25%",
-            }}
-            image="https://source.unsplash.com/random"
-            alt="random"
-          /> */}
-
             <CardHeader
               title={parking.parking_name}
               subheader={`${parking.address} - ${parking.pincode}`}

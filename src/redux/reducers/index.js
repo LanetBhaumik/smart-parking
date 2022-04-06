@@ -8,7 +8,7 @@ import user from "./userReducer";
 import owner from "./ownerReducer";
 import parkingBookings from "./parkingBookingReducer";
 
-export default combineReducers({
+const appReducer = combineReducers({
   auth,
   parkings,
   alert,
@@ -16,3 +16,11 @@ export default combineReducers({
   user,
   parkingBookings,
 });
+
+export const rootReducer = (state, action) => {
+  if (action.type === "SIGNOUT") {
+    return appReducer(undefined, action);
+  }
+
+  return appReducer(state, action);
+};

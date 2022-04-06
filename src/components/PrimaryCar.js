@@ -25,7 +25,6 @@ const PrimaryCar = ({ profile, setProfile, makeCarPrimary, setAlert }) => {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      console.log(primaryCar);
       const data = await makeCarPrimary(primaryCar);
       if (data.type === "PRIMARY_CAR_SUCCESS") {
         setAlert(
@@ -36,8 +35,6 @@ const PrimaryCar = ({ profile, setProfile, makeCarPrimary, setAlert }) => {
       } else {
         setAlert("error", data.payload.error);
       }
-
-      // after request
       setSuccess(true);
       setLoading(false);
     }
