@@ -83,7 +83,7 @@ const OwnerProfile = ({ ownerProfile, signOut }) => {
 
             <Typography sx={{ m: 1 }}>
               <b>Mobile No : </b>
-              {profile.mobile_no}
+              {profile.mobileNo}
             </Typography>
             <div>
               <Typography sx={{ fontWeight: 600, m: 1 }}>

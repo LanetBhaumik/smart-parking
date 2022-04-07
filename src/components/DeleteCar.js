@@ -25,7 +25,7 @@ const DeleteCar = ({ profile, deleteCar, setProfile }) => {
   const [open, setOpen] = useState(false);
   const [carToBeDeleted, setCarToBeDeleted] = useState({
     id: "",
-    car_no: "",
+    carNo: "",
   });
 
   const onSubmitHandle = async () => {
@@ -57,7 +57,7 @@ const DeleteCar = ({ profile, deleteCar, setProfile }) => {
             sx={{ display: "flex", alignItems: "center", m: 1 }}
             key={car._id}
           >
-            <Typography>{car.car_no}</Typography>
+            <Typography>{car.carNo}</Typography>
             <IconButton
               title="Delete Car"
               variant="outlined"
@@ -75,7 +75,7 @@ const DeleteCar = ({ profile, deleteCar, setProfile }) => {
         <DialogContent>
           <DialogContentText>
             <Typography style={{ color: "red" }}>
-              {carToBeDeleted.car_no}
+              {carToBeDeleted.carNo}
             </Typography>
             will be removed from your car list
           </DialogContentText>

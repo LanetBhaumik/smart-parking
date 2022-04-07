@@ -28,7 +28,7 @@ const OwnerParkings = ({ ownerProfile, owner }) => {
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [ownerProfile]);
 
   return (
     <>

@@ -51,7 +51,7 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
     return () => {
       mountedRef.current = false;
     };
-  }, [bookings, userBookings]);
+  }, [bookings, skip, userBookings]);
 
   const pad = (n) => (n < 10 ? "0" + n : n);
   const timeFormat = (date) => {
@@ -76,7 +76,7 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
       if (data.type === "DELETE_BOOKING_SUCCESS") {
         setBookings(
           bookings.filter((bkng) => {
-            return bkng._id != bookingId;
+            return bkng._id !== bookingId;
           })
         );
         setSkip(skip - 1);
@@ -132,7 +132,7 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
               bookings.map((booking, i) => {
                 return (
                   <li className={classes["table-row"]} key={i}>
-                    {currentTime > new Date(booking.out_time) && (
+                    {currentTime > new Date(booking.outTime) && (
                       <div
                         className={`${classes.col} ${classes["col-1"]}`}
                         data-label="Status"
@@ -141,7 +141,7 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
                       </div>
                     )}
 
-                    {currentTime < new Date(booking.in_time) && (
+                    {currentTime < new Date(booking.inTime) && (
                       <div
                         className={`${classes.col} ${classes["col-1"]}`}
                         data-label="Status"
@@ -149,8 +149,8 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
                         <span className={classes.upcoming}>Upcoming</span>
                       </div>
                     )}
-                    {currentTime >= new Date(booking.in_time) &&
-                      currentTime <= new Date(booking.out_time) && (
+                    {currentTime >= new Date(booking.inTime) &&
+                      currentTime <= new Date(booking.outTime) && (
                         <div
                           className={`${classes.col} ${classes["col-1"]}`}
                           data-label="Status"
@@ -163,13 +163,13 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Car No"
                     >
-                      {booking?.car.car_no}
+                      {booking?.car.carNo}
                     </div>
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Parking"
                     >
-                      {booking.parking.parking_name}
+                      {booking.parking.parkingName}
                     </div>
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
@@ -181,13 +181,13 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Entry Time"
                     >
-                      {timeFormat(booking.in_time)}
+                      {timeFormat(booking.inTime)}
                     </div>
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Exit Time"
                     >
-                      {timeFormat(booking.out_time)}
+                      {timeFormat(booking.outTime)}
                     </div>
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}

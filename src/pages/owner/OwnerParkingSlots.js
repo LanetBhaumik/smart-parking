@@ -47,7 +47,7 @@ const OwnerParkingSlots = ({
     <>
       <h2
         className={classes.heading}
-      >{`Bookings of ${parking.parking_name}`}</h2>
+      >{`Bookings of ${parking.parkingName}`}</h2>
       {loading && (
         <Box sx={{ textAlign: "center" }}>
           <CircularProgress />
@@ -59,8 +59,8 @@ const OwnerParkingSlots = ({
             Object.keys(bookings).map((slot) => {
               let btnClass = null;
               const active = bookings[slot].some((booking) => {
-                const bookingIn = new Date(booking.in_time).getTime();
-                const bookingOut = new Date(booking.out_time).getTime();
+                const bookingIn = new Date(booking.inTime).getTime();
+                const bookingOut = new Date(booking.outTime).getTime();
                 return bookingIn <= currentTime && currentTime <= bookingOut;
               });
               btnClass = active

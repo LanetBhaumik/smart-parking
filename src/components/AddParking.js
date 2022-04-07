@@ -16,10 +16,10 @@ import { setAlert } from "../redux/actions/alertAction";
 
 const AddParking = ({ addParking, setAlert }) => {
   const [parking, setParking] = useState({
-    parking_name: "",
+    parkingName: "",
     address: "",
     pincode: "",
-    total_slots: "",
+    totalSlots: "",
     rate: "",
   });
 
@@ -31,7 +31,7 @@ const AddParking = ({ addParking, setAlert }) => {
     });
   };
 
-  const { parking_name, address, pincode, total_slots, rate } = parking;
+  const { parkingName, address, pincode, totalSlots, rate } = parking;
   const [open, setOpen] = React.useState(false);
 
   const onAddHandle = () => {
@@ -63,14 +63,14 @@ const AddParking = ({ addParking, setAlert }) => {
         <DialogContent>
           <DialogContentText>Add details of your paking</DialogContentText>
           <TextField
-            id="parking_name"
+            id="parkingName"
             label="Name of Parking"
             variant="outlined"
             required
             type="text"
             margin="normal"
-            value={parking_name}
-            name="parking_name"
+            value={parkingName}
+            name="parkingName"
             onChange={handleParkingChange}
             fullWidth
           />
@@ -99,14 +99,14 @@ const AddParking = ({ addParking, setAlert }) => {
             fullWidth
           />
           <TextField
-            id="total_slots"
+            id="totalSlots"
             label="Total slots"
             variant="outlined"
             required
             type="text"
             margin="normal"
-            value={total_slots}
-            name="total_slots"
+            value={totalSlots}
+            name="totalSlots"
             onChange={handleParkingChange}
             fullWidth
           />

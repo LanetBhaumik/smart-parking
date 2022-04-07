@@ -11,4 +11,4 @@ export const deleteCarService = (carId) =>
   baseService.delete(`/user/cars/${carId}`);
 
 export const primaryCarService = (carId) =>
-  baseService.post(`/user/primary_car/${carId}`);
+  baseService.post(`/user/primaryCar/${carId}`);

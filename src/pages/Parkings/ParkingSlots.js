@@ -21,32 +21,32 @@ const getOptimizedBookings = (bkgs) => {
   const optimizedBookingsArr = [];
   const lastIndex = bkgs.length - 1;
   for (let i = 0; i < lastIndex; i++) {
-    const newIn = bkgs[i].in_time;
-    while (i < lastIndex && bkgs[i].out_time === bkgs[i + 1].in_time) {
+    const newIn = bkgs[i].inTime;
+    while (i < lastIndex && bkgs[i].outTime === bkgs[i + 1].inTime) {
       i++;
     }
-    const newOut = bkgs[i].out_time;
+    const newOut = bkgs[i].outTime;
     optimizedBookingsArr.push({
       color: "error",
-      in_time: newIn,
-      out_time: newOut,
+      inTime: newIn,
+      outTime: newOut,
     });
   }
   if (optimizedBookingsArr.length === 0) {
     optimizedBookingsArr.push({
       color: "error",
-      in_time: bkgs.at(-1).in_time,
-      out_time: bkgs.at(-1).out_time,
+      inTime: bkgs.at(-1).inTime,
+      outTime: bkgs.at(-1).outTime,
     });
   }
   if (
     // optimizedBookingsArr.length > 0 &&
-    optimizedBookingsArr.at(-1).out_time !== bkgs.at(-1).out_time
+    optimizedBookingsArr.at(-1).outTime !== bkgs.at(-1).outTime
   ) {
     optimizedBookingsArr.push({
       color: "error",
-      in_time: bkgs[lastIndex].in_time,
-      out_time: bkgs[lastIndex].out_time,
+      inTime: bkgs[lastIndex].inTime,
+      outTime: bkgs[lastIndex].outTime,
     });
   }
   return optimizedBookingsArr;

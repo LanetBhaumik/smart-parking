@@ -39,8 +39,8 @@ const getTimeline = (bkgs) => {
     return [
       {
         color: "success",
-        in_time: currentTime,
-        out_time: new Date().setHours(12, 0),
+        inTime: currentTime,
+        outTime: new Date().setHours(12, 0),
       },
     ];
   const timelineArray = [];
@@ -48,8 +48,8 @@ const getTimeline = (bkgs) => {
     timelineArray.push(bkgs[i]);
     timelineArray.push({
       color: "success",
-      in_time: bkgs[i].out_time,
-      out_time: bkgs[i + 1].in_time,
+      inTime: bkgs[i].outTime,
+      outTime: bkgs[i + 1].inTime,
     });
   }
   timelineArray.push(bkgs[bkgs.length - 1]);
@@ -77,8 +77,8 @@ const TimelineModal = ({ slot, bookings, parking }) => {
   };
 
   const active = bookings.some((booking) => {
-    const bookingIn = new Date(booking.in_time).getTime();
-    const bookingOut = new Date(booking.out_time).getTime();
+    const bookingIn = new Date(booking.inTime).getTime();
+    const bookingOut = new Date(booking.outTime).getTime();
     return bookingIn <= currentTime && currentTime <= bookingOut;
   });
   const btnClass = active ? "OccupiedSlotBtn" : "AvailableSlotBtn";
@@ -92,7 +92,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
   useEffect(() => {
     const newTimeline = getTimeline(bookings);
     setTimeline(newTimeline);
-  }, []);
+  }, [bookings]);
 
   return (
     <>
@@ -111,14 +111,14 @@ const TimelineModal = ({ slot, bookings, parking }) => {
               return (
                 <TimelineItem key={i}>
                   <TimelineOppositeContent>
-                    {timeFormat(booking.in_time)}
+                    {timeFormat(booking.inTime)}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
                     <TimelineDot color={booking.color} />
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    {timeFormat(booking.out_time)}
+                    {timeFormat(booking.outTime)}
                   </TimelineContent>
                 </TimelineItem>
               );
@@ -153,7 +153,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
               <BookingDialog
                 parking={{
                   rate: parking.rate,
-                  parkingName: parking.parking_name,
+                  parkingName: parking.parkingName,
                   parkingId: params.parkingId,
                   slot: slot,
                 }}

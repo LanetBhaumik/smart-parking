@@ -29,7 +29,7 @@ const PrimaryCar = ({ profile, setProfile, makeCarPrimary, setAlert }) => {
       if (data.type === "PRIMARY_CAR_SUCCESS") {
         setAlert(
           "success",
-          `${data.payload.user.car.car_no} is now your primary car`
+          `${data.payload.user.car.carNo} is now your primary car`
         );
         setProfile(data.payload.user);
       } else {
@@ -57,7 +57,7 @@ const PrimaryCar = ({ profile, setProfile, makeCarPrimary, setAlert }) => {
         >
           {profile.cars.map((car) => (
             <MenuItem key={car._id} value={car._id}>
-              {car.car_no}
+              {car.carNo}
             </MenuItem>
           ))}
         </Select>

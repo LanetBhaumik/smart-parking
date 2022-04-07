@@ -89,7 +89,7 @@ const UserProfile = ({ userProfile, signOut }) => {
 
             <Typography sx={{ m: 1 }}>
               <b>Mobile No : </b>
-              {profile.mobile_no}
+              {profile.mobileNo}
             </Typography>
 
             <PrimaryCar profile={profile} setProfile={setProfile} />

@@ -19,14 +19,14 @@ const ParkingCard = ({ parking }) => {
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <CardActionArea component={Link} to={`/parkings/${parking._id}`}>
             <CardHeader
-              title={parking.parking_name}
+              title={parking.parkingName}
               subheader={`${parking.address} - ${parking.pincode}`}
             />
 
             <CardContent sx={{ flexGrow: 1 }}>
               <Typography
                 paragraph
-              >{`Total Slots: ${parking.total_slots}`}</Typography>
+              >{`Total Slots: ${parking.totalSlots}`}</Typography>
               <Typography
                 paragraph
               >{`Rate: ${parking.rate} Rs./hour`}</Typography>

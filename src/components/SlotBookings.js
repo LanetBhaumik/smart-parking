@@ -40,7 +40,7 @@ const SlotBookings = ({
     return () => {
       mountedRef.current = false;
     };
-  }, []);
+  }, [fetchParkingBookings, fetchParkingDetail, fetchParkingSlotBookings, parkingId, slot]);
 
   const parking = parkingBookings[parkingId];
   let bookings = [];
@@ -93,7 +93,7 @@ const SlotBookings = ({
             bookings.map((booking, i) => {
               return (
                 <li className={classes["table-row"]} key={i}>
-                  {currentTime > new Date(booking.out_time) && (
+                  {currentTime > new Date(booking.outTime) && (
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Status"
@@ -102,7 +102,7 @@ const SlotBookings = ({
                     </div>
                   )}
 
-                  {currentTime < new Date(booking.in_time) && (
+                  {currentTime < new Date(booking.inTime) && (
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Status"
@@ -110,8 +110,8 @@ const SlotBookings = ({
                       <span className={classes.upcoming}>Upcoming</span>
                     </div>
                   )}
-                  {currentTime >= new Date(booking.in_time) &&
-                    currentTime <= new Date(booking.out_time) && (
+                  {currentTime >= new Date(booking.inTime) &&
+                    currentTime <= new Date(booking.outTime) && (
                       <div
                         className={`${classes.col} ${classes["col-1"]}`}
                         data-label="Status"
@@ -129,19 +129,19 @@ const SlotBookings = ({
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Car"
                   >
-                    {booking.car.car_no}
+                    {booking.car.carNo}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Entry Time"
                   >
-                    {timeFormat(booking.in_time)}
+                    {timeFormat(booking.inTime)}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}
                     data-label="Exit Time"
                   >
-                    {timeFormat(booking.out_time)}
+                    {timeFormat(booking.outTime)}
                   </div>
                   <div
                     className={`${classes.col} ${classes["col-1"]}`}

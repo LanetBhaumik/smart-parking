@@ -24,8 +24,8 @@ import { setAlert } from "../redux/actions/alertAction";
 //logic of time is occupied or not
 const validateOperation = (requestedIn, requestedOut, bookings) => {
   const occupied = bookings.some((booking) => {
-    const bookedIn = new Date(booking.in_time).getTime();
-    const bookedOut = new Date(booking.out_time).getTime();
+    const bookedIn = new Date(booking.inTime).getTime();
+    const bookedOut = new Date(booking.outTime).getTime();
     return (
       (bookedIn <= requestedIn && requestedIn < bookedOut) ||
       (bookedIn < requestedOut && requestedOut <= bookedOut)
@@ -84,8 +84,8 @@ const BookingDialog = ({ parking, bookSlot, role, setAlert, bookings }) => {
     if (valid && !loading) {
       setLoading(true);
       const data = await bookSlot({
-        in_time: inTime,
-        out_time: outTime,
+        inTime: inTime,
+        outTime: outTime,
         parking: parkingId,
         charge,
         slot,

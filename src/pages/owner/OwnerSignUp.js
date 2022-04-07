@@ -32,19 +32,19 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
     email: "",
     password: "",
     conPassword: "",
-    mobile_no: "",
+    mobileNo: "",
     car: "",
   });
   const [parking, setParking] = useState({
-    parking_name: "",
+    parkingName: "",
     address: "",
     pincode: "",
-    total_slots: "",
+    totalSlots: "",
     rate: "",
   });
 
-  const { name, email, password, conPassword, mobile_no } = ownerData;
-  const { parking_name, address, pincode, total_slots, rate } = parking;
+  const { name, email, password, conPassword, mobileNo } = ownerData;
+  const { parkingName, address, pincode, totalSlots, rate } = parking;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,13 +62,13 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
   };
 
   const credIsValid = () => {
-    if (mobile_no.length !== 10) {
-      setAlert("error", "mobile_no is invalid");
+    if (mobileNo.length !== 10) {
+      setAlert("error", "mobileNo is invalid");
       return false;
     } else if (pincode.length !== 6) {
       setAlert("error", "pincode is invalid");
       return false;
-    } else if (total_slots < 10) {
+    } else if (totalSlots < 10) {
       setAlert("error", "you must have more then 10 slots");
       return false;
     } else if (password.length < 7) {
@@ -113,7 +113,7 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
               margin="normal"
               align="center"
             >
-              Sign Up To List Your Park
+              Sign Up
             </Typography>
             <Box>
               <TextField
@@ -145,14 +145,14 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
             </Box>
             <Box>
               <TextField
-                id="mobile_no"
-                label="mobile_no"
+                id="mobileNo"
+                label="mobileNo"
                 variant="outlined"
                 required
                 type="tel"
                 margin="normal"
-                value={mobile_no}
-                name="mobile_no"
+                value={mobileNo}
+                name="mobileNo"
                 onChange={handleChange}
                 fullWidth
               />
@@ -172,14 +172,14 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
                   </Typography>
                   <Box>
                     <TextField
-                      id="parking_name"
+                      id="parkingName"
                       label="Name of Parking"
                       variant="outlined"
                       required
                       type="text"
                       margin="normal"
-                      value={parking_name}
-                      name="parking_name"
+                      value={parkingName}
+                      name="parkingName"
                       onChange={handleParkingChange}
                       fullWidth
                     />
@@ -214,14 +214,14 @@ const OwnerSignUp = ({ ownerSignUp, setAlert, token }) => {
                   </Box>
                   <Box>
                     <TextField
-                      id="total_slots"
+                      id="totalSlots"
                       label="Total slots"
                       variant="outlined"
                       required
                       type="text"
                       margin="normal"
-                      value={total_slots}
-                      name="total_slots"
+                      value={totalSlots}
+                      name="totalSlots"
                       onChange={handleParkingChange}
                       fullWidth
                     />

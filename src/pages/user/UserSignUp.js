@@ -31,14 +31,14 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
     email: "",
     password: "",
     conPassword: "",
-    mobile_no: "",
+    mobileNo: "",
     car: "",
   });
 
-  const { name, email, password, conPassword, mobile_no, car } = userData;
+  const { name, email, password, conPassword, mobileNo, car } = userData;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+const handleChange = (e) => {
+    let { name, value } = e.target;
     setUserData({
       ...userData,
       [name]: value,
@@ -46,7 +46,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
   };
 
   const credIsValid = () => {
-    if (mobile_no.length !== 10) {
+    if (mobileNo.length !== 10) {
       setAlert("error", "mobile number is invalid");
       return false;
     } else if (
@@ -96,7 +96,7 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
               margin="normal"
               align="center"
             >
-              Sign Up To Park Your car
+              Sign Up
             </Typography>
             <div>
               <TextField
@@ -129,15 +129,15 @@ const UserSignUp = ({ token, userSignUp, setAlert, resetAlert }) => {
             </div>
             <div>
               <TextField
-                id="mobile_no"
-                label="mobile_no"
+                id="mobileNo"
+                label="mobileNo"
                 helperText="without +91"
                 variant="outlined"
                 required
                 type="tel"
                 margin="normal"
-                value={mobile_no}
-                name="mobile_no"
+                value={mobileNo}
+                name="mobileNo"
                 onChange={handleChange}
                 fullWidth
               />
