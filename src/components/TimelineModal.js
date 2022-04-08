@@ -62,7 +62,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
   const [open, setOpen] = useState(false);
   const currentTime = new Date().getTime();
 
-  const params = useParams();
+  const {parkingId} = useParams();
   const style = {
     position: "absolute",
     top: "50%",
@@ -154,7 +154,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
                 parking={{
                   rate: parking.rate,
                   parkingName: parking.parkingName,
-                  parkingId: params.parkingId,
+                  parkingId:parkingId,
                   slot: slot,
                 }}
                 bookings={bookings}

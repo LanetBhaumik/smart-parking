@@ -19,8 +19,7 @@ const OwnerParkingSlots = ({
   const [loading, setLoading] = useState(true);
   const currentTime = new Date().getTime();
   const Navigate = useNavigate();
-  const params = useParams();
-  const parkingId = params.parkingId;
+  const {parkingId} = useParams();
   const mountedRef = useRef(true);
 
   useEffect(() => {

@@ -60,8 +60,7 @@ const ParkingSlots = ({
   const [parking, setParking] = useState({});
   const [loading, setLoading] = useState(true);
   const [showTimeline, setShowTimeline] = useState({});
-  const params = useParams();
-  const parkingId = params.parkingId;
+  const {parkingId} = useParams();
 
   useEffect(() => {
     const optimizedBookings = {};

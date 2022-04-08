@@ -20,9 +20,7 @@ const SlotBookings = ({
   fetchParkingDetail,
 }) => {
   const currentTime = new Date();
-  const params = useParams();
-  const parkingId = params.parkingId;
-  const slot = params.slot;
+  const {parkingId, slot} = useParams();
   const [loading, setLoading] = useState(true);
   const mountedRef = useRef(true);
 

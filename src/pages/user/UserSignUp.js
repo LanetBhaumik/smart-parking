@@ -193,7 +193,7 @@ const handleChange = (e) => {
                 variant="contained"
                 margin="normal"
                 fullWidth
-                sx={{ m: 1, position: "relative" }}
+                sx={{ position: "relative" }}
                 disabled={loading}
               >
                 Sign Up
