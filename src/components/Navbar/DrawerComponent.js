@@ -18,9 +18,11 @@ import {
 // actions
 import { signOut } from "../../redux/actions/authAction";
 import { setAlert } from "../../redux/actions/alertAction";
+import ConfirmDialog from "../ConfirmDialog";
 
 const DrawerComponent = ({ role, signOut, setAlert }) => {
   const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const Navigate = useNavigate();
 
   const toggleDrawer = (value) => (event) => {
@@ -64,7 +66,7 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
             variant="outlined"
             color="inherit"
             sx={{ fontWeight: "bold" }}
-            onClick={handleSignOut}
+            onClick={() => setDialogOpen(true)}
           >
             Sign Out
           </Button>
@@ -127,6 +129,17 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
           <List>{list}</List>
         </Box>
       </SwipeableDrawer>
+      {dialogOpen && (
+        <ConfirmDialog
+          open={dialogOpen}
+          setOpen={setDialogOpen}
+          title="Sign Out"
+          content="Do you really wish to leave and sign out ?"
+          yes="Yes, Sign Out"
+          no="No, Cancel"
+          onConfirm={handleSignOut}
+        />
+      )}
     </>
   );
 };

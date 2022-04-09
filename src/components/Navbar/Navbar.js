@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMedia } from "react-use";
@@ -14,11 +14,15 @@ import {
   Typography,
 } from "@mui/material";
 
+// components
+import ConfirmDialog from "../../components/ConfirmDialog";
+
 // actions
 import { signOut } from "../../redux/actions/authAction";
 import { setAlert } from "../../redux/actions/alertAction";
 
 const Navbar = ({ role, signOut, setAlert }) => {
+  const [open, setOpen] = useState(false);
   const isMobile = useMedia("(max-width: 720px)");
   const Navigate = useNavigate();
   const handleSignOut = () => {
@@ -64,7 +68,11 @@ const Navbar = ({ role, signOut, setAlert }) => {
         {CustomNavItem("/user/bookings", "Bookings")}
         {CustomNavItem("/user/me", "Profile")}
         <Box sx={{ m: 1 }}>
-          <Button variant="outlined" color="inherit" onClick={handleSignOut}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={() => setOpen(true)}
+          >
             Sign Out
           </Button>
         </Box>
@@ -77,7 +85,11 @@ const Navbar = ({ role, signOut, setAlert }) => {
         {CustomNavItem("/owner/parkings", "Parkings")}
         {CustomNavItem("/owner/me", "Profile")}
         <Box sx={{ m: 1 }}>
-          <Button variant="outlined" color="inherit" onClick={handleSignOut}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={() => setOpen(true)}
+          >
             Sign Out
           </Button>
         </Box>
@@ -94,38 +106,51 @@ const Navbar = ({ role, signOut, setAlert }) => {
   }
 
   return (
-    <div style={{ paddingTop: 64 }}>
-      <AppBar position="fixed">
-        <Toolbar
-          sx={{
-            justifyContent: "space-between",
-          }}
-        >
-          <Box
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+    <>
+      <div style={{ paddingTop: 64 }}>
+        <AppBar position="fixed">
+          <Toolbar
+            sx={{
+              justifyContent: "space-between",
             }}
           >
-            {isMobile && <DrawerComponent />}
-            <Typography
-              component={NavLink}
-              to="/"
-              color="inherit"
-              sx={{
-                cursor: "pointer",
-                m: 1,
-                textDecoration: "none",
+            <Box
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              Smart Parking
-            </Typography>
-          </Box>
-          {!isMobile && <>{links}</>}
-        </Toolbar>
-      </AppBar>
-    </div>
+              {isMobile && <DrawerComponent />}
+              <Typography
+                component={NavLink}
+                to="/"
+                color="inherit"
+                sx={{
+                  cursor: "pointer",
+                  m: 1,
+                  textDecoration: "none",
+                }}
+              >
+                Smart Parking
+              </Typography>
+            </Box>
+            {!isMobile && <>{links}</>}
+          </Toolbar>
+        </AppBar>
+      </div>
+      {open && (
+        <ConfirmDialog
+          open={open}
+          setOpen={setOpen}
+          title="Sign Out"
+          content="Do you really wish to leave and sign out ?"
+          yes="Yes, Sign Out"
+          no="No, Cancel"
+          onConfirm={handleSignOut}
+        />
+      )}
+    </>
   );
 };
 

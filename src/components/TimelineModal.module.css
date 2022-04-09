@@ -6,11 +6,11 @@
   background: green;
   outline: none;
   border: none;
+  color: black;
   border-radius: 10px;
-  color:white;
 }
 .OccupiedSlotBtn {
-  color:white;  
+  color: black;
   height: 60px;
   width: 60px;
   margin: 8px;
@@ -23,13 +23,13 @@
 
 .AvailableSlotBtn:hover {
   background-color: rgb(0, 100, 0);
-  color: black;
   transform : scale(1.1);
-  border : 1px solid gray
+  border : 1px solid gray;
+  color:white;
 }
 .OccupiedSlotBtn:hover{
   transform : scale(1.1);
   border : 1px solid gray;
   background-color: #cb0000;
-  color: black;
+  color:white;  
 }

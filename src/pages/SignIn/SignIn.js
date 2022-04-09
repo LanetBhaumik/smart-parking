@@ -59,6 +59,7 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
         }
       });
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -126,6 +127,7 @@ const SignIn = ({ userSignIn, ownerSignIn, token, setAlert }) => {
             value={password}
             onChange={handleChange}
             fullWidth
+            autoComplete="false"
           />
         </div>
         <Box sx={{ m: 1, position: "relative" }}>

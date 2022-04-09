@@ -16,8 +16,10 @@ import classes from "./UserProfile.module.css";
 import { Box, Button, Typography } from "@mui/material";
 import PrimaryCar from "../../components/PrimaryCar";
 import DeleteCar from "../../components/DeleteCar";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const UserProfile = ({ userProfile, signOut }) => {
+  const [open, setOpen] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [profile, setProfile] = useState({});
 
@@ -100,12 +102,23 @@ const UserProfile = ({ userProfile, signOut }) => {
             <Button
               variant="outlined"
               color="primary"
-              onClick={onSignOutHandle}
+              onClick={() => setOpen(true)}
             >
               Sign Out
             </Button>
           </Box>
         </Box>
+      )}
+      {open && (
+        <ConfirmDialog
+          open={open}
+          setOpen={setOpen}
+          title="Sign Out"
+          content="Do you really wish to leave and sign out ?"
+          yes="Yes, Sign Out"
+          no="No, Cancel"
+          onConfirm={onSignOutHandle}
+        />
       )}
     </>
   );
