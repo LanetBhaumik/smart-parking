@@ -28,6 +28,7 @@ const Navbar = ({ role, signOut, setAlert }) => {
   const handleSignOut = () => {
     signOut().then((data) => {
       if (data.type === "SIGNOUT") {
+        setOpen(false);
         setAlert("success", "sign out success");
         Navigate("/");
       }

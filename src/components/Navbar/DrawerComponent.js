@@ -40,6 +40,7 @@ const DrawerComponent = ({ role, signOut, setAlert }) => {
   const handleSignOut = () => {
     signOut().then((data) => {
       if (data.type === "SIGNOUT") {
+        setDialogOpen(false);
         setAlert("success", "sign out success");
         Navigate("/");
       }

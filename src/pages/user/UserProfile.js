@@ -30,7 +30,11 @@ const UserProfile = ({ userProfile, signOut }) => {
   const mountedRef = useRef(true);
 
   const onSignOutHandle = () => {
-    signOut();
+    signOut().then((data) => {
+      if (data.type === "SIGNOUT") {
+        setOpen(false);
+      }
+    });
   };
 
   useEffect(() => {
