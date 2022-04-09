@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 
 import BookingDialog from "./BookingDialog";
 
-import { Box, Modal, Typography } from "@mui/material";
+// material ui
+import { Box, IconButton, Modal, Typography } from "@mui/material";
 import {
   Timeline,
   TimelineConnector,
@@ -14,6 +15,7 @@ import {
   TimelineOppositeContent,
   TimelineSeparator,
 } from "@mui/lab";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 // css
 import classes from "./TimelineModal.module.css";
@@ -32,7 +34,6 @@ const timeFormat = (date) => {
 };
 
 // timeline logic
-
 const getTimeline = (bkgs) => {
   const currentTime = new Date().getTime();
   if (bkgs.length === 0)
@@ -62,7 +63,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
   const [open, setOpen] = useState(false);
   const currentTime = new Date().getTime();
 
-  const {parkingId} = useParams();
+  const { parkingId } = useParams();
   const style = {
     position: "absolute",
     top: "50%",
@@ -106,6 +107,11 @@ const TimelineModal = ({ slot, bookings, parking }) => {
         aria-describedby="parent-modal-description"
       >
         <Box sx={{ ...style, width: 400 }}>
+          <Box sx={{ textAlign: "right" }}>
+            <IconButton onClick={handleClose} style={{ padding: 0 }}>
+              <CancelIcon />
+            </IconButton>
+          </Box>
           <Timeline>
             {timeline.map((booking, i) => {
               return (
@@ -154,7 +160,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
                 parking={{
                   rate: parking.rate,
                   parkingName: parking.parkingName,
-                  parkingId:parkingId,
+                  parkingId: parkingId,
                   slot: slot,
                 }}
                 bookings={bookings}
