@@ -6,9 +6,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import classes from "./UserBookings.module.css";
 
 // material ui
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import { Box, CircularProgress, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // action
 import { setAlert } from "../../redux/actions/alertAction";
@@ -17,12 +16,38 @@ import {
   userBookings,
 } from "../../redux/actions/userAction";
 
+const pad = (n) => (n < 10 ? "0" + n : n);
+const timeFormat = (date) => {
+  date = new Date(date);
+  const dd = pad(date.getDate());
+  const mm = pad(date.getMonth() + 1);
+  const yyyy = date.getFullYear();
+  let hh = date.getHours();
+  const min = pad(date.getMinutes());
+
+  const ampm = hh >= 12 ? "PM" : "AM";
+  hh = hh % 12;
+  hh = hh ? hh : 12; // the hour '0' should be '12'
+  hh = pad(hh);
+  return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
+};
+
+const currentTime = new Date();
+const getBookingStatus = (inTime, outTime) => {
+  if (currentTime > new Date(outTime)) {
+    return "expired";
+  } else if (currentTime < new Date(inTime)) {
+    return "upcoming";
+  } else {
+    return "active";
+  }
+};
+
 const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [skip, setSkip] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
-  const currentTime = new Date();
 
   const mountedRef = useRef(true);
 
@@ -52,22 +77,6 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
       mountedRef.current = false;
     };
   }, [bookings, skip, userBookings]);
-
-  const pad = (n) => (n < 10 ? "0" + n : n);
-  const timeFormat = (date) => {
-    date = new Date(date);
-    const dd = pad(date.getDate());
-    const mm = pad(date.getMonth() + 1);
-    const yyyy = date.getFullYear();
-    let hh = date.getHours();
-    const min = pad(date.getMinutes());
-
-    const ampm = hh >= 12 ? "PM" : "AM";
-    hh = hh % 12;
-    hh = hh ? hh : 12; // the hour '0' should be '12'
-    hh = pad(hh);
-    return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
-  };
 
   const onDeleteBooking = async (bookingId) => {
     if (!loading) {
@@ -130,35 +139,21 @@ const UserBookings = ({ userBookings, deleteBookingAction, setAlert }) => {
               bookings &&
               bookings.length > 0 &&
               bookings.map((booking, i) => {
+                const bookingStatus = getBookingStatus(
+                  booking.inTime,
+                  booking.outTime
+                );
+
                 return (
                   <li className={classes["table-row"]} key={i}>
-                    {currentTime > new Date(booking.outTime) && (
-                      <div
-                        className={`${classes.col} ${classes["col-1"]}`}
-                        data-label="Status"
-                      >
-                        <span className={classes.expired}>Expired</span>
-                      </div>
-                    )}
-
-                    {currentTime < new Date(booking.inTime) && (
-                      <div
-                        className={`${classes.col} ${classes["col-1"]}`}
-                        data-label="Status"
-                      >
-                        <span className={classes.upcoming}>Upcoming</span>
-                      </div>
-                    )}
-                    {currentTime >= new Date(booking.inTime) &&
-                      currentTime <= new Date(booking.outTime) && (
-                        <div
-                          className={`${classes.col} ${classes["col-1"]}`}
-                          data-label="Status"
-                        >
-                          <span className={classes.active}>Active</span>
-                        </div>
-                      )}
-
+                    <div
+                      className={`${classes.col} ${classes["col-1"]}`}
+                      data-label="Status"
+                    >
+                      <span className={classes[bookingStatus]}>
+                        {bookingStatus}
+                      </span>
+                    </div>
                     <div
                       className={`${classes.col} ${classes["col-1"]}`}
                       data-label="Car No"
