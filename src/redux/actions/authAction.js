@@ -15,7 +15,7 @@ import {
   SIGNOUT,
   INVALID_DATA,
 } from "../reducers/authReducer";
-import { setAuthToken } from "../../utils/setAuthToken";
+
 import { setWithExpiry } from "../../utils/localStorage";
 
 export const getProfile = () => async (dispatch) => {
@@ -53,7 +53,6 @@ export const userSignIn = (Credentials) => async (dispatch) => {
     const response = await userSignInService(Credentials);
     if (response.status === 200) {
       setWithExpiry("token", response.data.token, 30 * 60 * 1000);
-      setAuthToken(response.data.token);
       return dispatch({
         type: USER_SIGNIN_SUCCESS,
         payload: response.data,
@@ -74,7 +73,6 @@ export const userSignUp = (userData) => async (dispatch) => {
     const response = await userSignUpService(userData);
     if (response.status === 201) {
       setWithExpiry("token", response.data.token, 30 * 60 * 1000);
-      setAuthToken(response.data.token);
       return dispatch({
         type: USER_SIGNUP,
         payload: response.data,
@@ -99,7 +97,6 @@ export const ownerSignIn = (Credentials) => async (dispatch) => {
     const response = await ownerSignInService(Credentials);
     if (response.status === 200) {
       setWithExpiry("token", response.data.token, 30 * 60 * 1000);
-      setAuthToken(response.data.token);
       return dispatch({
         type: OWNER_SIGNIN_SUCCESS,
         payload: response.data,
@@ -120,7 +117,6 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
     const response = await ownerSignUpService(ownerData);
     if (response.status === 201) {
       setWithExpiry("token", response.data.token, 30 * 60 * 1000);
-      setAuthToken(response.data.token);
       return dispatch({
         type: OWNER_SIGNUP,
         payload: response.data,
@@ -138,8 +134,6 @@ export const ownerSignUp = (ownerData) => async (dispatch) => {
 
 export const signOut = () => async (dispatch) => {
   localStorage.removeItem("token");
-
-  setAuthToken();
   return dispatch({
     type: SIGNOUT,
   });
