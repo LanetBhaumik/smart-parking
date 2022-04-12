@@ -69,7 +69,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "60vw",
+    width: "50vw",
     bgcolor: "background.paper",
     boxShadow: 24,
     pt: 2,
@@ -106,7 +106,7 @@ const TimelineModal = ({ slot, bookings, parking }) => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <Box sx={{ ...style, width: 400 }}>
+        <Box sx={{ ...style }}>
           <Box sx={{ textAlign: "right" }}>
             <IconButton onClick={handleClose} style={{ padding: 0 }}>
               <CancelIcon />

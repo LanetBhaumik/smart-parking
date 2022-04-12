@@ -20,5 +20,3 @@ export const getWithExpiry = (key) => {
   }
   return item.value;
 };
-
-// export default { setWithExpiry, getWithExpiry };
